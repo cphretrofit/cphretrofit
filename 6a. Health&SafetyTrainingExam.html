@@ -1,0 +1,674 @@
+# Generating the HTML file for the exam
+html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Certification Exam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .option-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-card:hover {
+            transform: translateX(4px);
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .option-selected {
+            border-color: #3b82f6;
+            background-color: #dbeafe;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        
+        /* Certificate Pattern */
+        .certificate-bg {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .seal {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">P</div>
+                <h1 class="text-xl font-bold text-slate-900 tracking-tight">ProCert Exam</h1>
+            </div>
+            <div id="exam-timer" class="hidden font-mono text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
+                Time: <span id="time-display">00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container max-w-3xl mx-auto px-4 py-8">
+        
+        <!-- Landing Page -->
+        <div id="landing-view" class="fade-in space-y-8 pt-8">
+            <div class="text-center space-y-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Professional Competency Exam</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Demonstrate your expertise by completing this comprehensive assessment. 
+                    You must score <span class="font-bold text-blue-600">80% or higher</span> to earn your certificate.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 sm:p-8 space-y-6">
+                    <div class="grid sm:grid-cols-3 gap-4 text-center">
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <div class="text-2xl font-bold text-slate-900">30</div>
+                            <div class="text-sm text-slate-500">Questions</div>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <div class="text-2xl font-bold text-slate-900">45m</div>
+                            <div class="text-sm text-slate-500">Time Limit</div>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <div class="text-2xl font-bold text-blue-600">80%</div>
+                            <div class="text-sm text-slate-500">Pass Rate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-slate-100 pt-6">
+                        <h3 class="font-semibold text-slate-900 mb-3">Instructions:</h3>
+                        <ul class="space-y-2 text-slate-600 text-sm">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Read each question carefully before selecting your answer.
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                You can navigate between questions using the previous/next buttons.
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Once submitted, you cannot change your answers.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div>
+                            <label for="candidate-name" class="block text-sm font-medium text-slate-700 mb-1">Full Name (for Certificate)</label>
+                            <input type="text" id="candidate-name" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" placeholder="Enter your full name">
+                            <p id="name-error" class="text-red-500 text-xs mt-1 hidden">Please enter your name to begin.</p>
+                        </div>
+                        <button onclick="startExam()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                            Start Exam
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Interface -->
+        <div id="exam-view" class="hidden space-y-6">
+            <!-- Progress Bar -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex justify-between text-sm font-medium text-slate-600 mb-2">
+                    <span>Progress</span>
+                    <span id="progress-text">Question 1 of 30</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 3%"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="question-container" class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden min-h-[400px] flex flex-col">
+                <!-- Content injected via JS -->
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between items-center pt-4">
+                <button id="prev-btn" onclick="changeQuestion(-1)" class="px-6 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                </button>
+                
+                <div class="flex gap-2">
+                    <button onclick="submitExam()" class="px-6 py-2.5 bg-slate-800 text-white font-medium rounded-lg hover:bg-slate-900 transition-colors shadow-md">
+                        Submit Exam
+                    </button>
+                    <button id="next-btn" onclick="changeQuestion(1)" class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md flex items-center gap-2">
+                        Next
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results View -->
+        <div id="results-view" class="hidden space-y-8 pt-4 fade-in">
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="p-8 text-center border-b border-slate-100">
+                    <div id="result-icon" class="mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-4 text-4xl">
+                        <!-- Icon injected via JS -->
+                    </div>
+                    <h2 id="result-title" class="text-3xl font-bold mb-2">Exam Completed</h2>
+                    <p id="result-message" class="text-slate-600">Here is how you performed.</p>
+                </div>
+                
+                <div class="p-8 bg-slate-50">
+                    <div class="grid grid-cols-3 gap-8 text-center">
+                        <div>
+                            <div class="text-sm text-slate-500 uppercase tracking-wide font-semibold mb-1">Score</div>
+                            <div id="score-display" class="text-4xl font-bold text-slate-900">0%</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-slate-500 uppercase tracking-wide font-semibold mb-1">Correct</div>
+                            <div id="correct-display" class="text-4xl font-bold text-slate-900">0/30</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-slate-500 uppercase tracking-wide font-semibold mb-1">Status</div>
+                            <div id="status-display" class="inline-flex items-center px-4 py-1 rounded-full text-sm font-bold mt-2">
+                                <!-- Status injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="certificate-actions" class="p-6 border-t border-slate-100 flex justify-center gap-4 hidden">
+                    <button onclick="generateCertificate()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-md flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        View Certificate
+                    </button>
+                    <button onclick="location.reload()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-8 rounded-lg transition-colors">
+                        Retake Exam
+                    </button>
+                </div>
+                
+                <div id="fail-actions" class="p-6 border-t border-slate-100 flex justify-center hidden">
+                    <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-md">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+
+            <!-- Certificate Preview Area -->
+            <div id="certificate-area" class="hidden fade-in">
+                <div class="flex justify-between items-end mb-4">
+                    <h3 class="text-lg font-bold text-slate-900">Your Certificate</h3>
+                    <button onclick="window.print()" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        Print / Save PDF
+                    </button>
+                </div>
+                
+                <div id="certificate-card" class="certificate-bg border-8 border-double border-slate-200 p-8 sm:p-12 rounded-lg shadow-2xl relative overflow-hidden text-center">
+                    <!-- Decorative corners -->
+                    <div class="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-blue-800 rounded-tl-lg"></div>
+                    <div class="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-blue-800 rounded-tr-lg"></div>
+                    <div class="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-blue-800 rounded-bl-lg"></div>
+                    <div class="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-blue-800 rounded-br-lg"></div>
+
+                    <div class="relative z-10 space-y-6">
+                        <div class="text-sm font-bold tracking-[0.2em] text-slate-500 uppercase">Certificate of Completion</div>
+                        
+                        <h1 class="text-4xl sm:text-5xl font-serif font-bold text-slate-900">Professional Competency</h1>
+                        
+                        <div class="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
+                        
+                        <p class="text-lg text-slate-600">This certifies that</p>
+                        
+                        <h2 id="cert-name" class="text-3xl font-bold text-blue-900 font-serif italic">Candidate Name</h2>
+                        
+                        <p class="text-lg text-slate-600">has successfully passed the examination with a score of</p>
+                        
+                        <div class="inline-block bg-slate-100 px-6 py-2 rounded-lg border border-slate-200">
+                            <span id="cert-score" class="text-3xl font-bold text-slate-900">0%</span>
+                        </div>
+                        
+                        <p class="text-slate-600 max-w-lg mx-auto">Demonstrating proficiency in the required subject matter and meeting the high standards of the certification body.</p>
+                        
+                        <div class="flex justify-center items-center gap-8 pt-8 mt-8 border-t border-slate-200">
+                            <div class="text-center">
+                                <div id="cert-date" class="text-slate-900 font-bold">Date</div>
+                                <div class="text-xs text-slate-500 uppercase tracking-wide mt-1">Date Issued</div>
+                            </div>
+                            <div class="w-px h-12 bg-slate-300"></div>
+                            <div class="text-center">
+                                <div class="text-slate-900 font-bold">PRO-2024</div>
+                                <div class="text-xs text-slate-500 uppercase tracking-wide mt-1">Certification ID</div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-8 right-8 opacity-10 pointer-events-none">
+                            <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor" class="text-blue-900">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- Data: 30 Questions ---
+        const questions = [
+            {
+                id: 1,
+                question: "In project management, which methodology emphasizes iterative development and continuous feedback?",
+                options: ["Waterfall", "Agile", "Six Sigma", "Lean"],
+                correct: 1
+            },
+            {
+                id: 2,
+                question: "What does the acronym 'SMART' stand for in goal setting?",
+                options: [
+                    "Simple, Measurable, Achievable, Relevant, Timely",
+                    "Specific, Measurable, Achievable, Relevant, Time-bound",
+                    "Strategic, Manageable, Attainable, Realistic, Tested",
+                    "Systematic, Meaningful, Actionable, Reliable, Trackable"
+                ],
+                correct: 1
+            },
+            {
+                id: 3,
+                question: "Which financial statement provides a snapshot of a company's financial position at a single point in time?",
+                options: ["Income Statement", "Cash Flow Statement", "Balance Sheet", "Statement of Equity"],
+                correct: 2
+            },
+            {
+                id: 4,
+                question: "In data analysis, what is the term for the middle value in a sorted list of numbers?",
+                options: ["Mean", "Mode", "Median", "Range"],
+                correct: 2
+            },
+            {
+                id: 5,
+                question: "Which psychological concept describes the tendency to search for information that confirms one's preexisting beliefs?",
+                options: ["Cognitive Dissonance", "Confirmation Bias", "Anchoring Effect", "Dunning-Kruger Effect"],
+                correct: 1
+            },
+            {
+                id: 6,
+                question: "What is the primary purpose of a 'Firewall' in network security?",
+                options: ["To speed up internet connection", "To block unauthorized access", "To store passwords", "To compress data"],
+                correct: 1
+            },
+            {
+                id: 7,
+                question: "In marketing, what does 'SEO' stand for?",
+                options: ["Search Engine Optimization", "Sales Engagement Operation", "Systematic Email Outreach", "Social Engagement Online"],
+                correct: 0
+            },
+            {
+                id: 8,
+                question: "Which economic principle states that as consumption increases, the marginal utility derived from each additional unit decreases?",
+                options: ["Law of Demand", "Law of Diminishing Marginal Utility", "Opportunity Cost", "Scarcity Principle"],
+                correct: 1
+            },
+            {
+                id: 9,
+                question: "What is the standard port number for HTTP?",
+                options: ["21", "80", "443", "8080"],
+                correct: 1
+            },
+            {
+                id: 10,
+                question: "Which leadership style involves making decisions without consulting team members?",
+                options: ["Democratic", "Laissez-faire", "Autocratic", "Transformational"],
+                correct: 2
+            },
+            {
+                id: 11,
+                question: "In database terminology, what does 'SQL' stand for?",
+                options: ["Structured Query Language", "Simple Question Logic", "System Quality Level", "Standard Query Link"],
+                correct: 0
+            },
+            {
+                id: 12,
+                question: "What is the primary function of the 'Parasympathetic Nervous System'?",
+                options: ["Fight or Flight", "Rest and Digest", "Voluntary Movement", "Sensory Processing"],
+                correct: 1
+            },
+            {
+                id: 13,
+                question: "Which type of intellectual property protection lasts for the lifetime of the creator plus 70 years?",
+                options: ["Patents", "Trademarks", "Copyrights", "Trade Secrets"],
+                correct: 2
+            },
+            {
+                id: 14,
+                question: "In physics, what is the unit of electrical resistance?",
+                options: ["Volt", "Ampere", "Ohm", "Watt"],
+                correct: 2
+            },
+            {
+                id: 15,
+                question: "What does 'KPI' stand for in business analytics?",
+                options: ["Key Performance Indicator", "Knowledge Process Integration", "Key Product Index", "Kinetic Process Improvement"],
+                correct: 0
+            },
+            {
+                id: 16,
+                question: "Which cloud computing model provides virtualized computing resources over the internet?",
+                options: ["SaaS", "PaaS", "IaaS", "DaaS"],
+                correct: 2
+            },
+            {
+                id: 17,
+                question: "What is the chemical symbol for Gold?",
+                options: ["Ag", "Fe", "Au", "Pb"],
+                correct: 2
+            },
+            {
+                id: 18,
+                question: "In statistics, what does a 'p-value' less than 0.05 typically indicate?",
+                options: ["The null hypothesis is true", "The results are not significant", "Statistical significance", "High standard deviation"],
+                correct: 2
+            },
+            {
+                id: 19,
+                question: "Which design principle suggests that related items should be grouped together?",
+                options: ["Contrast", "Repetition", "Alignment", "Proximity"],
+                correct: 3
+            },
+            {
+                id: 20,
+                question: "What is the primary goal of 'Six Sigma' methodology?",
+                options: ["Increase speed", "Reduce defects", "Lower costs", "Improve morale"],
+                correct: 1
+            },
+            {
+                id: 21,
+                question: "Which planet in our solar system is known as the 'Red Planet'?",
+                options: ["Venus", "Jupiter", "Mars", "Saturn"],
+                correct: 2
+            },
+            {
+                id: 22,
+                question: "In accounting, what does 'GAAP' stand for?",
+                options: ["General American Accounting Principles", "Generally Accepted Accounting Principles", "Global Accounting and Auditing Practices", "Government Approved Accounting Procedures"],
+                correct: 1
+            },
+            {
+                id: 23,
+                question: "What is the term for a market structure with only one seller of a particular product?",
+                options: ["Oligopoly", "Monopoly", "Monopsony", "Perfect Competition"],
+                correct: 1
+            },
+            {
+                id: 24,
+                question: "Which programming language is primarily used for adding interactivity to websites?",
+                options: ["HTML", "CSS", "Python", "JavaScript"],
+                correct: 3
+            },
+            {
+                id: 25,
+                question: "What is the 'Hawthorne Effect' in research?",
+                options: ["The tendency to forget information", "The change in behavior due to being observed", "The bias in sampling", "The placebo effect"],
+                correct: 1
+            },
+            {
+                id: 26,
+                question: "Which blood type is known as the universal donor?",
+                options: ["A+", "B-", "AB+", "O-"],
+                correct: 3
+            },
+            {
+                id: 27,
+                question: "In legal terms, what is a 'tort'?",
+                options: ["A criminal act", "A civil wrong causing harm", "A contract breach", "A property dispute"],
+                correct: 1
+            },
+            {
+                id: 28,
+                question: "What does 'API' stand for in software development?",
+                options: ["Application Programming Interface", "Advanced Protocol Integration", "Automated Process Instruction", "Application Process Integration"],
+                correct: 0
+            },
+            {
+                id: 29,
+                question: "Which element has the atomic number 1?",
+                options: ["Helium", "Oxygen", "Hydrogen", "Carbon"],
+                correct: 2
+            },
+            {
+                id: 30,
+                question: "What is the primary purpose of a 'SWOT' analysis?",
+                options: ["Financial forecasting", "Strategic planning", "Quality control", "Risk mitigation"],
+                correct: 1
+            }
+        ];
+
+        // --- State Management ---
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(30).fill(null);
+        let timerInterval;
+        let secondsElapsed = 0;
+        let candidateName = "";
+
+        // --- Functions ---
+
+        function startExam() {
+            const nameInput = document.getElementById('candidate-name');
+            const nameError = document.getElementById('name-error');
+            
+            if (!nameInput.value.trim()) {
+                nameError.classList.remove('hidden');
+                nameInput.classList.add('border-red-500');
+                return;
+            }
+            
+            candidateName = nameInput.value.trim();
+            nameError.classList.add('hidden');
+            nameInput.classList.remove('border-red-500');
+            
+            document.getElementById('landing-view').classList.add('hidden');
+            document.getElementById('exam-view').classList.remove('hidden');
+            document.getElementById('exam-timer').classList.remove('hidden');
+            
+            startTimer();
+            renderQuestion();
+            updateNavigation();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                document.getElementById('time-display').textContent = `${mins}:${secs}`;
+                
+                // Auto-submit after 45 minutes (2700 seconds)
+                if (secondsElapsed >= 2700) {
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            const container = document.getElementById('question-container');
+            
+            // Update Progress
+            const progressPercent = ((currentQuestionIndex + 1) / 30) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-text').textContent = `Question ${currentQuestionIndex + 1} of 30`;
+            
+            // Generate Options HTML
+            const optionsHtml = q.options.map((opt, idx) => {
+                const isSelected = userAnswers[currentQuestionIndex] === idx;
+                const selectedClass = isSelected ? 'option-selected border-blue-500 bg-blue-50' : 'border-slate-200 bg-white';
+                
+                return `
+                    <div onclick="selectOption(${idx})" 
+                         class="option-card ${selectedClass} border-2 rounded-lg p-4 flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'}">
+                            ${String.fromCharCode(65 + idx)}
+                        </div>
+                        <span class="text-slate-700 font-medium">${opt}</span>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="p-6 sm:p-8 flex-grow slide-in">
+                    <div class="text-sm font-bold text-blue-600 mb-2 uppercase tracking-wide">Question ${currentQuestionIndex + 1}</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-8 leading-relaxed">${q.question}</h3>
+                    <div class="space-y-3">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestion(); // Re-render to update styling
+        }
+
+        function changeQuestion(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < 30) {
+                currentQuestionIndex = newIndex;
+                renderQuestion();
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (currentQuestionIndex === 29) {
+                nextBtn.innerHTML = `Finish <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>`;
+                nextBtn.onclick = submitExam;
+            } else {
+                nextBtn.innerHTML = `Next <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>`;
+                nextBtn.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function submitExam() {
+            // Check for unanswered questions
+            const unanswered = userAnswers.filter(a => a === null).length;
+            
+            if (unanswered > 0) {
+                if (!confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
+                    return;
+                }
+            }
+            
+            clearInterval(timerInterval);
+            
+            // Calculate Score
+            let correctCount = 0;
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) correctCount++;
+            });
+            
+            const percentage = Math.round((correctCount / 30) * 100);
+            const passed = percentage >= 80;
+            
+            // Show Results
+            document.getElementById('exam-view').classList.add('hidden');
+            document.getElementById('exam-timer').classList.add('hidden');
+            document.getElementById('results-view').classList.remove('hidden');
+            
+            // Update Results UI
+            document.getElementById('score-display').textContent = `${percentage}%`;
+            document.getElementById('correct-display').textContent = `${correctCount}/30`;
+            
+            const statusEl = document.getElementById('status-display');
+            const resultIcon = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            const resultMsg = document.getElementById('result-message');
+            
+            if (passed) {
+                statusEl.textContent = "PASSED";
+                statusEl.className = "inline-flex items-center px-4 py-1 rounded-full text-sm font-bold mt-2 bg-green-100 text-green-800";
+                resultIcon.className = "mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-4 text-4xl bg-green-100 text-green-600";
+                resultIcon.innerHTML = "✓";
+                resultTitle.textContent = "Congratulations!";
+                resultMsg.textContent = `You have successfully passed the exam with a score of ${percentage}%.`;
+                document.getElementById('certificate-actions').classList.remove('hidden');
+                document.getElementById('fail-actions').classList.add('hidden');
+            } else {
+                statusEl.textContent = "FAILED";
+                statusEl.className = "inline-flex items-center px-4 py-1 rounded-full text-sm font-bold mt-2 bg-red-100 text-red-800";
+                resultIcon.className = "mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-4 text-4xl bg-red-100 text-red-600";
+                resultIcon.innerHTML = "✕";
+                resultTitle.textContent = "Exam Failed";
+                resultMsg.textContent = `You scored ${percentage}%. You need 80% to pass. Review the material and try again.`;
+                document.getElementById('certificate-actions').classList.add('hidden');
+                document.getElementById('fail-actions').classList.remove('hidden');
+            }
+        }
+
+        function generateCertificate() {
+            document.getElementById('certificate-area').classList.remove('hidden');
+            
+            // Populate Certificate Data
+            document.getElementById('cert-name').textContent = candidateName;
+            document.getElementById('cert-score').textContent = document.getElementById('score-display').textContent;
+            
+            const date = new Date();
+            const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('cert-date').textContent = dateStr;
+            
+            // Scroll to certificate
+            document.getElementById('certificate-area').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+"""
+
+# Write to file
+with open('/mnt/kimi/output/professional_exam.html', 'w') as f:
+    f.write(html_content)
+
+print("✅ Exam generated successfully!")
+print("📁 File saved to: /mnt/kimi/output/professional_exam.html")
+print("\nFeatures included:")
+print("• 30 Moderate Difficulty Questions (General Knowledge/Business/Tech)")
+print("• 80% Pass Rate Requirement (24/30 correct)")
+print("• 45-minute Timer (Auto-submit)")
+print("• Dynamic Certificate Generation (Name + Score + Date)")
+print("• Print-friendly CSS for saving PDF")
+print("• Responsive Design (Mobile/Desktop)")
+print("• Navigation (Previous/Next/Submit)")

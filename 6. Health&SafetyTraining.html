@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPH Retrofit - Health & Safety Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a3a52;
+            --secondary: #2d5a7b;
+            --accent: #e67e22;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--warning));
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border-left: 5px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .module-card.completed {
+            border-left-color: var(--success);
+            background: linear-gradient(to right, rgba(39, 174, 96, 0.05), white);
+        }
+
+        .module-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-left-color: #95a5a6;
+        }
+
+        .module-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-desc {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .module-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #ffeaa7; color: #d63031; }
+        .status-completed { background: #55efc4; color: #00b894; }
+        .status-locked { background: #dfe6e9; color: #636e72; }
+
+        .content-area {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-area.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: var(--light);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #d5dbdb;
+        }
+
+        .hazard-box {
+            background: #fff3cd;
+            border-left: 5px solid var(--warning);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid var(--danger);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid var(--success);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quiz-option {
+            background: white;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--secondary);
+            background: #f0f4f8;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--accent);
+            background: #fff3e0;
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: #d4edda;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--danger);
+            background: #f8d7da;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 0.8rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checklist li:before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .checklist li.checked:before {
+            content: '☑';
+            color: var(--success);
+        }
+
+        .emergency-procedure {
+            background: var(--danger);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .emergency-procedure h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .lone-worker-check {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .lone-worker-check h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .contact-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .phone-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .ppe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .ppe-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .ppe-item:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .ppe-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-box {
+            background: #f0f4f8;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .scenario-box::before {
+            content: 'SCENARIO';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .completion-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        .video-placeholder {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            height: 300px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder::after {
+            content: '▶';
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content-area {
+                padding: 1.5rem;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏗️ CPH Retrofit</h1>
+        <p class="subtitle">Health & Safety Training for Retrofit Services</p>
+    </header>
+
+    <div class="completion-badge" id="completionBadge">
+        ✓ Course Completed!
+    </div>
+
+    <div class="container">
+        <!-- Dashboard View -->
+        <div id="dashboard" class="fade-in">
+            <div class="progress-container">
+                <h3>Your Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
+                </div>
+                <p style="margin-top: 1rem; color: #666;">Complete all modules to receive your certification</p>
+            </div>
+
+            <div class="module-grid" id="moduleGrid">
+                <!-- Modules will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Content Views -->
+        <div id="contentArea" class="content-area">
+            <!-- Dynamic content loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Course Data Structure
+        const courseData = {
+            modules: [
+                {
+                    id: 1,
+                    title: "Introduction to Retrofit Safety",
+                    icon: "🏠",
+                    description: "Fundamental safety principles specific to domestic retrofit projects",
+                    duration: "30 mins",
+                    completed: false,
+                    locked: false,
+                    content: `
+                        <h2>Introduction to Retrofit Safety</h2>
+                        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                            Welcome to CPH Retrofit's Health and Safety training. This module covers the essential safety 
+                            considerations when working on energy efficiency retrofit projects in domestic properties.
+                        </p>
+
+                        <div class="video-placeholder">
+                            Introduction Video: Retrofit Safety Overview
+                        </div>
+
+                        <div class="info-box">
+                            <h3>🎯 Learning Objectives</h3>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Understand the unique hazards of retrofit work</li>
+                                <li>Recognize the differences between retrofit and new build construction</li>
+                                <li>Identify key legislation affecting retrofit activities</li>
+                                <li>Know CPH Retrofit's safety culture and expectations</li>
+                            </ul>
+                        </div>
+
+                        <h3>What Makes Retrofit Different?</h3>
+                        <p style="line-height: 1.8; margin: 1rem 0;">
+                            Retrofit work involves upgrading existing buildings to improve energy efficiency. Unlike new construction, 
+                            you're working in occupied homes with unknown existing conditions, potential asbestos, aging electrical systems, 
+                            and residents who may be vulnerable.
+                        </p>
+
+                        <div class="hazard-box">
+                            <h3>⚠️ Key Retrofit Hazards</h3>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li><strong>Unknown Construction:</strong> Hidden voids, unconventional building methods</li>
+                                <li><strong>Asbestos:</strong> Common in pre-2000 buildings (Artex, insulation boards, pipe lagging)</li>
+                                <li><strong>Occupied Dwellings:</strong> Working around residents, children, pets</li>
+                                <li><strong>Confined Spaces:</strong> Lofts, crawl spaces, underfloor areas</li>
+                                <li><strong>Electrical Safety:</strong> Old wiring, overloaded circuits</li>
+                                <li><strong>Working at Height:</strong> Ladders, scaffolding, roof work</li>
+                            </ul>
+                        </div>
+
+                        <h3>Legislation Overview</h3>
+                        <div class="scenario-box">
+                            <p><strong>Health and Safety at Work Act 1974:</strong> Employers must ensure safety of employees and others affected by work activities.</p>
+                            <br>
+                            <p><strong>Construction (Design and Management) Regulations 2015:</strong> Specific duties for domestic projects including appointment of Principal Designer and Principal Contractor.</p>
+                            <br>
+                            <p><strong>Control of Asbestos Regulations 2012:</strong> Mandatory asbestos surveys before refurbishment work in pre-2000 buildings.</p>
+                        </div>
+
+                        <div class="quiz-container" id="quiz-1">
+                            <div class="quiz-question">Why is retrofit work potentially more hazardous than new construction?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                    A. Unknown existing conditions, potential asbestos, and working in occupied homes
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    B. It requires more expensive tools
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    C. It takes longer to complete
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    D. It requires special permits
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="checkAnswer(1)">Submit Answer</button>
+                            <div id="feedback-1" style="margin-top: 1rem; font-weight: bold;"></div>
+                        </div>
+                    `
+                },
+                {
+                    id: 2,
+                    title: "Lone Working for Assessors",
+                    icon: "👤",
+                    description: "Safety protocols for retrofit assessors working alone in client properties",
+                    duration: "45 mins",
+                    completed: false,
+                    locked: true,
+                    content: `
+                        <h2>Lone Working for Retrofit Assessors</h2>
+                        
+                        <div class="danger-box">
+                            <h3>🚨 Critical Risk</h3>
+                            <p>Retrofit assessors often work alone in unfamiliar private properties. This creates unique risks including 
+                            confrontational situations, medical emergencies, and accidents without immediate assistance available.</p>
+                        </div>
+
+                        <div class="lone-worker-check">
+                            <h3>📋 Pre-Visit Safety Checklist</h3>
+                            <ul class="checklist" id="checklist-2">
+                                <li onclick="toggleCheck(this)">Inform CPH Retrofit office of appointment details (address, time, client name)</li>
+                                <li onclick="toggleCheck(this)">Check client history for any previous incidents or concerns</li>
+                                <li onclick="toggleCheck(this)">Ensure mobile phone is fully charged with credit/data</li>
+                                <li onclick="toggleCheck(this)">Share live location with supervisor using CPH Tracker app</li>
+                                <li onclick="toggleCheck(this)">Plan escape routes and identify nearest hospital</li>
+                                <li onclick="toggleCheck(this)">Carry personal alarm and first aid kit</li>
+                                <li onclick="toggleCheck(this)">Confirm check-in/check-out procedure with office</li>
+                            </ul>
+                        </div>
+
+                        <h3>Dynamic Risk Assessment</h3>
+                        <p style="line-height: 1.8; margin: 1rem 0;">
+                            Unlike fixed risk assessments, dynamic assessment happens in real-time. Trust your instincts. If a situation 
+                            feels unsafe, leave immediately.
+                        </p>
+
+                        <div class="scenario-box">
+                            <h4>Scenario: Uncomfortable Situation</h4>
+                            <p>You arrive for a retrofit assessment. The client appears intoxicated and is behaving erratically. 
+                            The property is in a remote location with poor mobile signal.</p>
+                            <br>
+                            <p><strong>What do you do?</strong></p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Do not enter the property</li>
+                                <li>Return to your vehicle and lock doors</li>
+                                <li>Drive to area with signal and call supervisor</li>
+                                <li>Reschedule appointment with additional support</li>
+                                <li>Document incident in CPH incident reporting system</li>
+                            </ul>
+                        </div>
+
+                        <h3>Communication Protocols</h3>
+                        <div class="contact-grid">
+                            <div class="contact-card">
+                                <h4>Check-in Time</h4>
+                                <p>Every 2 hours or upon arrival/departure</p>
+                            </div>
+                            <div class="contact-card">
+                                <h4>Emergency Contact</h4>
+                                <p class="phone-number">0800 CPH 999</p>
+                            </div>
+                            <div class="contact-card">
+                                <h4>Escalation</h4>
+                                <p>Missed check-in triggers welfare call after 15 mins, emergency services after 30 mins</p>
+                            </div>
+                        </div>
+
+                        <div class="emergency-procedure">
+                            <h3>EMERGENCY PROCEDURE</h3>
+                            <p style="font-size: 1.2rem; margin-top: 1rem;">
+                                If you feel threatened or unsafe:<br>
+                                <strong>1. LEAVE</strong> → <strong>2. SAFE LOCATION</strong> → <strong>3. CALL 999</strong> → <strong>4. NOTIFY CPH</strong>
+                            </p>
+                        </div>
+
+                        <div class="quiz-container" id="quiz-2">
+                            <div class="quiz-question">How often must lone workers check in with the office during site visits?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    A. Only at the beginning and end of the day
+                                </div>
+                                <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                    B. Every 2 hours and upon arrival/departure from each property
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    C. Only if there is an incident
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    D. Once per week
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="checkAnswer(2)">Submit Answer</button>
+                            <div id="feedback-2" style="margin-top: 1rem; font-weight: bold;"></div>
+                        </div>
+                    `
+                },
+                {
+                    id: 3,
+                    title: "Retrofit Coordinator Safety",
+                    icon: "📋",
+                    description: "Health and safety responsibilities specific to the Retrofit Coordinator role",
+                    duration: "40 mins",
+                    completed: false,
+                    locked: true,
+                    content: `
+                        <h2>Retrofit Coordinator Safety Management</h2>
+
+                        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                            As a Retrofit Coordinator, you have specific duties under CDM 2015 and PAS 2035. You must ensure that 
+                            health and safety is integrated into the project from design through to handover.
+                        </p>
+
+                        <div class="info-box">
+                            <h3>📌 PAS 2035 Requirements</h3>
+                            <p>Retrofit Coordinators must ensure that:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Risk assessments are suitable and sufficient</li>
+                                <li>Method statements address specific retrofit hazards</li>
+                                <li>Contractors are competent and properly inducted</li>
+                                <li>Monitoring and auditing of safety standards occurs</li>
+                                <li>Incident reporting and investigation procedures are followed</li>
+                            </ul>
+                        </div>
+
+                        <h3>Pre-Construction Information (PCI)</h3>
+                        <div class="hazard-box">
+                            <p>Before work begins, you must provide installers with:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Asbestos survey reports</li>
+                                <li>Existing building drawings (if available)</li>
+                                <li>Known hazards (structural issues, electrical condition)</li>
+                                <li>Occupant vulnerability information</li>
+                                <li>Access constraints and restrictions</li>
+                            </ul>
+                        </div>
+
+                        <h3>Site Monitoring & Audits</h3>
+                        <div class="scenario-box">
+                            <h4>Monthly Safety Audit Checklist</h4>
+                            <ul class="checklist" id="checklist-3">
+                                <li onclick="toggleCheck(this)">PPE compliance (hard hats, safety boots, hi-vis)</li>
+                                <li onclick="toggleCheck(this)">Ladder and scaffold inspections current</li>
+                                <li onclick="toggleCheck(this)">Asbestos awareness documentation in place</li>
+                                <li onclick="toggleCheck(this)">Fire extinguishers accessible and inspected</li>
+                                <li onclick="toggleCheck(this)">First aid kits stocked and accessible</li>
+                                <li onclick="toggleCheck(this)">Waste segregation and disposal compliant</li>
+                                <li onclick="toggleCheck(this)">Client protection measures (dust sheets, barriers)</li>
+                            </ul>
+                        </div>
+
+                        <h3>Managing Subcontractors</h3>
+                        <p style="line-height: 1.8; margin: 1rem 0;">
+                            All subcontractors must provide:
+                        </p>
+                        <ul style="margin-left: 2rem; line-height: 2;">
+                            <li>Valid insurance certificates (Employers' Liability £10m, Public Liability £5m)</li>
+                            <li>Method statements specific to their scope</li>
+                            <li>Evidence of competent persons (CSCS/CPCS cards)</li>
+                            <li>Asbestos awareness training certificates</li>
+                            <li>Face fit test certificates for respiratory protection</li>
+                        </ul>
+
+                        <div class="danger-box">
+                            <h3>⚠️ Stop Work Authority</h3>
+                            <p>Retrofit Coordinators have the authority and obligation to stop work immediately if:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Unsafe work at height is observed</li>
+                                <li>Asbestos disturbance is suspected</li>
+                                <li>Live electrical work is unplanned</li>
+                                <li>Workers appear unfit (fatigue, intoxication)</li>
+                                <li>Client safety is compromised</li>
+                            </ul>
+                        </div>
+
+                        <div class="quiz-container" id="quiz-3">
+                            <div class="quiz-question">Under PAS 2035, what must Retrofit Coordinators ensure regarding subcontractors?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    A. They charge the lowest price
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    B. They complete work quickly
+                                </div>
+                                <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                    C. They are competent, properly inducted, and have suitable insurance
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    D. They provide their own tools only
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="checkAnswer(3)">Submit Answer</button>
+                            <div id="feedback-3" style="margin-top: 1rem; font-weight: bold;"></div>
+                        </div>
+                    `
+                },
+                {
+                    id: 4,
+                    title: "Asbestos & Hazardous Materials",
+                    icon: "☠️",
+                    description: "Identifying and managing asbestos in retrofit projects",
+                    duration: "50 mins",
+                    completed: false,
+                    locked: true,
+                    content: `
+                        <h2>Asbestos & Hazardous Materials in Retrofit</h2>
+
+                        <div class="danger-box">
+                            <h3>🚨 LEGAL REQUIREMENT</h3>
+                            <p>Any building constructed before 2000 may contain asbestos. <strong>YOU MUST NOT START WORK</strong> 
+                            without a valid asbestos survey for refurbishment/demolition activities.</p>
+                        </div>
+
+                        <h3>Common Asbestos Locations in Retrofit</h3>
+                        <div class="ppe-grid">
+                            <div class="ppe-item">
+                                <div class="ppe-icon">🏠</div>
+                                <h4>Artex Ceilings</h4>
+                                <p>Pre-1984 decorative coatings</p>
+                            </div>
+                            <div class="ppe-item">
+                                <div class="ppe-icon">🔥</div>
+                                <h4>Boiler Insulation</h4>
+                                <p>Pipe lagging and gaskets</p>
+                            </div>
+                            <div class="ppe-item">
+                                <div class="ppe-icon">🧱</div>
+                                <h4>Insulation Boards</h4>
+                                <p>Loft insulation, fire breaks</p>
+                            </div>
+                            <div class="ppe-item">
+                                <div class="ppe-icon">🚪</div>
+                                <h4>Paneling</h4>
+                                <p>Bath panels, window boards</p>
+                            </div>
+                        </div>
+
+                        <h3>Survey Types</h3>
+                        <div class="info-box">
+                            <p><strong>Type 1: Management Survey</strong> - Locates asbestos that could be disturbed during normal occupancy. NOT sufficient for retrofit work.</p>
+                            <br>
+                            <p><strong>Type 2: Refurbishment/Demolition Survey</strong> - Required before retrofit work. Intrusive survey to access all areas where work will occur.</p>
+                        </div>
+
+                        <div class="scenario-box">
+                            <h4>Real Incident: Loft Insulation Project</h4>
+                            <p>A contractor began installing loft insulation without checking for asbestos. They disturbed asbestos-containing insulation boards used as fire breaks. The property required decontamination costing £15,000, and the contractor faced prosecution.</p>
+                            <br>
+                            <p><strong>Lesson:</strong> Always verify the asbestos survey covers the specific work area.</p>
+                        </div>
+
+                        <h3>Lead Paint & Other Hazards</h3>
+                        <div class="hazard-box">
+                            <h3>Other Common Retrofit Hazards</h3>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li><strong>Lead Paint:</strong> Common in pre-1960s properties. Dust from sanding is toxic.</li>
+                                <li><strong>Silica Dust:</strong> From cutting masonry or concrete. Causes silicosis.</li>
+                                <li><strong>Biological Hazards:</strong> Bird/bat droppings in lofts (histoplasmosis, psittacosis).</li>
+                                <li><strong>Radon:</strong> Gas from ground in certain areas. Ensure ventilation not compromised.</li>
+                            </ul>
+                        </div>
+
+                        <h3>Emergency Procedures</h3>
+                        <div class="emergency-procedure">
+                            <h3>IF YOU SUSPECT ASBESTOS DISTURBANCE</h3>
+                            <p style="margin-top: 1rem;">
+                                1. STOP WORK IMMEDIATELY<br>
+                                2. EVACUATE AREA<br>
+                                3. PREVENT ACCESS<br>
+                                4. CALL EMERGENCY ASBESTOS HOTLINE: 0800 CPH HAZ<br>
+                                5. DO NOT RE-ENTER UNTIL CLEARED
+                            </p>
+                        </div>
+
+                        <div class="quiz-container" id="quiz-4">
+                            <div class="quiz-question">What type of asbestos survey is required before starting retrofit installation work?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    A. Management Survey only
+                                </div>
+                                <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                    B. Refurbishment/Demolition Survey
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    C. No survey needed if the house looks modern
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    D. Visual inspection by the contractor
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="checkAnswer(4)">Submit Answer</button>
+                            <div id="feedback-4" style="margin-top: 1rem; font-weight: bold;"></div>
+                        </div>
+                    `
+                },
+                {
+                    id: 5,
+                    title: "Working at Height & Access",
+                    icon: "🪜",
+                    description: "Safe access for loft insulation, external wall insulation, and roof work",
+                    duration: "35 mins",
+                    completed: false,
+                    locked: true,
+                    content: `
+                        <h2>Working at Height in Retrofit</h2>
+
+                        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                            Working at height remains the biggest cause of workplace fatalities. Retrofit work often involves 
+                            lofts, ladders, and scaffolding. This module covers the specific requirements for retrofit assessors and installers.
+                        </p>
+
+                        <div class="danger-box">
+                            <h3>⚠️ Hierarchy of Controls</h3>
+                            <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li><strong>Avoid:</strong> Can work be done from ground level? (e.g., using extension poles)</li>
+                                <li><strong>Prevent:</strong> Use existing safe platforms, mobile elevating work platforms (MEWPs)</li>
+                                <li><strong>Minimise:</strong> Fall arrest equipment, safety nets (last resort)</li>
+                            </ol>
+                        </div>
+
+                        <h3>Ladder Safety - The 3-Point Rule</h3>
+                        <div class="info-box">
+                            <ul style="margin-left: 1.5rem;">
+                                <li>Always maintain three points of contact (two feet and one hand, or two hands and one foot)</li>
+                                <li>Extend ladder 1m above landing point</li>
+                                <li>Angle: 1 out for every 4 up (75°)</li>
+                                <li>Secure the ladder - tie it off or use a stability device</li>
+                                <li>Never overreach - keep belt buckle within stiles</li>
+                                <li>Maximum 30 minutes continuous use</li>
+                            </ul>
+                        </div>
+
+                        <h3>Loft Access Specifics</h3>
+                        <div class="scenario-box">
+                            <h4>Retrofit Loft Assessment Protocol</h4>
+                            <p>Before entering any loft:</p>
+                            <ul class="checklist" id="checklist-5" style="margin-top: 1rem;">
+                                <li onclick="toggleCheck(this)">Check ceiling joist condition - will it support your weight?</li>
+                                <li onclick="toggleCheck(this)">Identify safe crawling boards or use crawl boards</li>
+                                <li onclick="toggleCheck(this)">Check for wasp/bee nests, rodents</li>
+                                <li onclick="toggleCheck(this)">Ensure adequate lighting (head torch + portable light)</li>
+                                <li onclick="toggleCheck(this)">Check for exposed electrical conductors</li>
+                                <li onclick="toggleCheck(this)">Verify adequate ventilation (risk of heat exhaustion)</li>
+                                <li onclick="toggleCheck(this)">Have emergency communication method</li>
+                            </ul>
+                        </div>
+
+                        <h3>External Wall Insulation (EWI) Access</h3>
+                        <div class="hazard-box">
+                            <p>For EWI installation:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Scaffold must be erected by competent persons (CISRS card holders)</li>
+                                <li>Weekly scaffold inspections required (tag system)</li>
+                                <li>Edge protection mandatory on all platforms</li>
+                                <li>Consider overhead power lines - minimum 6m clearance</li>
+                                <li>Weather conditions: No work in high winds (>23mph) or rain</li>
+                            </ul>
+                        </div>
+
+                        <div class="success-box">
+                            <h3>✅ Assessor Specific Guidance</h3>
+                            <p>As a Retrofit Assessor, you typically only need visual inspection of roof/loft areas. <strong>Do not climb onto roofs.</strong> Use:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Ladders for loft access only (with spotter if possible)</li>
+                                <li>Binoculars for external roof condition assessment</li>
+                                <li>Drone surveys (if qualified and authorised)</li>
+                                <li>Homeowner photos for inaccessible areas (with disclaimer)</li>
+                            </ul>
+                        </div>
+
+                        <div class="quiz-container" id="quiz-5">
+                            <div class="quiz-question">What is the maximum recommended continuous time for using a ladder?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    A. 1 hour
+                                </div>
+                                <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                    B. 30 minutes
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    C. 2 hours
+                                </div>
+                                <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                    D. No limit if properly secured
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="checkAnswer(5)">Submit Answer</button>
+                            <div id="feedback-5" style="margin-top: 1rem; font-weight: bold;"></div>
+                        </div>
+                    `
+                },
+                {
+                    id: 6,
+                    title: "Final Assessment & Certification",
+                    icon: "🎓",
+                    description: "Complete the final assessment to receive your CPH Retrofit H&S Certificate",
+                    duration: "30 mins",
+                    completed: false,
+                    locked: true,
+                    content: `
+                        <h2>Final Assessment</h2>
+                        
+                        <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                            You must score 80% or higher to pass. You have 3 attempts. Good luck!
+                        </p>
+
+                        <div id="final-exam">
+                            <div class="quiz-container" style="margin-bottom: 2rem;">
+                                <div class="quiz-question">1. What is the first step in the emergency procedure if you feel threatened during a lone working visit?</div>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        A. Call the police immediately
+                                    </div>
+                                    <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                        B. Leave the property immediately
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        C. Try to calm the situation
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        D. Complete the assessment quickly
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-container" style="margin-bottom: 2rem;">
+                                <div class="quiz-question">2. Under CDM 2015, who is responsible for ensuring health and safety during the construction phase of a retrofit project?</div>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        A. The homeowner
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        B. The Retrofit Assessor only
+                                    </div>
+                                    <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                        C. The Principal Contractor
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        D. Building Control
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-container" style="margin-bottom: 2rem;">
+                                <div class="quiz-question">3. Which PPE is mandatory when entering a loft space?</div>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        A. Just a hard hat
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        B. Safety glasses only
+                                    </div>
+                                    <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                        C. Hard hat, knee pads, gloves, and dust mask
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        D. Hi-vis vest only
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-container" style="margin-bottom: 2rem;">
+                                <div class="quiz-question">4. What documentation must subcontractors provide before starting work on a CPH Retrofit project?</div>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        A. Just their business card
+                                    </div>
+                                    <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                        B. Insurance, method statements, and competency cards
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        C. Only their CSCS card
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        D. No documentation needed for small jobs
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-container" style="margin-bottom: 2rem;">
+                                <div class="quiz-question">5. If you discover suspected asbestos during work, what is your immediate action?</div>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" data-correct="true" onclick="selectOption(this)">
+                                        A. Stop work, evacuate, and prevent access
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        B. Continue carefully and tell the coordinator later
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        C. Remove it carefully yourself
+                                    </div>
+                                    <div class="quiz-option" data-correct="false" onclick="selectOption(this)">
+                                        D. Cover it with tape and continue
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn-primary" onclick="checkFinalExam()" style="font-size: 1.2rem; padding: 1.2rem 3rem;">
+                                Submit Final Assessment
+                            </button>
+                            <div id="final-feedback" style="margin-top: 2rem; font-size: 1.2rem;"></div>
+                        </div>
+
+                        <div id="certificate" style="display: none; text-align: center; margin-top: 3rem; padding: 3rem; border: 5px solid var(--success); border-radius: 15px; background: linear-gradient(135deg, #d4edda 0%, #ffffff 100%);">
+                            <h2 style="color: var(--success); font-size: 2.5rem; margin-bottom: 1rem;">🎉 CONGRATULATIONS! 🎉</h2>
+                            <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 2rem;">Health & Safety Certification</h3>
+                            <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                                This certifies that you have successfully completed the<br>
+                                <strong>CPH Retrofit Health & Safety Training Course</strong><br>
+                                covering Retrofit Services, Lone Working, and Safety Coordination.
+                            </p>
+                            <div style="font-size: 1.5rem; margin: 2rem 0; padding: 1rem; background: white; border-radius: 10px; display: inline-block;">
+                                Score: <span id="final-score" style="color: var(--success); font-weight: bold;"></span>%
+                            </div>
+                            <p style="margin-top: 2rem; color: #666;">
+                                Date: <span id="cert-date"></span><br>
+                                Certificate ID: CPH-HS-<span id="cert-id"></span>
+                            </p>
+                            <button class="btn-primary" onclick="window.print()" style="margin-top: 2rem;">
+                                Print Certificate
+                            </button>
+                        </div>
+                    `
+                }
+            ]
+        };
+
+        // State Management
+        let currentModule = null;
+        let quizAttempts = {};
+        let finalExamAnswers = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderModules();
+            updateProgress();
+        });
+
+        function renderModules() {
+            const grid = document.getElementById('moduleGrid');
+            grid.innerHTML = '';
+            
+            courseData.modules.forEach((module, index) => {
+                const card = document.createElement('div');
+                card.className = `module-card ${module.completed ? 'completed' : ''} ${module.locked ? 'locked' : ''}`;
+                card.onclick = () => !module.locked && openModule(module.id);
+                
+                card.innerHTML = `
+                    <div class="module-icon">${module.icon}</div>
+                    <h3 class="module-title">${module.title}</h3>
+                    <p class="module-desc">${module.description}</p>
+                    <div class="module-meta">
+                        <span>⏱️ ${module.duration}</span>
+                        <span class="status-badge status-${module.completed ? 'completed' : module.locked ? 'locked' : 'pending'}">
+                            ${module.completed ? 'Completed' : module.locked ? 'Locked' : 'Start'}
+                        </span>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function updateProgress() {
+            const completed = courseData.modules.filter(m => m.completed).length;
+            const total = courseData.modules.length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            const fill = document.getElementById('progressFill');
+            fill.style.width = percentage + '%';
+            fill.textContent = percentage + '%';
+            
+            if (percentage === 100) {
+                document.getElementById('completionBadge').style.display = 'block';
+            }
+        }
+
+        function openModule(id) {
+            currentModule = courseData.modules.find(m => m.id === id);
+            if (!currentModule) return;
+            
+            document.getElementById('dashboard').style.display = 'none';
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <button class="back-btn" onclick="backToDashboard()">← Back to Modules</button>
+                ${currentModule.content}
+            `;
+            contentArea.classList.add('active');
+            
+            // Initialize any checklists
+            if (currentModule.id === 2) initChecklist('checklist-2');
+            if (currentModule.id === 3) initChecklist('checklist-3');
+            if (currentModule.id === 5) initChecklist('checklist-5');
+        }
+
+        function backToDashboard() {
+            document.getElementById('contentArea').classList.remove('active');
+            document.getElementById('dashboard').style.display = 'block';
+            currentModule = null;
+        }
+
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+        }
+
+        function initChecklist(id) {
+            // Checklist items are clickable via onclick
+        }
+
+        function selectOption(element) {
+            const container = element.closest('.quiz-options');
+            const options = container.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function checkAnswer(moduleId) {
+            const container = document.getElementById(`quiz-${moduleId}`);
+            const selected = container.querySelector('.quiz-option.selected');
+            const feedback = document.getElementById(`feedback-${moduleId}`);
+            
+            if (!selected) {
+                feedback.textContent = 'Please select an answer';
+                feedback.style.color = '#e74c3c';
+                return;
+            }
+            
+            const isCorrect = selected.getAttribute('data-correct') === 'true';
+            const options = container.querySelectorAll('.quiz-option');
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.getAttribute('data-correct') === 'true') {
+                    opt.classList.add('correct');
+                } else if (opt === selected && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            if (isCorrect) {
+                feedback.textContent = '✓ Correct! Well done.';
+                feedback.style.color = '#27ae60';
+                
+                // Mark module complete
+                const module = courseData.modules.find(m => m.id === moduleId);
+                if (module && !module.completed) {
+                    module.completed = true;
+                    
+                    // Unlock next module
+                    const nextModule = courseData.modules.find(m => m.id === moduleId + 1);
+                    if (nextModule) {
+                        nextModule.locked = false;
+                    }
+                    
+                    updateProgress();
+                    
+                    // Show continue button
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-primary';
+                    btn.textContent = 'Continue to Next Module';
+                    btn.onclick = () => {
+                        backToDashboard();
+                        setTimeout(() => openModule(moduleId + 1), 100);
+                    };
+                    btn.style.marginLeft = '1rem';
+                    container.querySelector('button').after(btn);
+                }
+            } else {
+                feedback.textContent = '✗ Incorrect. The correct answer is highlighted in green. Please review the material.';
+                feedback.style.color = '#e74c3c';
+                
+                // Allow retry after 3 seconds
+                setTimeout(() => {
+                    options.forEach(opt => {
+                        opt.classList.remove('selected', 'correct', 'incorrect');
+                        opt.style.pointerEvents = 'auto';
+                    });
+                    feedback.textContent = '';
+                }, 3000);
+            }
+        }
+
+        function checkFinalExam() {
+            const containers = document.querySelectorAll('#final-exam .quiz-container');
+            let correct = 0;
+            let total = containers.length;
+            let allAnswered = true;
+            
+            containers.forEach((container, index) => {
+                const selected = container.querySelector('.quiz-option.selected');
+                if (!selected) {
+                    allAnswered = false;
+                    return;
+                }
+                
+                const isCorrect = selected.getAttribute('data-correct') === 'true';
+                if (isCorrect) correct++;
+                
+                // Visual feedback
+                const options = container.querySelectorAll('.quiz-option');
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    if (opt.getAttribute('data-correct') === 'true') {
+                        opt.classList.add('correct');
+                    } else if (opt === selected && !isCorrect) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+            });
+            
+            const feedback = document.getElementById('final-feedback');
+            
+            if (!allAnswered) {
+                feedback.textContent = 'Please answer all questions before submitting.';
+                feedback.style.color = '#e74c3c';
+                return;
+            }
+            
+            const percentage = Math.round((correct / total) * 100);
+            
+            if (percentage >= 80) {
+                feedback.innerHTML = `<span style="color: #27ae60; font-size: 1.3rem;">✓ PASSED! You scored ${percentage}%</span>`;
+                
+                // Mark final module complete
+                const finalModule = courseData.modules.find(m => m.id === 6);
+                if (finalModule && !finalModule.completed) {
+                    finalModule.completed = true;
+                    updateProgress();
+                }
+                
+                // Show certificate
+                setTimeout(() => {
+                    document.getElementById('final-exam').style.display = 'none';
+                    document.getElementById('certificate').style.display = 'block';
+                    document.getElementById('final-score').textContent = percentage;
+                    document.getElementById('cert-date').textContent = new Date().toLocaleDateString();
+                    document.getElementById('cert-id').textContent = Math.random().toString(36).substr(2, 9).toUpperCase();
+                }, 1500);
+            } else {
+                feedback.innerHTML = `<span style="color: #e74c3c; font-size: 1.3rem;">✗ FAILED. You scored ${percentage}%. You need 80% to pass.</span><br><button class="btn-primary" onclick="location.reload()" style="margin-top: 1rem;">Retry Assessment</button>`;
+            }
+        }
+
+        // Prevent accidental navigation during quiz
+        window.onbeforeunload = function() {
+            if (currentModule) {
+                return "You are in the middle of a training module. Are you sure you want to leave?";
+            }
+        };
+    </script>
+</body>
+</html>

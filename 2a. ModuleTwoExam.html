@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Two Exam - PAS2030/2035 Certification</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #059669;
+            --warning: #d97706;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --bg: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .exam-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .exam-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .exam-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .exam-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .timer.warning {
+            background: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        .timer.danger {
+            background: var(--danger);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: none;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .question-card.answered {
+            border-left-color: var(--secondary);
+        }
+
+        .question-card.flagged {
+            border-left-color: var(--warning);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: var(--secondary);
+            background: #eff6ff;
+        }
+
+        .option.selected {
+            border-color: var(--secondary);
+            background: #dbeafe;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 1rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        .option.correct .option-letter {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: var(--gray);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Flag Button */
+        .flag-btn {
+            float: right;
+            background: transparent;
+            border: 2px solid #e2e8f0;
+            color: var(--gray);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .flag-btn:hover {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .flag-btn.flagged {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        /* Question Navigator Grid */
+        .question-nav {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #e2e8f0;
+        }
+
+        .nav-item.current {
+            border-color: var(--secondary);
+            background: #dbeafe;
+        }
+
+        .nav-item.answered {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .nav-item.flagged {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .nav-item.answered.flagged {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--warning);
+        }
+
+        /* Results Screen */
+        .results-container {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: conic-gradient(var(--success) calc(var(--score) * 1%), #e2e8f0 0);
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .score-percentage {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .score-label {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .result-pass {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .result-fail {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .breakdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .breakdown-item {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .breakdown-item h4 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-item p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* Review Section */
+        .review-section {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .review-item {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .review-item.correct {
+            border-left-color: var(--success);
+        }
+
+        .review-item.incorrect {
+            border-left-color: var(--danger);
+        }
+
+        .review-item.skipped {
+            border-left-color: var(--gray);
+        }
+
+        /* Start Screen */
+        .start-screen {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 700px;
+            margin: 2rem auto;
+        }
+
+        .start-screen h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .exam-info {
+            text-align: left;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .exam-info h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .exam-info ul {
+            margin-left: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .exam-info li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Certificate */
+        .certificate {
+            display: none;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 8px solid var(--primary);
+            padding: 3rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .certificate::before {
+            content: '✓';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .certificate h3 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .certificate-details {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 2rem 0;
+        }
+
+        /* Hidden utility */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .exam-container {
+                padding: 1rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+            
+            .breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .exam-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Print styles for certificate */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .certificate {
+                display: block !important;
+                border: 4px solid #000;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="exam-container">
+    
+    <!-- START SCREEN -->
+    <div id="startScreen" class="start-screen">
+        <h2>🏗️ Module Two Examination</h2>
+        <h3 style="color: var(--gray); margin-bottom: 2rem;">Introduction to PAS2030/2035</h3>
+        
+        <div class="exam-info">
+            <h3>📋 Exam Information</h3>
+            <ul>
+                <li><strong>Duration:</strong> 45 minutes</li>
+                <li><strong>Questions:</strong> 30 multiple choice questions</li>
+                <li><strong>Pass Mark:</strong> 70% (21 correct answers)</li>
+                <li><strong>Difficulty:</strong> Moderate to Hard</li>
+            </ul>
+            
+            <h3 style="margin-top: 1.5rem;">⚠️ Important Instructions</h3>
+            <ul>
+                <li>You can flag questions to review later</li>
+                <li>You can navigate between questions using the question grid</li>
+                <li>Once submitted, you cannot change your answers</li>
+                <li>The exam will auto-submit when time expires</li>
+                <li>Read each question carefully before answering</li>
+            </ul>
+        </div>
+        
+        <button class="btn btn-success" style="font-size: 1.2rem; padding: 1rem 2rem;" onclick="startExam()">
+            Start Exam →
+        </button>
+    </div>
+
+    <!-- EXAM INTERFACE (Hidden initially) -->
+    <div id="examInterface" class="hidden">
+        
+        <!-- Header -->
+        <div class="exam-header">
+            <h1>Module Two: PAS2030/2035 Certification Exam</h1>
+            <div class="exam-meta">
+                <span>Candidate: <strong>Trainee</strong></span>
+                <div class="timer" id="timer">45:00</div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-text">
+                <span>Progress</span>
+                <span id="progressText">0/30 answered</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Question Navigator -->
+        <div class="question-nav no-print">
+            <h4 style="margin-bottom: 0.5rem;">Question Navigator</h4>
+            <div class="nav-grid" id="navGrid"></div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons no-print">
+            <button class="btn btn-secondary" onclick="prevQuestion()" id="prevBtn">
+                ← Previous
+            </button>
+            <button class="btn btn-warning" onclick="toggleFlag()" id="flagBtn">
+                🚩 Flag for Review
+            </button>
+            <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">
+                Next →
+            </button>
+            <button class="btn btn-success hidden" onclick="submitExam()" id="submitBtn">
+                Submit Exam ✓
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen" class="results-container">
+        <h2>Exam Results</h2>
+        
+        <div class="score-circle" id="scoreCircle" style="--score: 0;">
+            <div class="score-content">
+                <div class="score-percentage" id="scorePercentage">0%</div>
+                <div class="score-label">Score</div>
+            </div>
+        </div>
+
+        <div id="resultMessage" class="result-message"></div>
+
+        <div class="breakdown">
+            <div class="breakdown-item">
+                <h4>Correct</h4>
+                <p id="correctCount" style="color: var(--success);">0</p>
+            </div>
+            <div class="breakdown-item">
+                <h4>Incorrect</h4>
+                <p id="incorrectCount" style="color: var(--danger);">0</p>
+            </div>
+            <div class="breakdown-item">
+                <h4>Unanswered</h4>
+                <p id="unansweredCount" style="color: var(--gray);">0</p>
+            </div>
+        </div>
+
+        <div class="certificate" id="certificate">
+            <h3>Certificate of Completion</h3>
+            <div class="certificate-details">
+                <p><strong>This certifies that</strong></p>
+                <p style="font-size: 1.5rem; color: var(--primary); margin: 1rem 0;"><strong>Trainee</strong></p>
+                <p>has successfully completed</p>
+                <p style="font-size: 1.3rem; margin: 1rem 0;"><strong>Module Two: Introduction to PAS2030/2035</strong></p>
+                <p>with a score of <strong id="certScore">0%</strong></p>
+                <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--gray);">
+                    Date: <span id="certDate"></span><br>
+                    Certification Number: PAS-<span id="certNumber"></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="review-section" id="reviewSection">
+            <h3 style="margin-bottom: 1rem;">Detailed Review</h3>
+            <div id="reviewContent"></div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;" class="no-print">
+            <button class="btn btn-primary" onclick="printCertificate()" id="printBtn">
+                🖨️ Print Certificate
+            </button>
+            <button class="btn btn-secondary" onclick="restartExam()">
+                ↻ Retake Exam
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Exam Data - 30 Questions
+    const examData = [
+        {
+            id: 1,
+            section: "A",
+            question: "Under PAS 2035, which of the following is the PRIMARY purpose of the Medium Term Improvement Plan (MTIP)?",
+            options: [
+                "To secure funding from energy suppliers",
+                "To provide a 30-year roadmap for improving the dwelling's energy performance while avoiding conflicting measures",
+                "To satisfy mortgage lenders' requirements",
+                "To replace the need for annual maintenance contracts"
+            ],
+            correct: 1,
+            explanation: "The MTIP provides a 30-year strategic view to plan phased improvements and avoid installing measures now that would conflict with future works."
+        },
+        {
+            id: 2,
+            section: "A",
+            question: "Which standard specifically requires that 'if it isn't documented, it didn't happen' regarding evidence of installation quality?",
+            options: [
+                "PAS 2035 only",
+                "PAS 2030 only",
+                "Both PAS 2030 and PAS 2035",
+                "Building Regulations Part L"
+            ],
+            correct: 1,
+            explanation: "PAS 2030 specifically emphasizes documentation of installation evidence including photos, checklists, and test results."
+        },
+        {
+            id: 3,
+            section: "A",
+            question: "A Retrofit Coordinator discovers that an installer has used 100mm insulation instead of the specified 150mm to save time. According to PAS standards, what is the REQUIRED action?",
+            options: [
+                "The installer should note the change in the site diary for future reference",
+                "The work must be removed and reinstalled to specification, with the Retrofit Coordinator approving any remedial design changes",
+                "If the U-value improvement is still achieved, the variation can be accepted",
+                "The customer must be offered a discount and the work accepted as-is"
+            ],
+            correct: 1,
+            explanation: "PAS 2030 requires exact compliance with design. Any deviations require Retrofit Coordinator approval, and non-compliant work must be remediated."
+        },
+        {
+            id: 4,
+            section: "A",
+            question: "In the context of PAS 2035, what does 'fabric first' methodology prioritize?",
+            options: [
+                "Installation of renewable energy technologies before insulation",
+                "Improvement of the building envelope (insulation, airtightness) before heating system upgrades",
+                "Decorative improvements to increase property value",
+                "Structural repairs before energy efficiency measures"
+            ],
+            correct: 1,
+            explanation: "Fabric first prioritizes building envelope improvements (insulation, airtightness) before heating system upgrades to maximize efficiency."
+        },
+        {
+            id: 5,
+            section: "A",
+            question: "Which of the following is NOT a statutory requirement for an organization to perform PAS 2030 installation work on government-funded schemes?",
+            options: [
+                "Holding a valid TrustMark license",
+                "Employing at least one Retrofit Coordinator on staff",
+                "Certification by a PAS 2030 approved body",
+                "Maintaining competent operatives for each measure installed"
+            ],
+            correct: 1,
+            explanation: "Retrofit Coordinators are required under PAS 2035 for the project, not necessarily employed by the PAS 2030 installation organization."
+        },
+        {
+            id: 6,
+            section: "A",
+            question: "Under PAS 2035, when must ventilation be assessed and potentially upgraded?",
+            options: [
+                "Only when installing mechanical ventilation systems",
+                "Only in properties built before 1919",
+                "Whenever retrofit work changes the moisture movement or makes the home more airtight",
+                "Only when requested by the homeowner"
+            ],
+            correct: 2,
+            explanation: "PAS 2035 mandates ventilation assessment whenever airtightness changes or moisture movement is affected - 'Build Tight, Ventilate Right'."
+        },
+        {
+            id: 7,
+            section: "A",
+            question: "What is the maximum gap period allowed between the Retrofit Assessment and the commencement of installation works under PAS 2035 without requiring a reassessment?",
+            options: [
+                "3 months",
+                "6 months",
+                "12 months",
+                "There is no specified time limit"
+            ],
+            correct: 2,
+            explanation: "Assessments are valid for 12 months; beyond this, conditions may have changed and a reassessment is required."
+        },
+        {
+            id: 8,
+            section: "A",
+            question: "Which role has the authority to approve changes to the retrofit design once installation has commenced?",
+            options: [
+                "The lead installer on site",
+                "The Retrofit Coordinator",
+                "The Retrofit Assessor who conducted the original survey",
+                "The property owner"
+            ],
+            correct: 1,
+            explanation: "The Retrofit Coordinator is the single point of accountability and must approve any design changes to ensure risks are managed."
+        },
+        {
+            id: 9,
+            section: "A",
+            question: "PAS 2030 requires that installation businesses maintain records of competence for operatives. How often must these competence records be reviewed as a minimum?",
+            options: [
+                "Every 3 months",
+                "Every 6 months",
+                "Annually",
+                "Only when the operative changes employers"
+            ],
+            correct: 2,
+            explanation: "Competence records must be reviewed at least annually to ensure ongoing suitability for the work."
+        },
+        {
+            id: 10,
+            section: "A",
+            question: "Under PAS 2035, which of the following risk pathways must be assessed when specifying solid wall insulation?",
+            options: [
+                "Interstitial condensation risk only",
+                "Surface condensation and interstitial condensation, plus fire risk and structural integrity",
+                "Fire risk only",
+                "No specific risk assessment is required if the insulation manufacturer provides a warranty"
+            ],
+            correct: 1,
+            explanation: "Multiple risk pathways must be assessed including condensation (surface and interstitial), fire safety, and structural integrity."
+        },
+        {
+            id: 11,
+            section: "B",
+            question: "A Retrofit Designer specifies external wall insulation (EWI) on a property with cracked render. According to PAS 2035, who is responsible for ensuring the substrate is suitable before EWI installation proceeds?",
+            options: [
+                "The Retrofit Designer alone",
+                "The Retrofit Coordinator and the installer jointly",
+                "The installer only, as they are the technical experts",
+                "The building control officer"
+            ],
+            correct: 1,
+            explanation: "Both the Retrofit Coordinator (overall compliance) and installer (technical suitability) share responsibility for substrate assessment."
+        },
+        {
+            id: 12,
+            section: "B",
+            question: "Which of the following tasks falls OUTSIDE the scope of PAS 2030 and specifically within PAS 2035?",
+            options: [
+                "Checking that insulation is installed to the correct thickness",
+                "Determining whether the dwelling requires a whole-house ventilation system upgrade",
+                "Ensuring airtightness tape is properly applied",
+                "Providing the homeowner with maintenance instructions"
+            ],
+            correct: 1,
+            explanation: "Ventilation strategy decisions are design functions under PAS 2035, not installation functions under PAS 2030."
+        },
+        {
+            id: 13,
+            section: "B",
+            question: "Under PAS 2035, the Retrofit Coordinator must be appointed:",
+            options: [
+                "Before the Retrofit Assessment is carried out",
+                "After the installation is complete to sign off the works",
+                "At any point during the project, provided they review all previous documentation",
+                "Only for projects exceeding £10,000 in value"
+            ],
+            correct: 0,
+            explanation: "The Retrofit Coordinator must be appointed early to oversee the entire process from assessment through to evaluation."
+        },
+        {
+            id: 14,
+            section: "B",
+            question: "An installer notices that the specified location for a new boiler flue would create a fire hazard due to proximity to combustible materials. According to PAS standards, what should the installer do?",
+            options: [
+                "Relocate the flue to a safe position using professional judgment",
+                "Halt work and seek written approval for a design change from the Retrofit Coordinator",
+                "Install as specified but add a warning notice to the homeowner",
+                "Proceed with installation if the homeowner signs a waiver"
+            ],
+            correct: 1,
+            explanation: "Installers must not deviate from design. Hazards require stopping work and seeking Retrofit Coordinator approval for changes."
+        },
+        {
+            id: 15,
+            section: "B",
+            question: "Which of the following is a specific requirement for the Retrofit Evaluator role under PAS 2035:2019+A1:2022?",
+            options: [
+                "They must be employed by the same organization as the installer",
+                "They must be independent of the design and installation team",
+                "They must hold a PAS 2030 certification",
+                "They are only required for social housing projects"
+            ],
+            correct: 1,
+            explanation: "Independence from design and installation is mandatory to ensure objective evaluation of project success."
+        },
+        {
+            id: 16,
+            section: "B",
+            question: "PAS 2030 requires that installation organizations have a documented complaints procedure. Within what timeframe must a complaint be acknowledged?",
+            options: [
+                "Within 24 hours",
+                "Within 5 working days",
+                "Within 10 working days",
+                "Within 28 days"
+            ],
+            correct: 1,
+            explanation: "5 working days is the maximum for acknowledgment under PAS 2030 consumer protection requirements."
+        },
+        {
+            id: 17,
+            section: "B",
+            question: "When coordinating multiple measures under PAS 2035, who is responsible for ensuring the correct sequencing of works (e.g., insulation before heating system sizing)?",
+            options: [
+                "The individual trade contractors coordinating amongst themselves",
+                "The Retrofit Coordinator",
+                "The homeowner project managing the works",
+                "The Retrofit Designer initially, then the installer on site"
+            ],
+            correct: 1,
+            explanation: "The Retrofit Coordinator manages sequencing to ensure measures don't conflict and heating systems are sized correctly for the final envelope."
+        },
+        {
+            id: 18,
+            section: "B",
+            question: "Under PAS 2030, which of the following must be included in the handover documentation provided to the dwelling occupant?",
+            options: [
+                "Only the guarantees for materials",
+                "Operating instructions, maintenance guidance, warranties, and complaint procedures",
+                "A copy of the installer's public liability insurance",
+                "The Retrofit Coordinator's CV and qualifications"
+            ],
+            correct: 1,
+            explanation: "Comprehensive handover including operation, maintenance, warranties, and complaint procedures is mandatory under PAS 2030."
+        },
+        {
+            id: 19,
+            section: "B",
+            question: "A Retrofit Assessor identifies significant rising damp during the whole-dwelling assessment. What is the REQUIRED action under PAS 2035 before proceeding with energy efficiency measures?",
+            options: [
+                "Proceed with the retrofit but recommend a dehumidifier",
+                "Exclude the affected walls from insulation but proceed with other measures",
+                "Remediate the damp issue or exclude measures that would exacerbate it, with this decision recorded in the risk assessment",
+                "Ignore it as damp proofing is outside the scope of retrofit"
+            ],
+            correct: 2,
+            explanation: "Damp must be remediated or measures excluded to avoid exacerbating the problem, with documented risk assessment."
+        },
+        {
+            id: 20,
+            section: "B",
+            question: "Which of the following is a specific competence requirement for a Retrofit Coordinator under PAS 2035?",
+            options: [
+                "They must be a qualified electrician",
+                "They must hold a relevant construction degree only",
+                "They must demonstrate competence in building physics, moisture risk assessment, and project coordination",
+                "They must have at least 10 years' experience as a builder"
+            ],
+            correct: 2,
+            explanation: "Specific competence in building physics, moisture risk, and coordination is required - not just general construction experience."
+        },
+        {
+            id: 21,
+            section: "C",
+            question: "A solid wall insulation project involves installing 90mm EPS insulation to a Victorian solid brick wall. The Retrofit Designer has specified a VCL (vapour control layer) on the warm side. Under PAS 2030, what is the installer's responsibility regarding the VCL?",
+            options: [
+                "Omit the VCL if it complicates window reveals, as the insulation itself provides adequate protection",
+                "Install the VCL exactly as specified, ensuring continuity at junctions and penetrations",
+                "Substitute the VCL with a breather membrane if more readily available",
+                "Install the VCL only on north-facing elevations"
+            ],
+            correct: 1,
+            explanation: "Exact compliance with design specifications is mandatory. The VCL must be installed as specified with proper continuity."
+        },
+        {
+            id: 22,
+            section: "C",
+            question: "Under PAS 2035, when assessing overheating risk in a dwelling, which of the following factors MUST be considered?",
+            options: [
+                "Only the orientation of the main living room",
+                "Glazing ratio, solar gain, ventilation strategy, and occupancy patterns",
+                "The colour of external walls only",
+                "Overheating risk is not assessed under PAS 2035"
+            ],
+            correct: 1,
+            explanation: "Overheating assessment requires holistic consideration of glazing, solar gain, ventilation, and occupancy patterns."
+        },
+        {
+            id: 23,
+            section: "C",
+            question: "An installation company is PAS 2030 certified for cavity wall insulation and loft insulation. They wish to expand into heat pump installations. What is required?",
+            options: [
+                "They can proceed immediately as they already hold PAS 2030 certification",
+                "They must undergo assessment and certification for the new measure category (heat pumps) before undertaking such work",
+                "They need only send one employee on a heat pump course",
+                "Heat pumps are automatically included in all PAS 2030 certifications"
+            ],
+            correct: 1,
+            explanation: "Each measure category requires specific certification. Expansion into new measures requires additional assessment."
+        },
+        {
+            id: 24,
+            section: "C",
+            question: "During airtightness testing following PAS 2030 installation works, the dwelling fails to meet the design air permeability target. What is the REQUIRED procedure?",
+            options: [
+                "Accept the result if the improvement is at least 50% better than the original",
+                "Identify and seal leaks, then retest until compliance is achieved, with records maintained",
+                "Adjust the design target to match the achieved result",
+                "Proceed to handover if the homeowner is satisfied"
+            ],
+            correct: 1,
+            explanation: "Remedial action and retesting until compliance is mandatory. Records of testing and remediation must be maintained."
+        },
+        {
+            id: 25,
+            section: "C",
+            question: "Which of the following best describes the 'Improvement Option Evaluation' (IOE) under PAS 2035?",
+            options: [
+                "A cost-benefit analysis comparing different funding sources",
+                "A systematic evaluation of potential measures against constraints including heritage, technical feasibility, and cost-effectiveness",
+                "A marketing tool to persuade homeowners to accept more expensive options",
+                "A mandatory requirement to install the maximum possible insulation thickness"
+            ],
+            correct: 1,
+            explanation: "IOE systematically evaluates options against multiple constraints including heritage, technical feasibility, and cost-effectiveness."
+        },
+        {
+            id: 26,
+            section: "C",
+            question: "A Retrofit Coordinator is reviewing a design for internal wall insulation (IWI) in a bathroom. The design does not address moisture production from bathing activities. What should the Coordinator do?",
+            options: [
+                "Approve the design as bathrooms are exempt from PAS 2035 requirements",
+                "Reject the design or require enhanced ventilation strategy to manage moisture loads",
+                "Specify a mould-resistant paint as the solution",
+                "Reduce the insulation thickness to allow more heat through to warm the walls"
+            ],
+            correct: 1,
+            explanation: "Moisture loads must be properly addressed. Mould-resistant paint or reduced insulation are insufficient solutions."
+        },
+        {
+            id: 27,
+            section: "C",
+            question: "PAS 2030 requires that materials and components used in retrofit installations meet specific standards. Which of the following is NOT an acceptable basis for material selection?",
+            options: [
+                "CE/UKCA marking where applicable",
+                "British Standards (BS) or equivalent technical approvals",
+                "The installer's previous experience with the product on other jobs",
+                "Manufacturer's instructions and declared performance data"
+            ],
+            correct: 2,
+            explanation: "Previous experience alone is insufficient. Objective standards (CE/UKCA, BS, manufacturer data) are required."
+        },
+        {
+            id: 28,
+            section: "C",
+            question: "Under PAS 2035, what is the required approach when retrofitting a traditionally constructed building (pre-1919) with breathable materials?",
+            options: [
+                "Treat it the same as any modern building for simplicity",
+                "Use modern cement-based renders and foams for better performance",
+                "Assess moisture open/closed characteristics and specify compatible materials and details to avoid trapping moisture",
+                "Exempt such buildings from retrofit requirements"
+            ],
+            correct: 2,
+            explanation: "Traditional buildings require specific assessment of moisture characteristics and compatible breathable materials."
+        },
+        {
+            id: 29,
+            section: "C",
+            question: "An installer discovers asbestos-containing materials (ACMs) in the loft space where insulation is to be installed. According to PAS 2030 and health & safety requirements, what is the correct procedure?",
+            options: [
+                "Carefully work around the ACMs and install insulation anyway",
+                "Stop work immediately, notify the Retrofit Coordinator, and ensure proper asbestos remediation by licensed contractors before proceeding",
+                "Remove the ACMs themselves if they wear dust masks",
+                "Cover the ACMs with plastic sheeting and continue"
+            ],
+            correct: 1,
+            explanation: "Asbestos requires immediate stop-work and licensed remediation. This is both a PAS 2030 and health & safety requirement."
+        },
+        {
+            id: 30,
+            section: "C",
+            question: "Which of the following best describes the relationship between PAS 2035 and Building Regulations?",
+            options: [
+                "PAS 2035 replaces Building Regulations for retrofit projects",
+                "PAS 2035 complements Building Regulations by adding process and quality requirements; compliance with both is necessary",
+                "Building Regulations are only advisory when PAS 2035 is applied",
+                "PAS 2035 applies only where Building Regulations are not in force"
+            ],
+            correct: 1,
+            explanation: "PAS 2035 complements Building Regulations. Both must be complied with - PAS 2035 adds process requirements beyond basic compliance."
+        }
+    ];
+
+    // Exam State
+    let currentQuestion = 0;
+    let answers = new Array(30).fill(null);
+    let flagged = new Array(30).fill(false);
+    let timeRemaining = 45 * 60; // 45 minutes in seconds
+    let timerInterval;
+    let examSubmitted = false;
+
+    // Initialize
+    function init() {
+        renderNavGrid();
+        renderQuestions();
+        updateProgress();
+    }
+
+    function startExam() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('examInterface').classList.remove('hidden');
+        startTimer();
+        showQuestion(0);
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            updateTimerDisplay();
+            
+            if (timeRemaining <= 0) {
+                submitExam();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const timerEl = document.getElementById('timer');
+        timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Add warning colors
+        timerEl.classList.remove('warning', 'danger');
+        if (timeRemaining < 300) { // Less than 5 minutes
+            timerEl.classList.add('danger');
+        } else if (timeRemaining < 600) { // Less than 10 minutes
+            timerEl.classList.add('warning');
+        }
+    }
+
+    function renderNavGrid() {
+        const grid = document.getElementById('navGrid');
+        grid.innerHTML = '';
+        
+        for (let i = 0; i < 30; i++) {
+            const item = document.createElement('div');
+            item.className = 'nav-item';
+            item.textContent = i + 1;
+            item.onclick = () => goToQuestion(i);
+            grid.appendChild(item);
+        }
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+        
+        examData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `question-${index}`;
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            card.innerHTML = `
+                <button class="flag-btn" onclick="toggleFlag(${index})" id="flag-btn-${index}">
+                    🚩 Flag
+                </button>
+                <span class="question-number">Question ${q.id} • Section ${q.section}</span>
+                <div class="question-text">${q.question}</div>
+                <ul class="options-list">
+                    ${q.options.map((opt, i) => `
+                        <li class="option" onclick="selectOption(${index}, ${i})" data-option="${i}">
+                            <span class="option-letter">${letters[i]}</span>
+                            <span>${opt}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+            
+            container.appendChild(card);
+        });
+    }
+
+    function showQuestion(index) {
+        // Hide all questions
+        document.querySelectorAll('.question-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Show current
+        document.getElementById(`question-${index}`).classList.add('active');
+        currentQuestion = index;
+        
+        // Update nav
+        updateNavGrid();
+        
+        // Update buttons
+        document.getElementById('prevBtn').disabled = index === 0;
+        document.getElementById('nextBtn').classList.toggle('hidden', index === 29);
+        document.getElementById('submitBtn').classList.toggle('hidden', index !== 29);
+        
+        // Update flag button
+        updateFlagButton();
+        
+        // Restore selection if exists
+        if (answers[index] !== null) {
+            highlightOption(index, answers[index]);
+        }
+    }
+
+    function updateNavGrid() {
+        const items = document.querySelectorAll('.nav-item');
+        items.forEach((item, index) => {
+            item.classList.remove('current', 'answered', 'flagged');
+            if (index === currentQuestion) item.classList.add('current');
+            if (answers[index] !== null) item.classList.add('answered');
+            if (flagged[index]) item.classList.add('flagged');
+        });
+    }
+
+    function selectOption(questionIndex, optionIndex) {
+        if (examSubmitted) return;
+        
+        answers[questionIndex] = optionIndex;
+        
+        // Visual feedback
+        highlightOption(questionIndex, optionIndex);
+        
+        // Update progress
+        updateProgress();
+        updateNavGrid();
+        
+        // Auto-advance after short delay (optional)
+        // setTimeout(() => nextQuestion(), 500);
+    }
+
+    function highlightOption(questionIndex, optionIndex) {
+        const card = document.getElementById(`question-${questionIndex}`);
+        const options = card.querySelectorAll('.option');
+        
+        options.forEach((opt, idx) => {
+            opt.classList.remove('selected');
+            if (idx === optionIndex) {
+                opt.classList.add('selected');
+            }
+        });
+        
+        card.classList.add('answered');
+    }
+
+    function toggleFlag(index = currentQuestion) {
+        flagged[index] = !flagged[index];
+        updateFlagButton();
+        updateNavGrid();
+        
+        const card = document.getElementById(`question-${index}`);
+        if (flagged[index]) {
+            card.classList.add('flagged');
+        } else {
+            card.classList.remove('flagged');
+        }
+    }
+
+    function updateFlagButton() {
+        const btn = document.getElementById('flagBtn');
+        if (flagged[currentQuestion]) {
+            btn.classList.add('flagged');
+            btn.textContent = '🚩 Flagged';
+        } else {
+            btn.classList.remove('flagged');
+            btn.textContent = '🚩 Flag for Review';
+        }
+    }
+
+    function nextQuestion() {
+        if (currentQuestion < 29) {
+            showQuestion(currentQuestion + 1);
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQuestion > 0) {
+            showQuestion(currentQuestion - 1);
+        }
+    }
+
+    function goToQuestion(index) {
+        showQuestion(index);
+    }
+
+    function updateProgress() {
+        const answered = answers.filter(a => a !== null).length;
+        const percentage = (answered / 30) * 100;
+        
+        document.getElementById('progressText').textContent = `${answered}/30 answered`;
+        document.getElementById('progressBar').style.width = `${percentage}%`;
+    }
+
+    function submitExam() {
+        if (examSubmitted) return;
+        
+        clearInterval(timerInterval);
+        examSubmitted = true;
+        
+        // Calculate results
+        let correct = 0;
+        let incorrect = 0;
+        let unanswered = 0;
+        
+        answers.forEach((answer, index) => {
+            if (answer === null) {
+                unanswered++;
+            } else if (answer === examData[index].correct) {
+                correct++;
+            } else {
+                incorrect++;
+            }
+        });
+        
+        const percentage = Math.round((correct / 30) * 100);
+        const passed = percentage >= 70;
+        
+        // Hide exam interface
+        document.getElementById('examInterface').classList.add('hidden');
+        
+        // Show results
+        const resultsScreen = document.getElementById('resultsScreen');
+        resultsScreen.classList.add('show');
+        
+        // Update score display
+        document.getElementById('scoreCircle').style.setProperty('--score', percentage);
+        document.getElementById('scorePercentage').textContent = `${percentage}%`;
+        
+        // Update counts
+        document.getElementById('correctCount').textContent = correct;
+        document.getElementById('incorrectCount').textContent = incorrect;
+        document.getElementById('unansweredCount').textContent = unanswered;
+        
+        // Result message
+        const msgEl = document.getElementById('resultMessage');
+        if (passed) {
+            msgEl.className = 'result-message result-pass';
+            msgEl.innerHTML = `<strong>✓ PASSED</strong><br>Congratulations! You have achieved certification.`;
+            document.getElementById('certificate').style.display = 'block';
+            document.getElementById('certScore').textContent = `${percentage}%`;
+            document.getElementById('certDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('certNumber').textContent = Math.random().toString(36).substr(2, 9).toUpperCase();
+        } else {
+            msgEl.className = 'result-message result-fail';
+            msgEl.innerHTML = `<strong>✗ NOT PASSED</strong><br>You need 70% to pass. Review the material and try again.`;
+            document.getElementById('certificate').style.display = 'none';
+            document.getElementById('printBtn').style.display = 'none';
+        }
+        
+        // Generate review
+        generateReview();
+    }
+
+    function generateReview() {
+        const container = document.getElementById('reviewContent');
+        container.innerHTML = '';
+        
+        examData.forEach((q, index) => {
+            const userAnswer = answers[index];
+            const isCorrect = userAnswer === q.correct;
+            const isSkipped = userAnswer === null;
+            
+            const reviewItem = document.createElement('div');
+            reviewItem.className = `review-item ${isCorrect ? 'correct' : isSkipped ? 'skipped' : 'incorrect'}`;
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            const userLetter = userAnswer !== null ? letters[userAnswer] : '—';
+            const correctLetter = letters[q.correct];
+            
+            reviewItem.innerHTML = `
+                <strong>Question ${q.id} (${isCorrect ? '✓ Correct' : isSkipped ? '○ Skipped' : '✗ Incorrect'})</strong><br>
+                <em>Section ${q.section}: ${q.question}</em><br>
+                <div style="margin-top: 0.5rem;">
+                    Your answer: <strong>${userLetter}</strong> | 
+                    Correct answer: <strong>${correctLetter}</strong>
+                </div>
+                ${!isCorrect ? `<div style="margin-top: 0.5rem; color: var(--gray); font-size: 0.9rem;">
+                    <strong>Explanation:</strong> ${q.explanation}
+                </div>` : ''}
+            `;
+            
+            container.appendChild(reviewItem);
+        });
+    }
+
+    function printCertificate() {
+        window.print();
+    }
+
+    function restartExam() {
+        location.reload();
+    }
+
+    // Initialize on load
+    init();
+</script>
+
+</body>
+</html>

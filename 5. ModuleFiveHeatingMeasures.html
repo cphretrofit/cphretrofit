@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Four: Domestic Space & Water Heating – PAS 2035 Retrofit Training</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --accent-warm: #f59e0b;
+            --accent-cool: #06b6d4;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #ef4444;
+            --border: #334155;
+            --card-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Progress */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-warm);
+            letter-spacing: -0.5px;
+        }
+
+        .progress-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+            height: 6px;
+            background: var(--secondary-dark);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-warm), var(--accent-cool));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            right: 0;
+            top: -20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            margin-top: 60px;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 300px;
+            background: var(--secondary-dark);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 2rem 0;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .nav-header h2 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-warm);
+            border-left-color: var(--accent-warm);
+            font-weight: 600;
+        }
+
+        .nav-link.completed {
+            color: var(--success);
+        }
+
+        .nav-link.completed::after {
+            content: "✓";
+            position: absolute;
+            right: 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 3rem;
+            max-width: 900px;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-number {
+            display: inline-block;
+            background: var(--accent-warm);
+            color: var(--primary-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cool));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--accent-cool);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Cards & Components */
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent-cool);
+        }
+
+        .info-card.warning::before {
+            background: var(--warning);
+        }
+
+        .info-card.success::before {
+            background: var(--success);
+        }
+
+        .info-card.warm::before {
+            background: var(--accent-warm);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .key-point {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .key-point:hover {
+            background: rgba(245, 158, 11, 0.2);
+            transform: translateX(5px);
+        }
+
+        .key-point-header {
+            font-weight: 600;
+            color: var(--accent-warm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .key-point-content {
+            margin-top: 0.5rem;
+            display: none;
+            color: var(--text-secondary);
+        }
+
+        .key-point.expanded .key-point-content {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        li::marker {
+            color: var(--accent-cool);
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--secondary-dark);
+            color: var(--accent-warm);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.03);
+            color: var(--text-primary);
+        }
+
+        .efficiency-high { color: var(--success); font-weight: 600; }
+        .efficiency-med { color: var(--accent-warm); font-weight: 600; }
+        .efficiency-low { color: var(--warning); font-weight: 600; }
+
+        /* Interactive Calculator */
+        .calculator {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
+            border: 2px solid var(--accent-cool);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .calc-input {
+            background: var(--primary-dark);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: var(--accent-cool);
+        }
+
+        .calc-button {
+            background: var(--accent-cool);
+            color: var(--primary-dark);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .calc-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        .calc-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+            border: 2px solid var(--accent-warm);
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quiz-option {
+            background: var(--primary-dark);
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-cool);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--accent-cool);
+            background: rgba(6, 182, 212, 0.2);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--warning);
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .option-letter {
+            background: var(--secondary-dark);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .quiz-button {
+            margin-top: 1.5rem;
+            background: var(--accent-warm);
+            color: var(--primary-dark);
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+        }
+
+        .quiz-button.show {
+            display: inline-block;
+        }
+
+        /* Certificate */
+        .certificate {
+            display: none;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 3px solid var(--accent-warm);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate::before {
+            content: "PAS 2035";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 8rem;
+            opacity: 0.03;
+            font-weight: 900;
+            pointer-events: none;
+        }
+
+        .cert-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-warm);
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .completion-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-cool);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 999;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 2rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .completion-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 1.75rem; }
+            h2 { font-size: 1.4rem; }
+            .main-content { padding: 1.5rem; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 0.75rem 0.5rem; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar, .top-bar, .quiz-container, .calculator, .key-point {
+                display: none;
+            }
+            .main-content { margin-left: 0; }
+            .section { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="logo">PAS 2035 Retrofit Training</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <span class="progress-text" id="progressText">0% Complete</span>
+        </div>
+        <div style="width: 40px;"></div>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <div class="nav-header">
+                <h2>Module Contents</h2>
+            </div>
+            <ul class="nav-list">
+                <li class="nav-item"><a class="nav-link active" onclick="scrollToSection('intro')">4.1 Fabric First Approach</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('physics')">4.2 Heating Physics</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('gas')">4.3 Gas Boilers</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('oil')">4.4 Oil & LPG Boilers</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('electric')">4.5 Electric Heating</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('heatpump')">4.6 Heat Pumps</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('hybrid')">4.7 Hybrid Systems</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('dhw')">4.8 DHW Systems</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('distribution')">4.9 Distribution</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('comparison')">4.10 System Comparison</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('sap')">4.11 SAP & RdSAP</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('summary')">4.12 Summary</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="scrollToSection('assessment')">Final Assessment</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content" id="mainContent">
+            
+            <!-- Section 4.1 -->
+            <section class="section" id="intro" data-section="4.1">
+                <div class="section-header">
+                    <span class="section-number">Section 4.1</span>
+                    <h1>Introduction: Fabric First and Heat Demand Reduction</h1>
+                </div>
+
+                <div class="info-card warm">
+                    <div class="card-title">⚡ Core Principle</div>
+                    <p>PAS 2035 requires a <strong>fabric-first approach</strong> to domestic retrofit. This means improving the thermal performance of the building fabric before upgrading or replacing heating systems.</p>
+                </div>
+
+                <h3>The Purpose of Fabric-First</h3>
+                <ul>
+                    <li>Reduce the space heating demand of the dwelling</li>
+                    <li>Enable smaller, more efficient heating systems</li>
+                    <li>Improve thermal comfort and internal surface temperatures</li>
+                    <li>Reduce the risk of fuel poverty and overheating</li>
+                    <li>Improve system efficiency and controllability</li>
+                </ul>
+
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>🔍 Key Insight: The Fabric-Heating Relationship</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>A well-insulated, airtight home with controlled ventilation requires less heat, for fewer hours, allowing heating systems to operate closer to their optimal efficiency. Heating systems do not create comfort; they <strong>replace heat lost</strong> through the building fabric and ventilation.</p>
+                    </div>
+                </div>
+
+                <h3>Benefits of Reducing Heat Loss</h3>
+                <ul>
+                    <li>Boilers cycle less frequently</li>
+                    <li>Heat pumps operate at lower flow temperatures</li>
+                    <li>Distribution losses are reduced</li>
+                    <li>Peak heat loads are lowered</li>
+                </ul>
+
+                <div class="info-card warning">
+                    <div class="card-title">⚠️ Critical Requirement</div>
+                    <p>Under PAS 2035, heating upgrades must be designed using <strong>post-retrofit heat demand</strong>, not existing conditions. Designing based on current heat loss will result in oversized systems and poor performance.</p>
+                </div>
+            </section>
+
+            <!-- Section 4.2 -->
+            <section class="section" id="physics" data-section="4.2">
+                <div class="section-header">
+                    <span class="section-number">Section 4.2</span>
+                    <h2>Basic Heating Physics for Retrofit</h2>
+                </div>
+
+                <h3>Space Heating vs Water Heating</h3>
+                <ul>
+                    <li><strong>Space heating:</strong> Replaces heat lost through the building envelope</li>
+                    <li><strong>Water heating:</strong> Provides domestic hot water (DHW) for taps, baths and showers</li>
+                </ul>
+
+                <div class="info-card">
+                    <div class="card-title">📊 Important Ratio</div>
+                    <p>In many retrofitted homes, DHW can account for <strong>30–50%</strong> of total energy use, particularly once space heating demand is reduced.</p>
+                </div>
+
+                <h3>Understanding Seasonal Efficiency</h3>
+                <p>PAS 2035 and SAP use seasonal efficiency to reflect real-world performance across a full heating season, accounting for:</p>
+                <ul>
+                    <li>Part-load operation</li>
+                    <li>Cycling losses</li>
+                    <li>Standby losses</li>
+                    <li>Control effectiveness</li>
+                </ul>
+
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>🧮 Why Seasonal Efficiency Matters</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>Seasonal efficiency is more representative than peak or laboratory efficiency figures. A boiler rated at 94% efficiency in lab conditions may achieve only 85% in real-world seasonal operation due to cycling and standby losses.</p>
+                    </div>
+                </div>
+
+                <div class="calculator">
+                    <h3 style="margin-top: 0; color: var(--accent-cool);">Interactive: Heat Demand Estimator</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">Estimate post-retrofit heat demand based on fabric improvements:</p>
+                    <div class="calc-grid">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Current Heat Demand (kWh/year)</label>
+                            <input type="number" class="calc-input" id="currentDemand" placeholder="e.g., 15000" value="15000">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Fabric Improvement %</label>
+                            <input type="number" class="calc-input" id="improvement" placeholder="e.g., 40" value="40">
+                        </div>
+                    </div>
+                    <button class="calc-button" onclick="calculateHeatDemand()">Calculate New Heat Demand</button>
+                    <div class="calc-result" id="calcResult">
+                        <strong>Result:</strong> New heat demand will be approximately <span id="newDemand" style="color: var(--accent-cool); font-size: 1.2rem;"></span> kWh/year<br>
+                        <span id="systemSize" style="font-size: 0.9rem; color: var(--text-muted);"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4.3 -->
+            <section class="section" id="gas" data-section="4.3">
+                <div class="section-header">
+                    <span class="section-number">Section 4.3</span>
+                    <h2>Gas Boilers (Natural Gas)</h2>
+                </div>
+
+                <p>Gas boilers burn natural gas to provide hot water for radiators and DHW via a hot water cylinder or combi system.</p>
+
+                <h3>Typical Seasonal Efficiencies</h3>
+                <ul>
+                    <li>Non-condensing boiler: <span class="efficiency-low">65–75%</span></li>
+                    <li>Older condensing boiler: <span class="efficiency-med">78–85%</span></li>
+                    <li>Modern condensing boiler (A-rated): <span class="efficiency-high">88–94%</span></li>
+                </ul>
+
+                <div class="info-card">
+                    <div class="card-title">PAS 2035 Characteristics</div>
+                    <ul style="margin: 0;">
+                        <li>Widely used in existing housing stock</li>
+                        <li>Performance highly dependent on flow temperature and controls</li>
+                        <li>Fossil fuel system – carbon reduction limited</li>
+                    </ul>
+                </div>
+
+                <h3>Key Retrofit Considerations</h3>
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>🔧 Oversizing Issues</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>Oversizing is common in legacy systems. A boiler too large for the heat demand will cycle frequently, reducing efficiency and lifespan. Post-fabric retrofit heat demand is often 40-60% lower than original design loads.</p>
+                    </div>
+                </div>
+
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>🌡️ Condensing Mode Requirements</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>Condensing mode requires low return temperatures (below 55°C) to extract latent heat from flue gases. Weather compensation and load compensation controls are essential to maintain these conditions and improve efficiency.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4.4 -->
+            <section class="section" id="oil" data-section="4.4">
+                <div class="section-header">
+                    <span class="section-number">Section 4.4</span>
+                    <h2>Oil and LPG Boilers</h2>
+                </div>
+
+                <p>Used primarily in off-gas properties, oil and LPG boilers operate similarly to gas boilers but with higher fuel carbon intensity.</p>
+
+                <h3>Typical Seasonal Efficiencies</h3>
+                <ul>
+                    <li>Oil boiler (modern condensing): <span class="efficiency-med">85–90%</span></li>
+                    <li>LPG boiler (condensing): <span class="efficiency-med">85–90%</span></li>
+                </ul>
+
+                <div class="info-card warning">
+                    <div class="card-title">⚠️ Cost & Carbon Considerations</div>
+                    <ul style="margin: 0;">
+                        <li>Higher running costs than mains gas</li>
+                        <li>Storage requirements introduce additional risks (tank integrity, fuel theft)</li>
+                        <li>Often transitional technologies in retrofit strategies</li>
+                    </ul>
+                </div>
+
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>🔄 Transitional Strategy</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>Fabric upgrades are critical before considering alternatives. In deep retrofit, oil and LPG systems are often replaced with heat pumps or hybrid systems once fabric improvements reduce heat demand sufficiently.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4.5 -->
+            <section class="section" id="electric" data-section="4.5">
+                <div class="section-header">
+                    <span class="section-number">Section 4.5</span>
+                    <h2>Electric Resistance Heating</h2>
+                </div>
+
+                <p>Includes panel heaters, storage heaters and electric immersion heaters.</p>
+
+                <h3>Efficiency Profile</h3>
+                <ul>
+                    <li>Point-of-use efficiency: <span class="efficiency-high">~100%</span></li>
+                    <li>System efficiency: <span class="efficiency-low">Low</span>, due to high electricity carbon and cost</li>
+                </ul>
+
+                <div class="info-card warning">
+                    <div class="card-title">⚠️ Fuel Poverty Risk</div>
+                    <p>High running costs mean electric resistance heating is often associated with fuel poverty. PAS 2035 treats this as a priority for improvement.</p>
+                </div>
+
+                <h3>Retrofit Strategy</h3>
+                <ul>
+                    <li>Fabric-first upgrades essential to minimize heat demand</li>
+                    <li>Time-of-use tariffs and smart controls critical to manage costs</li>
+                    <li>Modern high heat retention storage heaters offer better control than legacy systems</li>
+                </ul>
+            </section>
+
+            <!-- Section 4.6 -->
+            <section class="section" id="heatpump" data-section="4.6">
+                <div class="section-header">
+                    <span class="section-number">Section 4.6</span>
+                    <h2>Heat Pumps (Air Source and Ground Source)</h2>
+                </div>
+
+                <p>Heat pumps move heat from a low-temperature source (air or ground) into the dwelling using electricity.</p>
+
+                <h3>Seasonal Performance Factor (SCOP)</h3>
+                <ul>
+                    <li>Air Source Heat Pump (ASHP): <span class="efficiency-med">2.5–4.0</span></li>
+                    <li>Ground Source Heat Pump (GSHP): <span class="efficiency-high">3.0–4.5</span></li>
+                </ul>
+
+                <div class="info-card success">
+                    <div class="card-title">💡 Efficiency Multiplier</div>
+                    <p>This means 1 kWh of electricity produces 2.5–4.5 kWh of heat. Even with electricity's higher carbon intensity, this multiplier delivers significant carbon savings compared to fossil fuels.</p>
+                </div>
+
+                <h3>PAS 2035 Requirements</h3>
+                <ul>
+                    <li>Best suited to low heat demand dwellings</li>
+                    <li>Require low flow temperatures (35–55°C)</li>
+                    <li>Performance highly sensitive to design and installation quality</li>
+                </ul>
+
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>🏠 Critical: Fabric Requirements</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>Fabric upgrades are often mandatory before heat pump installation. Low flow temperatures require larger emitters (radiators or underfloor heating) and a hot water cylinder is usually required, even if previously using a combi boiler.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4.7 -->
+            <section class="section" id="hybrid" data-section="4.7">
+                <div class="section-header">
+                    <span class="section-number">Section 4.7</span>
+                    <h2>Hybrid Heating Systems</h2>
+                </div>
+
+                <p>Combine a boiler with a heat pump, switching between systems depending on conditions (typically outdoor temperature or heat demand).</p>
+
+                <h3>Performance Characteristics</h3>
+                <ul>
+                    <li>Overall efficiency varies by control strategy</li>
+                    <li>Carbon savings dependent on operating hours of each system</li>
+                    <li>Transitional technology bridging fossil fuel and full electrification</li>
+                </ul>
+
+                <div class="info-card warning">
+                    <div class="card-title">⚠️ Complexity Warning</div>
+                    <p>Increased system complexity requires careful control strategy and commissioning. Poorly configured hybrids may default to boiler operation, negating carbon savings.</p>
+                </div>
+            </section>
+
+            <!-- Section 4.8 -->
+            <section class="section" id="dhw" data-section="4.8">
+                <div class="section-header">
+                    <span class="section-number">Section 4.8</span>
+                    <h2>Domestic Hot Water (DHW) Systems</h2>
+                </div>
+
+                <h3>Hot Water Generation Options</h3>
+                <ul>
+                    <li>Combi boilers (instantaneous)</li>
+                    <li>Hot water cylinders (vented, unvented, thermal store)</li>
+                    <li>Electric immersion heaters</li>
+                </ul>
+
+                <h3>DHW Efficiency Considerations</h3>
+                <ul>
+                    <li>Storage losses from cylinders (insulation critical)</li>
+                    <li>Distribution losses from pipework (lagging, reduced dead legs)</li>
+                    <li>User behaviour and controls (temperature settings, timers)</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>System</th>
+                                <th>Seasonal Efficiency</th>
+                                <th>Key Considerations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gas DHW (combi)</td>
+                                <td class="efficiency-med">75–85%</td>
+                                <td>No storage losses; flow rate limitations</td>
+                            </tr>
+                            <tr>
+                                <td>Heat pump DHW</td>
+                                <td class="efficiency-med">SCOP 2.0–3.0</td>
+                                <td>Cylinder required; anti-legionella cycles</td>
+                            </tr>
+                            <tr>
+                                <td>Electric immersion</td>
+                                <td class="efficiency-high">~100%</td>
+                                <td>Point-of-use only; high running costs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 4.9 -->
+            <section class="section" id="distribution" data-section="4.9">
+                <div class="section-header">
+                    <span class="section-number">Section 4.9</span>
+                    <h2>Heat Distribution and Emitters</h2>
+                </div>
+
+                <h3>Radiators</h3>
+                <ul>
+                    <li>Designed for high-temperature systems (70-80°C flow)</li>
+                    <li>Often oversized post-fabric retrofit (opportunity for lower flow temps)</li>
+                    <li>Can work with heat pumps if sized correctly or upgraded</li>
+                </ul>
+
+                <h3>Underfloor Heating</h3>
+                <ul>
+                    <li>Operates at low temperatures (35-45°C)</li>
+                    <li>Well suited to heat pumps</li>
+                    <li>High thermal mass provides stability but slower response</li>
+                </ul>
+
+                <h3>Controls Impact</h3>
+                <div class="info-card success">
+                    <div class="card-title">🎛️ Efficiency Gains from Controls</div>
+                    <p>Controls can improve seasonal efficiency by <strong>10–25%</strong>:</p>
+                    <ul style="margin: 0.5rem 0 0 0;">
+                        <li>Time and temperature zoning</li>
+                        <li>Weather compensation (adjusting flow temp based on outdoor temp)</li>
+                        <li>Smart thermostats with geofencing and learning</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section 4.10 -->
+            <section class="section" id="comparison" data-section="4.10">
+                <div class="section-header">
+                    <span class="section-number">Section 4.10</span>
+                    <h2>Comparison of Domestic Heating Systems</h2>
+                </div>
+
+                <p style="margin-bottom: 1.5rem; font-style: italic; color: var(--text-muted);">
+                    SAP/RdSAP aligned terminology. Indicative values vary based on system design, tariffs and dwelling characteristics.
+                </p>
+
+                <div class="table-container">
+                    <table id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th>Heating System</th>
+                                <th>Fuel (SAP)</th>
+                                <th>Seasonal Efficiency / SCOP</th>
+                                <th>Running Cost</th>
+                                <th>Carbon Intensity</th>
+                                <th>Dwelling Suitability</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Gas boiler (modern)</strong></td>
+                                <td>Mains gas</td>
+                                <td class="efficiency-high">88–94%</td>
+                                <td class="efficiency-med">Low–medium</td>
+                                <td class="efficiency-med">Medium</td>
+                                <td>Best after fabric improvements; limited long-term decarbonisation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Oil boiler</strong></td>
+                                <td>Heating oil</td>
+                                <td class="efficiency-med">85–90%</td>
+                                <td class="efficiency-low">Medium–high</td>
+                                <td class="efficiency-low">High</td>
+                                <td>Off-gas; transitional only; fabric-first essential</td>
+                            </tr>
+                            <tr>
+                                <td><strong>LPG boiler</strong></td>
+                                <td>LPG</td>
+                                <td class="efficiency-med">85–90%</td>
+                                <td class="efficiency-low">High</td>
+                                <td class="efficiency-low">High</td>
+                                <td>Off-gas rural; higher fuel costs and carbon</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Electric resistance</strong></td>
+                                <td>Electricity</td>
+                                <td class="efficiency-high">~100%</td>
+                                <td class="efficiency-low">Very high</td>
+                                <td class="efficiency-med">Medium–high*</td>
+                                <td>Only very low heat demand; fabric-first critical</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Storage heaters</strong></td>
+                                <td>Electricity (off-peak)</td>
+                                <td class="efficiency-high">~100%</td>
+                                <td class="efficiency-med">Medium–high</td>
+                                <td class="efficiency-med">Medium–high*</td>
+                                <td>Flats/small dwellings; needs good insulation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ASHP</strong></td>
+                                <td>Electricity</td>
+                                <td class="efficiency-high">SCOP 2.5–4.0</td>
+                                <td class="efficiency-med">Low–medium</td>
+                                <td class="efficiency-high">Low</td>
+                                <td>Well-insulated dwellings; low flow temperatures</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GSHP</strong></td>
+                                <td>Electricity</td>
+                                <td class="efficiency-high">SCOP 3.0–4.5</td>
+                                <td class="efficiency-high">Low</td>
+                                <td class="efficiency-high">Very low</td>
+                                <td>High performance; higher capital cost; ground conditions</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hybrid heat pump</strong></td>
+                                <td>Gas + electricity</td>
+                                <td class="efficiency-med">Variable</td>
+                                <td class="efficiency-med">Medium</td>
+                                <td class="efficiency-med">Medium</td>
+                                <td>Transitional; increased complexity; control strategy critical</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    * Carbon intensity of electricity continues to reduce as grid decarbonises, improving heat pump performance in SAP calculations.
+                </p>
+            </section>
+
+            <!-- Section 4.11 -->
+            <section class="section" id="sap" data-section="4.11">
+                <div class="section-header">
+                    <span class="section-number">Section 4.11</span>
+                    <h2>SAP and RdSAP Considerations for Retrofit</h2>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+                    <div class="info-card">
+                        <div class="card-title">SAP</div>
+                        <p style="font-size: 0.9rem;"><strong>Standard Assessment Procedure</strong></p>
+                        <ul style="font-size: 0.9rem;">
+                            <li>Used for new build and full retrofit design</li>
+                            <li>Detailed modelling of fabric, heat pumps, low-temp systems</li>
+                            <li>Required for PAS 2035 medium- and high-risk retrofit</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-title">RdSAP</div>
+                        <p style="font-size: 0.9rem;"><strong>Reduced Data SAP</strong></p>
+                        <ul style="font-size: 0.9rem;">
+                            <li>Used for existing dwellings and EPCs</li>
+                            <li>Relies on assumptions and defaults</li>
+                            <li>Less sensitive to detailed design</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Implications for Retrofit Design</h3>
+                <ul>
+                    <li>Fabric improvements improve SAP and RdSAP scores regardless of heating system</li>
+                    <li>Heat pump performance improves significantly in SAP once fabric and emitters are upgraded</li>
+                    <li>Poor controls can reduce modelled efficiency even with high-performance systems</li>
+                </ul>
+
+                <div class="key-point" onclick="toggleKeyPoint(this)">
+                    <div class="key-point-header">
+                        <span>📋 Documentation Requirement</span>
+                        <span>+</span>
+                    </div>
+                    <div class="key-point-content">
+                        <p>PAS 2035 requires that heating system specifications be evidenced in SAP calculations. The post-retrofit heat demand calculation must show that the proposed system is correctly sized for the improved fabric performance.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4.12 -->
+            <section class="section" id="summary" data-section="4.12">
+                <div class="section-header">
+                    <span class="section-number">Section 4.12</span>
+                    <h2>PAS 2035 Summary</h2>
+                </div>
+
+                <div class="info-card success" style="border-width: 2px;">
+                    <div class="card-title" style="font-size: 1.3rem;">✓ Core Principles</div>
+                    <ul style="font-size: 1.05rem;">
+                        <li><strong>Fabric-first retrofit</strong> reduces space heating demand</li>
+                        <li>Heating systems must be designed for <strong>post-retrofit heat loss</strong></li>
+                        <li><strong>Seasonal efficiency and SCOP</strong> are the correct performance metrics</li>
+                        <li><strong>SAP and RdSAP</strong> should be used to evidence performance improvements</li>
+                        <li>Poor heating system design can <strong>undermine</strong> otherwise good fabric retrofit</li>
+                    </ul>
+                </div>
+
+                <p style="font-size: 1.1rem; margin-top: 2rem; padding: 1.5rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; border-left: 4px solid var(--accent-cool);">
+                    <strong>Key Takeaway:</strong> Effective domestic heating retrofit delivers comfort, affordability and carbon reduction when fabric and services are designed as a single, integrated system.
+                </p>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button onclick="scrollToSection('assessment')" style="background: var(--accent-warm); color: var(--primary-dark); border: none; padding: 1rem 3rem; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;">
+                        Proceed to Final Assessment →
+                    </button>
+                </div>
+            </section>
+
+            <!-- Assessment -->
+            <section class="section" id="assessment" data-section="assessment">
+                <div class="section-header">
+                    <span class="section-number">Assessment</span>
+                    <h2>Module Four Knowledge Check</h2>
+                </div>
+
+                <div id="quizContainer">
+                    <!-- Question 1 -->
+                    <div class="quiz-container" id="q1">
+                        <div class="quiz-question">1. Under PAS 2035, when should heating system upgrades be sized?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">A</div>
+                                <div>Based on existing heat loss calculations</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, true)">
+                                <div class="option-letter">B</div>
+                                <div>Using post-retrofit heat demand only</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">C</div>
+                                <div>Using the midpoint between existing and post-retrofit demand</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">D</div>
+                                <div>Based on the worst-case winter scenario</div>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback1"></div>
+                        <button class="quiz-button" id="btn1" onclick="nextQuestion(2)">Next Question</button>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="quiz-container" id="q2" style="display: none;">
+                        <div class="quiz-question">2. What is the typical SCOP range for an Air Source Heat Pump (ASHP)?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">A</div>
+                                <div>0.8 – 1.2</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">B</div>
+                                <div>1.5 – 2.0</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, true)">
+                                <div class="option-letter">C</div>
+                                <div>2.5 – 4.0</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">D</div>
+                                <div>5.0 – 6.0</div>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback2"></div>
+                        <button class="quiz-button" id="btn2" onclick="nextQuestion(3)">Next Question</button>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="quiz-container" id="q3" style="display: none;">
+                        <div class="quiz-question">3. In a well-retrofitted home, what percentage of total energy use might DHW account for?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">A</div>
+                                <div>5 – 10%</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, true)">
+                                <div class="option-letter">B</div>
+                                <div>30 – 50%</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">C</div>
+                                <div>60 – 70%</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">D</div>
+                                <div>Less than 5%</div>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback3"></div>
+                        <button class="quiz-button" id="btn3" onclick="nextQuestion(4)">Next Question</button>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="quiz-container" id="q4" style="display: none;">
+                        <div class="quiz-question">4. Which assessment procedure is required for PAS 2035 medium- and high-risk retrofit design?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, true)">
+                                <div class="option-letter">A</div>
+                                <div>Full SAP (Standard Assessment Procedure)</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">B</div>
+                                <div>RdSAP only</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">C</div>
+                                <div>Energy Performance Certificate (EPC) rating only</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">D</div>
+                                <div>Heat loss calculation without software</div>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback4"></div>
+                        <button class="quiz-button" id="btn4" onclick="nextQuestion(5)">Next Question</button>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="quiz-container" id="q5" style="display: none;">
+                        <div class="quiz-question">5. Why is seasonal efficiency preferred over laboratory efficiency for retrofit design?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">A</div>
+                                <div>It is easier to calculate</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, true)">
+                                <div class="option-letter">B</div>
+                                <div>It accounts for part-load operation, cycling, and standby losses</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">C</div>
+                                <div>It is always higher than laboratory efficiency</div>
+                            </div>
+                            <div class="quiz-option" onclick="selectOption(this, false)">
+                                <div class="option-letter">D</div>
+                                <div>It is required by boiler manufacturers only</div>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback5"></div>
+                        <button class="quiz-button" id="btn5" onclick="showCertificate()">Complete Module</button>
+                    </div>
+                </div>
+
+                <!-- Certificate -->
+                <div class="certificate" id="certificate">
+                    <div class="cert-icon">🏆</div>
+                    <div class="cert-title">Module Completed</div>
+                    <div class="cert-subtitle">Domestic Space & Water Heating – PAS 2035</div>
+                    
+                    <div class="completion-stats">
+                        <div class="stat-box">
+                            <div class="stat-value" id="scoreValue">0%</div>
+                            <div class="stat-label">Quiz Score</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Sections Completed</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="timeValue">0:00</div>
+                            <div class="stat-label">Time Invested</div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--text-secondary); margin: 2rem 0;">
+                        You have successfully completed Module Four of the PAS 2035 Retrofit Training Guide.
+                        <br>You understand fabric-first principles, heating system selection, and SAP compliance.
+                    </p>
+
+                    <button onclick="window.print()" style="background: var(--accent-cool); color: var(--primary-dark); border: none; padding: 0.875rem 2rem; border-radius: 6px; font-weight: 700; cursor: pointer;">
+                        Print Certificate
+                    </button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Progress tracking
+        let sectionsViewed = new Set();
+        let quizScore = 0;
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+        let startTime = Date.now();
+
+        // Intersection Observer for tracking progress
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.getAttribute('data-section');
+                    if (sectionId) {
+                        sectionsViewed.add(sectionId);
+                        updateProgress();
+                        updateNavigation(sectionId);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        function updateProgress() {
+            const totalSections = 12; // 4.1 through 4.12
+            const progress = Math.min((sectionsViewed.size / totalSections) * 100, 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '% Complete';
+        }
+
+        function updateNavigation(currentSection) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(currentSection)) {
+                    link.classList.add('active');
+                    link.classList.add('completed');
+                }
+            });
+        }
+
+        // Navigation
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                // Close sidebar on mobile
+                if (window.innerWidth <= 1024) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Key Point toggles
+        function toggleKeyPoint(element) {
+            element.classList.toggle('expanded');
+            const indicator = element.querySelector('.key-point-header span:last-child');
+            indicator.textContent = element.classList.contains('expanded') ? '−' : '+';
+        }
+
+        // Calculator
+        function calculateHeatDemand() {
+            const current = parseFloat(document.getElementById('currentDemand').value);
+            const improvement = parseFloat(document.getElementById('improvement').value);
+            
+            if (current && improvement) {
+                const reduction = current * (improvement / 100);
+                const newDemand = Math.round(current - reduction);
+                const kwLoad = (newDemand / 2000).toFixed(1); // Rough estimate for UK climate
+                
+                document.getElementById('newDemand').textContent = newDemand.toLocaleString();
+                document.getElementById('systemSize').textContent = `Indicative peak heat load: ~${kwLoad} kW (at -2°C design temperature)`;
+                document.getElementById('calcResult').style.display = 'block';
+            }
+        }
+
+        // Quiz functionality
+        function selectOption(element, isCorrect) {
+            const container = element.parentElement;
+            const options = container.querySelectorAll('.quiz-option');
+            const feedback = container.nextElementSibling;
+            const button = container.nextElementSibling.nextElementSibling;
+            
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedback.textContent = '✓ Correct! Well done.';
+                feedback.style.background = 'rgba(16, 185, 129, 0.2)';
+                feedback.style.color = '#10b981';
+                feedback.style.display = 'block';
+                quizScore++;
+            } else {
+                element.classList.add('incorrect');
+                feedback.textContent = '✗ Incorrect. Review the section and try again.';
+                feedback.style.background = 'rgba(239, 68, 68, 0.2)';
+                feedback.style.color = '#ef4444';
+                feedback.style.display = 'block';
+                
+                // Highlight correct answer
+                options.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            button.classList.add('show');
+        }
+
+        function nextQuestion(num) {
+            document.getElementById('q' + (num - 1)).style.display = 'none';
+            document.getElementById('q' + num).style.display = 'block';
+            document.getElementById('q' + num).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            currentQuestion = num;
+        }
+
+        function showCertificate() {
+            document.getElementById('q5').style.display = 'none';
+            document.getElementById('certificate').style.display = 'block';
+            document.getElementById('certificate').scrollIntoView({ behavior: 'smooth' });
+            
+            // Calculate score percentage
+            const percentage = Math.round((quizScore / totalQuestions) * 100);
+            document.getElementById('scoreValue').textContent = percentage + '%';
+            
+            // Calculate time
+            const elapsed = Math.floor((Date.now() - startTime) / 1000 / 60);
+            const minutes = elapsed % 60;
+            const hours = Math.floor(elapsed / 60);
+            document.getElementById('timeValue').textContent = hours > 0 ? `${hours}:${minutes.toString().padStart(2, '0')}` : `${minutes} min`;
+            
+            // Mark assessment as complete in nav
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('onclick').includes('assessment')) {
+                    link.classList.add('completed');
+                }
+            });
+            
+            // Set progress to 100%
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('progressText').textContent = '100% Complete';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            // Auto-expand first key point for engagement
+            setTimeout(() => {
+                const firstKeyPoint = document.querySelector('.key-point');
+                if (firstKeyPoint) toggleKeyPoint(firstKeyPoint);
+            }, 1000);
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

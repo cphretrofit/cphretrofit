@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Three: Key Characteristics of Domestic Energy Efficiency Measures</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+        /* Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive Card Hover */
+        .measure-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .measure-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #3b82f6;
+        }
+
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+        
+        /* Thermometer Animation */
+        .thermometer-fill {
+            transition: height 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-400 rounded-lg flex items-center justify-center text-white font-bold">M3</div>
+                    <span class="font-display font-bold text-xl tracking-tight">Retrofit<span class="text-blue-400">Academy</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#introduction" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Introduction</a>
+                        <a href="#physics" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Physics</a>
+                        <a href="#materials" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Materials</a>
+                        <a href="#measures" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Measures</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-block mb-4 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-semibold tracking-wide uppercase fade-in-up">
+                PAS 2035 Certified
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight fade-in-up" style="transition-delay: 100ms;">
+                Module Three:<br>
+                <span class="gradient-text">Domestic Energy Efficiency</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-400 fade-in-up" style="transition-delay: 200ms;">
+                Master the key characteristics of building fabric improvements. Learn the physics of heat loss, material selection, and the PAS 2035 risk-based approach to retrofit.
+            </p>
+            <div class="mt-10 flex justify-center gap-4 fade-in-up" style="transition-delay: 300ms;">
+                <a href="#introduction" class="px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-500/25">
+                    Start Learning
+                </a>
+                <button onclick="scrollToCalculator()" class="px-8 py-3 rounded-lg glass-panel hover:bg-slate-800 text-slate-300 font-semibold transition-all border border-slate-600">
+                    Try U-Value Calc
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction & PAS 2035 Context -->
+    <section id="introduction" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-in-up">
+                    <h2 class="text-3xl font-bold mb-6 text-white">The PAS 2035 Framework</h2>
+                    <p class="text-slate-400 mb-6 text-lg leading-relaxed">
+                        PAS 2035 is the UK standard for retrofitting domestic dwellings. It mandates a <strong class="text-emerald-400">"Whole House, Fabric First"</strong> approach. This means we prioritize the building envelope before adding expensive heating technologies.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                                <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <span class="ml-3 text-slate-300">Deliver genuine energy and carbon savings</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                                <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <span class="ml-3 text-slate-300">Protect occupant health and comfort</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
+                                <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <span class="ml-3 text-slate-300">Avoid unintended consequences (damp, mould, structural damage)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative fade-in-up" style="transition-delay: 200ms;">
+                    <div class="glass-panel rounded-2xl p-8 border border-slate-700">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">What is the Building Fabric?</h3>
+                        <p class="text-slate-400 mb-6">The physical envelope separating internal conditioned space from the external environment.</p>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
+                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🏠</div>
+                                <div class="text-sm font-medium text-slate-300">Roofs</div>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
+                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🧱</div>
+                                <div class="text-sm font-medium text-slate-300">Walls</div>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
+                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🏗️</div>
+                                <div class="text-sm font-medium text-slate-300">Floors</div>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
+                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🪟</div>
+                                <div class="text-sm font-medium text-slate-300">Openings</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Physics Section -->
+    <section id="physics" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Basic Building Physics</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Heat flows from warm to cold. Understanding the three mechanisms of heat loss is crucial for effective retrofit design.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Conduction Card -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-orange-500 fade-in-up hover:bg-slate-800/50 transition-all cursor-pointer group" onclick="togglePhysics('conduction')">
+                    <div class="h-12 w-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Conduction</h3>
+                    <p class="text-slate-400 text-sm mb-4">Heat flow through solid elements (walls, roofs, floors).</p>
+                    <div id="physics-detail-conduction" class="hidden mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300">
+                        <strong>Solution:</strong> Insulation materials trap air pockets to slow this transfer. Lower thermal conductivity (λ) means better resistance.
+                    </div>
+                    <button class="text-orange-400 text-xs font-semibold uppercase tracking-wider mt-2 group-hover:text-orange-300">Learn More</button>
+                </div>
+
+                <!-- Convection Card -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-blue-500 fade-in-up hover:bg-slate-800/50 transition-all cursor-pointer group" style="transition-delay: 100ms;" onclick="togglePhysics('convection')">
+                    <div class="h-12 w-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Convection</h3>
+                    <p class="text-slate-400 text-sm mb-4">Heat loss via air movement (draughts, uncontrolled ventilation).</p>
+                    <div id="physics-detail-convection" class="hidden mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300">
+                        <strong>Solution:</strong> Airtightness measures. Sealing gaps around windows, doors, and service penetrations.
+                    </div>
+                    <button class="text-blue-400 text-xs font-semibold uppercase tracking-wider mt-2 group-hover:text-blue-300">Learn More</button>
+                </div>
+
+                <!-- Radiation Card -->
+                <div class="glass-panel rounded-xl p-6 border-t-4 border-purple-500 fade-in-up hover:bg-slate-800/50 transition-all cursor-pointer group" style="transition-delay: 200ms;" onclick="togglePhysics('radiation')">
+                    <div class="h-12 w-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Radiation</h3>
+                    <p class="text-slate-400 text-sm mb-4">Heat emitted from warm internal surfaces to colder external ones.</p>
+                    <div id="physics-detail-radiation" class="hidden mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300">
+                        <strong>Solution:</strong> Low-emissivity (Low-E) coatings on glazing reflect heat back into the room.
+                    </div>
+                    <button class="text-purple-400 text-xs font-semibold uppercase tracking-wider mt-2 group-hover:text-purple-300">Learn More</button>
+                </div>
+            </div>
+
+            <!-- U-Value Visualizer -->
+            <div class="mt-20 glass-panel rounded-2xl p-8 border border-slate-700 fade-in-up">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold mb-4 text-white">Understanding U-Values</h3>
+                        <p class="text-slate-400 mb-6">
+                            A U-value measures the rate of heat loss through a building element. 
+                            <br><span class="text-emerald-400 font-semibold">Lower is Better.</span>
+                        </p>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-slate-300">Uninsulated Wall</span>
+                                    <span class="text-sm font-bold text-red-400">2.1 W/m²K</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2.5">
+                                    <div class="bg-red-500 h-2.5 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-slate-300">Basic Insulation</span>
+                                    <span class="text-sm font-bold text-yellow-400">0.45 W/m²K</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2.5">
+                                    <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 40%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm font-medium text-slate-300">PAS 2035 Target</span>
+                                    <span class="text-sm font-bold text-emerald-400">0.18 W/m²K</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2.5">
+                                    <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 10%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 w-full">
+                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-600">
+                            <h4 class="text-lg font-semibold mb-4 text-center">U-Value Impact Simulator</h4>
+                            <div class="flex justify-center mb-6">
+                                <div class="relative h-64 w-32 bg-slate-700 rounded-full border-4 border-slate-600 overflow-hidden">
+                                    <div id="thermometer-liquid" class="absolute bottom-0 w-full bg-gradient-to-t from-blue-600 to-red-500 thermometer-fill" style="height: 80%"></div>
+                                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                        <span class="text-2xl font-bold text-white drop-shadow-md">£££</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <label class="block text-sm font-medium text-slate-300">Select Wall Type:</label>
+                                <select id="u-value-select" onchange="updateThermometer()" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <option value="2.1">Uninsulated Solid Wall (2.1)</option>
+                                    <option value="0.45">Cavity Wall (0.45)</option>
+                                    <option value="0.30">IWI / EWI Standard (0.30)</option>
+                                    <option value="0.18">High Performance (0.18)</option>
+                                </select>
+                                <p class="text-xs text-slate-500 text-center mt-2">Visual representation of relative heat loss (energy cost)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials Table -->
+    <section id="materials" class="py-20 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 fade-in-up">
+                <h2 class="text-3xl font-bold mb-4">Common Insulation Materials</h2>
+                <p class="text-slate-400">Material selection must balance thermal performance (λ), moisture risk, and installation quality.</p>
+            </div>
+
+            <div class="glass-panel rounded-xl overflow-hidden border border-slate-700 fade-in-up">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800/80 text-slate-300 text-sm uppercase tracking-wider">
+                                <th class="p-4 font-semibold border-b border-slate-700">Material</th>
+                                <th class="p-4 font-semibold border-b border-slate-700">Thermal Conductivity (λ W/mK)</th>
+                                <th class="p-4 font-semibold border-b border-slate-700">PAS 2035 Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700 text-slate-300 text-sm">
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 font-medium text-white">Mineral Wool (Glass/Rock)</td>
+                                <td class="p-4">0.032 – 0.040</td>
+                                <td class="p-4 text-slate-400">Vapour open, tolerant of irregular substrates</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 font-medium text-white">PIR Rigid Board</td>
+                                <td class="p-4">0.022 – 0.026</td>
+                                <td class="p-4 text-slate-400">High performance, requires careful detailing</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 font-medium text-white">EPS (Expanded Polystyrene)</td>
+                                <td class="p-4">0.030 – 0.038</td>
+                                <td class="p-4 text-slate-400">Common for EWI, cost effective</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 font-medium text-white">Phenolic Foam</td>
+                                <td class="p-4 text-emerald-400 font-bold">0.018 – 0.022</td>
+                                <td class="p-4 text-slate-400">Very low λ value, thinner build ups</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4 font-medium text-white">Wood Fibre</td>
+                                <td class="p-4">0.038 – 0.045</td>
+                                <td class="p-4 text-slate-400">Hygroscopic, supports moisture buffering</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Measures Grid -->
+    <section id="measures" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Key Retrofit Measures</h2>
+                <p class="text-slate-400">Select a measure to view PAS 2035 characteristics, U-values, and risk controls.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Loft Insulation -->
+                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop" alt="Loft Insulation" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded">Low Risk</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Loft Insulation (Cold Roof)</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">Installed at ceiling level. High carbon savings with low cost and disruption.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">Target Depth</span>
+                                <span class="text-white font-medium">270–300 mm</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">U-Value (Target)</span>
+                                <span class="text-emerald-400 font-medium">~0.16 W/m²K</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
+                            <p class="text-xs text-slate-400">Blocking eaves ventilation can cause condensation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IWI -->
+                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 100ms;">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2031&auto=format&fit=crop" alt="Internal Wall" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Med/High Risk</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Internal Wall Insulation (IWI)</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">Applied to internal face of walls. Suitable where external appearance must be retained.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">System</span>
+                                <span class="text-white font-medium">Insulated PB / Stud</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">U-Value</span>
+                                <span class="text-emerald-400 font-medium">0.30–0.18 W/m²K</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
+                            <p class="text-xs text-slate-400">Interstitial condensation. Vapour control layers are critical.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EWI -->
+                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 200ms;">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1518005068251-37900150dfca?q=80&w=2072&auto=format&fit=crop" alt="External Wall" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Medium Risk</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">External Wall Insulation (EWI)</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">Applied to external face. Excellent whole-wall performance and reduces thermal bridging.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">Materials</span>
+                                <span class="text-white font-medium">EPS, MW, Phenolic</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">U-Value</span>
+                                <span class="text-emerald-400 font-medium">0.30–0.18 W/m²K</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
+                            <p class="text-xs text-slate-400">Planning/aesthetic issues. Detailing around openings essential.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Underfloor -->
+                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" alt="Floor Insulation" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Medium Risk</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Underfloor Insulation</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">Reduces heat loss through ground floors, particularly suspended timber.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">Ventilation</span>
+                                <span class="text-white font-medium">Airex Smart Bricks</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">U-Value</span>
+                                <span class="text-emerald-400 font-medium">0.25–0.18 W/m²K</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
+                            <p class="text-xs text-slate-400">Never block sub-floor ventilation. Risk of rot.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room in Roof -->
+                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 100ms;">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=2070&auto=format&fit=crop" alt="Attic Room" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">High Risk</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Room in Roof Insulation</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">Insulation for habitable spaces in the roof. Complex junctions increase risk.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">Location</span>
+                                <span class="text-white font-medium">Between/Below Rafters</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">U-Value</span>
+                                <span class="text-emerald-400 font-medium">0.20–0.15 W/m²K</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
+                            <p class="text-xs text-slate-400">Overheating risk assessment may be required.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glazing -->
+                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 200ms;">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop" alt="Windows" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded">Low Risk</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Glazing & Doors</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">Part of the thermal envelope influencing ventilation, daylight, and solar gain.</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">Target</span>
+                                <span class="text-white font-medium">Double/Triple Low-E</span>
+                            </div>
+                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
+                                <span class="text-slate-500">U-Value (Window)</span>
+                                <span class="text-emerald-400 font-medium">~1.2 to 0.8 W/m²K</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
+                            <p class="text-xs text-slate-400">Installation quality affects airtightness. Maintain background ventilation.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Section -->
+    <section class="py-20 bg-gradient-to-b from-slate-900 to-blue-900/20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
+            <h2 class="text-3xl font-bold mb-8">PAS 2035 Summary</h2>
+            <div class="glass-panel p-8 rounded-2xl border border-blue-500/30">
+                <p class="text-lg text-slate-300 mb-8">
+                    Under PAS 2035, fabric measures must be assessed as part of a whole dwelling retrofit plan, designed with moisture and ventilation risks in mind, and installed to a high standard of workmanship.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold">1</div>
+                        <div>
+                            <h4 class="font-bold text-white">Whole House Plan</h4>
+                            <p class="text-sm text-slate-400">Assess the dwelling as a system, not individual parts.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold">2</div>
+                        <div>
+                            <h4 class="font-bold text-white">Risk Management</h4>
+                            <p class="text-sm text-slate-400">Design out moisture, condensation, and ventilation issues.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold">3</div>
+                        <div>
+                            <h4 class="font-bold text-white">Quality Workmanship</h4>
+                            <p class="text-sm text-slate-400">Installation standards are critical for performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-8 text-slate-500 text-sm">
+                Improving the building fabric is the foundation of safe, effective, and long-lasting domestic retrofit.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-display font-bold text-xl text-slate-200">Retrofit<span class="text-blue-500">Academy</span></span>
+                <p class="text-slate-500 text-sm mt-1">Module Three: Key Characteristics of Domestic Energy Efficiency Measures</p>
+            </div>
+            <div class="text-slate-600 text-sm">
+                &copy; 2023 Training Material. Based on PAS 2035.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Physics Detail Toggle
+        function togglePhysics(type) {
+            const detailId = `physics-detail-${type}`;
+            const element = document.getElementById(detailId);
+            
+            // Close others
+            ['conduction', 'convection', 'radiation'].forEach(t => {
+                if (t !== type) {
+                    document.getElementById(`physics-detail-${t}`).classList.add('hidden');
+                }
+            });
+
+            // Toggle current
+            element.classList.toggle('hidden');
+        }
+
+        // Thermometer Simulator Logic
+        function updateThermometer() {
+            const select = document.getElementById('u-value-select');
+            const liquid = document.getElementById('thermometer-liquid');
+            const value = parseFloat(select.value);
+            
+            // Map U-value to height percentage (Lower U = Lower Heat Loss = Lower Liquid)
+            // 2.1 -> 90%
+            // 0.18 -> 10%
+            const maxU = 2.1;
+            const minU = 0.18;
+            const maxHeight = 90;
+            const minHeight = 10;
+
+            // Linear interpolation
+            const percentage = maxHeight - ((value - minU) / (maxU - minU)) * (maxHeight - minHeight);
+            
+            liquid.style.height = `${Math.max(minHeight, Math.min(maxHeight, percentage))}%`;
+            
+            // Change color based on severity
+            if(value > 1.0) {
+                liquid.className = "absolute bottom-0 w-full bg-gradient-to-t from-red-900 to-red-500 thermometer-fill";
+            } else if (value > 0.4) {
+                liquid.className = "absolute bottom-0 w-full bg-gradient-to-t from-yellow-700 to-yellow-400 thermometer-fill";
+            } else {
+                liquid.className = "absolute bottom-0 w-full bg-gradient-to-t from-emerald-900 to-emerald-500 thermometer-fill";
+            }
+        }
+
+        function scrollToCalculator() {
+            document.getElementById('physics').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateThermometer();
+        });
+    </script>
+</body>
+</html>

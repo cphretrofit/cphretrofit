@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar PV Training Course - Module 5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gradient-sun: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --gradient-sky: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: var(--gradient-sun);
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 6px;
+            border-radius: 3px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            overflow-x: auto;
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-width: max-content;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            background: #f1f5f9;
+            color: var(--dark);
+        }
+
+        .nav-tab.active {
+            background: var(--gradient-sun);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3);
+        }
+
+        .nav-tab.completed::after {
+            content: '✓';
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #e2e8f0;
+        }
+
+        .section-number {
+            display: inline-block;
+            background: var(--gradient-sun);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Interactive Elements */
+        .interactive-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-box::before {
+            content: '💡';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            opacity: 0.2;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #fef3c7 0%, #fef3c7 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        /* Diagram */
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .process-step {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 200px;
+            position: relative;
+            flex: 1;
+            transition: all 0.3s;
+        }
+
+        .process-step:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .process-step::after {
+            content: '→';
+            position: absolute;
+            right: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            background: var(--gradient-sun);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: var(--dark);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Quiz */
+        .quiz-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--secondary);
+            background: #f0f9ff;
+        }
+
+        .quiz-option.correct {
+            border-color: var(--accent);
+            background: #d1fae5;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .checklist-item:hover {
+            background: #f8fafc;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .checklist-item.checked {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-sun);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .process-step::after {
+                display: none;
+            }
+            
+            .process-flow {
+                flex-direction: column;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .nav-tabs, .nav-buttons, .quiz-container {
+                display: none;
+            }
+            
+            .section {
+                display: block !important;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>☀️ Solar PV Training Course</h1>
+            <p class="subtitle">Module 5: Introduction to Solar Photovoltaic Systems</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+        <div class="nav-container">
+            <button class="nav-tab active" onclick="showSection(0)">5.0 What is Solar PV?</button>
+            <button class="nav-tab" onclick="showSection(1)">5.1 Array Characteristics</button>
+            <button class="nav-tab" onclick="showSection(2)">5.3 How It Works</button>
+            <button class="nav-tab" onclick="showSection(3)">5.4 Benefits</button>
+            <button class="nav-tab" onclick="showSection(4)">5.5 Limitations</button>
+            <button class="nav-tab" onclick="showSection(5)">5.6 Performance</button>
+            <button class="nav-tab" onclick="showSection(6)">5.7 Safety & Standards</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+        
+        <!-- Section 5.0 -->
+        <section class="section active" id="section-0">
+            <div class="section-header">
+                <span class="section-number">Section 5.0</span>
+                <h2>What Is Solar PV?</h2>
+                <p>Understanding the fundamentals of solar photovoltaic technology</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Definition</h3>
+                <p>Solar photovoltaic (PV) technology converts <span class="highlight">sunlight directly into electricity</span> using semiconductor materials. A solar PV array is a group of interconnected solar panels installed together to produce electrical power.</p>
+            </div>
+
+            <div class="interactive-box">
+                <h3>🔍 Did You Know?</h3>
+                <p>The term "photovoltaic" comes from the Greek word <em>phos</em> (light) and the unit of electromotive force, the <em>volt</em>. Literally: "light-electricity!"</p>
+            </div>
+
+            <h3>Brief History of Solar PV</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <h4>1950s</h4>
+                    <p>First practical PV cell developed</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🛰️</div>
+                    <h4>1960s-70s</h4>
+                    <p>Early use in satellites and space applications</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📉</div>
+                    <h4>2000s</h4>
+                    <p>Rapid cost reductions and global adoption</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏠</div>
+                    <h4>Today</h4>
+                    <p>Used in residential, commercial, and utility-scale systems</p>
+                </div>
+            </div>
+
+            <h3>Types of Solar PV Systems (MCS Definitions)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>System Type</th>
+                        <th>Description</th>
+                        <th>Key Feature</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Grid-connected (Grid-tied)</strong></td>
+                        <td>Connected to the public electricity distribution network</td>
+                        <td>Excess power exported to grid</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stand-alone (Off-grid)</strong></td>
+                        <td>Not connected to the grid</td>
+                        <td>Typically includes battery storage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hybrid Systems</strong></td>
+                        <td>Grid-connected with storage</td>
+                        <td> incorporates Electrical Energy Storage Systems (EESS)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="quiz-container">
+                <div class="quiz-question">Quick Check: What does PV stand for?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">A) Power Voltage</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">B) Photovoltaic</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">C) Photo Voltaic</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">D) Power Vector</div>
+                </div>
+                <div class="quiz-feedback" id="feedback-0"></div>
+            </div>
+        </section>
+
+        <!-- Section 5.1 -->
+        <section class="section" id="section-1">
+            <div class="section-header">
+                <span class="section-number">Section 5.1</span>
+                <h2>Characteristics of a Solar PV Array</h2>
+                <p>MCS-Aligned technical specifications and components</p>
+            </div>
+
+            <h3>Main Components (MCS Installation Standards)</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>☀️ PV Modules</h4>
+                    <p>Assemblies of PV cells that generate DC electricity</p>
+                </div>
+                <div class="card">
+                    <h4>🔌 PV Array</h4>
+                    <p>One or more PV modules electrically connected and mounted on a supporting structure</p>
+                </div>
+                <div class="card">
+                    <h4>🏗️ Mounting System</h4>
+                    <p>Roof-mounted or ground-mounted structure designed to support the array</p>
+                </div>
+                <div class="card">
+                    <h4>🔋 DC Cabling</h4>
+                    <p>Double-insulated cables connecting PV modules and strings</p>
+                </div>
+                <div class="card">
+                    <h4>⚙️ Inverter</h4>
+                    <p>Converts DC electricity into AC electricity compatible with the grid</p>
+                </div>
+                <div class="card">
+                    <h4>🛑 Isolators</h4>
+                    <p>AC and DC isolators for safe system isolation</p>
+                </div>
+            </div>
+
+            <div class="interactive-box">
+                <h3>⚡ Key Electrical Characteristics</h3>
+                <ul>
+                    <li><strong>Nominal power (Wp):</strong> Rated output under Standard Test Conditions (STC)</li>
+                    <li><strong>Open-circuit voltage (Voc):</strong> Maximum voltage with no load</li>
+                    <li><strong>Short-circuit current (Isc):</strong> Current with output shorted</li>
+                    <li><strong>Maximum power voltage (Vmpp):</strong> Voltage at peak power point</li>
+                    <li><strong>Maximum power current (Impp):</strong> Current at peak power point</li>
+                    <li><strong>Temperature coefficients:</strong> Impact of temperature on voltage and power output</li>
+                </ul>
+            </div>
+
+            <h3>Array Configuration (MCS Considerations)</h3>
+            <div class="card">
+                <h4>String Configuration</h4>
+                <p>A <span class="highlight">string</span> is a number of PV modules connected in series. Key considerations include:</p>
+                <ul>
+                    <li>String inverter vs microinverters</li>
+                    <li>Maximum system voltage: Typically <strong>1,000 V DC</strong> for domestic systems</li>
+                    <li>Design limits based on inverter specification and MCS guidance</li>
+                </ul>
+            </div>
+
+            <h3>Physical and Design Characteristics</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Optimal Value/Consideration</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tilt Angle</td>
+                        <td>30-45 degrees</td>
+                        <td>Optimised for annual yield</td>
+                    </tr>
+                    <tr>
+                        <td>Orientation (Azimuth)</td>
+                        <td>Direction relative to south</td>
+                        <td>Maximises sun exposure</td>
+                    </tr>
+                    <tr>
+                        <td>Shading Analysis</td>
+                        <td>Must be assessed and documented</td>
+                        <td>Prevents significant losses</td>
+                    </tr>
+                    <tr>
+                        <td>Roof Zones</td>
+                        <td>Fire access considerations</td>
+                        <td>Safety compliance</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Site and Environmental Factors</h3>
+            <ul>
+                <li><strong>Solar irradiance:</strong> Measured in kWh/m²/year</li>
+                <li><strong>Ambient temperature effects:</strong> Impacts panel efficiency</li>
+                <li><strong>Shading:</strong> From permanent and temporary objects</li>
+                <li><strong>Roof condition:</strong> Load capacity and weatherproofing requirements</li>
+            </ul>
+        </section>
+
+        <!-- Section 5.3 -->
+        <section class="section" id="section-2">
+            <div class="section-header">
+                <span class="section-number">Section 5.3</span>
+                <h2>How a Solar PV Array Works</h2>
+                <p>From photons to power: The photovoltaic process</p>
+            </div>
+
+            <h3>The Photovoltaic Effect</h3>
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4>Sunlight Hits</h4>
+                    <p>Photons strike the solar cell surface</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4>Electron Excitation</h4>
+                    <p>Photons excite electrons in the semiconductor material</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4>Current Generated</h4>
+                    <p>An electric current is created and captured</p>
+                </div>
+            </div>
+
+            <h3>From Sunlight to Usable Electricity</h3>
+            <div class="card">
+                <ol style="padding-left: 1.5rem; line-height: 2;">
+                    <li>Solar panels produce <strong>DC electricity</strong></li>
+                    <li>DC electricity flows through cabling to the inverter</li>
+                    <li><strong>Inverter converts DC to AC</strong> electricity</li>
+                    <li>AC electricity is used on-site or exported to the grid</li>
+                </ol>
+            </div>
+
+            <div class="interactive-box">
+                <h3>🔧 Role of the Inverter</h3>
+                <p>The inverter is the "brain" of the system:</p>
+                <ul>
+                    <li><strong>DC to AC conversion</strong> - Essential for grid compatibility</li>
+                    <li><strong>System monitoring</strong> - Tracks performance and detects faults</li>
+                    <li><strong>Grid synchronization</strong> - Matches frequency and phase</li>
+                    <li><strong>Safety shutdown</strong> - Protects against grid faults</li>
+                </ul>
+            </div>
+
+            <h3>Performance Over a Day</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🌅 Morning/Evening</h4>
+                    <p>Reduced output due to low sun angle</p>
+                </div>
+                <div class="card">
+                    <h4>☀️ Solar Noon</h4>
+                    <p>Peak output when sun is highest</p>
+                </div>
+                <div class="card">
+                    <h4>☁️ Cloudy Conditions</h4>
+                    <p>Reduced output but still generating</p>
+                </div>
+                <div class="card">
+                    <h4>📅 Seasonal Variation</h4>
+                    <p>Energy generation varies throughout the year</p>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">What type of electricity do solar panels initially produce?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">A) Alternating Current (AC)</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">B) Direct Current (DC)</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">C) Both AC and DC</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">D) Static Electricity</div>
+                </div>
+                <div class="quiz-feedback" id="feedback-2"></div>
+            </div>
+        </section>
+
+        <!-- Section 5.4 -->
+        <section class="section" id="section-3">
+            <div class="section-header">
+                <span class="section-number">Section 5.4</span>
+                <h2>Benefits of Solar PV Arrays</h2>
+                <p>Environmental, financial, and operational advantages</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card" style="border-left-color: #10b981;">
+                    <h4>🌍 Environmental Benefits</h4>
+                    <ul>
+                        <li>Renewable and clean energy source</li>
+                        <li>Reduces carbon emissions significantly</li>
+                        <li>Low environmental impact during operation</li>
+                        <li>No fuel combustion or water usage</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="border-left-color: #f59e0b;">
+                    <h4>💰 Financial Benefits</h4>
+                    <ul>
+                        <li>Reduced electricity bills</li>
+                        <li>Protection against rising energy prices</li>
+                        <li>Potential income from exported electricity</li>
+                        <li>Long system lifespan (25+ years)</li>
+                        <li>Low maintenance costs</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left-color: #0ea5e9;">
+                    <h4>⚡ Energy Benefits</h4>
+                    <ul>
+                        <li>Increased energy independence</li>
+                        <li>Improved energy security</li>
+                        <li>Supports low-carbon transition</li>
+                        <li>Grid stability support</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left-color: #8b5cf6;">
+                    <h4>🔧 Practical Benefits</h4>
+                    <ul>
+                        <li>Low maintenance requirements</li>
+                        <li>Silent operation (no noise pollution)</li>
+                        <li>Scalable from small to large systems</li>
+                        <li>Modular design allows expansion</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="interactive-box">
+                <h3>📊 Impact at Scale</h3>
+                <p>A typical 4kWp domestic solar PV system can save approximately <strong>1.3 to 1.6 tonnes of CO₂</strong> per year, equivalent to driving a car for 3,600 miles!</p>
+            </div>
+        </section>
+
+        <!-- Section 5.5 -->
+        <section class="section" id="section-4">
+            <div class="section-header">
+                <span class="section-number">Section 5.5</span>
+                <h2>Limitations and Considerations</h2>
+                <p>Understanding constraints and planning requirements</p>
+            </div>
+
+            <h3>Technical Limitations</h3>
+            <div class="card">
+                <ul>
+                    <li><strong>Intermittent generation:</strong> Weather and daylight dependent</li>
+                    <li><strong>Efficiency losses:</strong> Due to heat and shading effects</li>
+                    <li><strong>Energy storage needs:</strong> For off-grid or time-shifted usage</li>
+                    <li><strong>Space requirements:</strong> Sufficient area needed for installation</li>
+                </ul>
+            </div>
+
+            <h3>Installation Considerations</h3>
+            <div class="checklist">
+                <h4>Pre-Installation Checklist</h4>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Suitable roof space and orientation assessed</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Structural integrity verified</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Electrical compliance checked</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Planning and permitting requirements reviewed</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Shading analysis completed</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Grid connection application submitted (if applicable)</span>
+                </label>
+            </div>
+
+            <h3>End-of-Life Considerations</h3>
+            <div class="card" style="border-left-color: #ef4444;">
+                <h4>♻️ Sustainability Planning</h4>
+                <ul>
+                    <li>Panel recycling options and facilities</li>
+                    <li>Long-term waste management strategies</li>
+                    <li>Manufacturer take-back schemes</li>
+                    <li>Material recovery (silicon, silver, aluminium)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 5.6 -->
+        <section class="section" id="section-5">
+            <div class="section-header">
+                <span class="section-number">Section 5.6</span>
+                <h2>Basic System Performance and Monitoring</h2>
+                <p>Measuring success and maintaining optimal operation</p>
+            </div>
+
+            <h3>Key Performance Indicators (KPIs)</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📊 Energy Yield (kWh)</h4>
+                    <p>Total electrical energy generated by the system over a specific period</p>
+                </div>
+                <div class="card">
+                    <h4>⚡ Specific Yield (kWh/kWp)</h4>
+                    <p>Energy produced per kilowatt-peak of installed capacity - allows comparison between systems</p>
+                </div>
+                <div class="card">
+                    <h4>📈 Performance Ratio (PR)</h4>
+                    <p>Ratio of actual energy output to theoretical maximum, accounting for losses (typically 80-85%)</p>
+                </div>
+            </div>
+
+            <div class="interactive-box">
+                <h3>🧮 Performance Ratio Formula</h3>
+                <p style="font-size: 1.2rem; text-align: center; margin: 1rem 0;">
+                    <strong>PR = (Actual Energy Output) ÷ (Theoretical Energy Output) × 100%</strong>
+                </p>
+                <p>A PR of 85% means the system is performing well, accounting for temperature losses, inverter efficiency, cable losses, and soiling.</p>
+            </div>
+
+            <h3>Monitoring Systems</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                        <th>Importance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Inverter Displays</td>
+                        <td>Real-time production data on device screen</td>
+                        <td>Immediate status check</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Apps</td>
+                        <td>Remote monitoring via smartphone</td>
+                        <td>Convenience and accessibility</td>
+                    </tr>
+                    <tr>
+                        <td>Fault Alerts</td>
+                        <td>Automatic notifications of issues</td>
+                        <td>Rapid response to problems</td>
+                    </tr>
+                    <tr>
+                        <td>Diagnostics</td>
+                        <td>Detailed error reporting and troubleshooting</td>
+                        <td>Maintenance planning</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="card" style="background: #fef3c7; border-left-color: #f59e0b;">
+                <h4>⚠️ Important: Regular Performance Checks</h4>
+                <p>Regular monitoring is essential to detect:</p>
+                <ul>
+                    <li>Unexpected drops in performance</li>
+                    <li>Inverter faults or shutdowns</li>
+                    <li>Shading issues (new vegetation/structures)</li>
+                    <li>Soiling (dirt accumulation)</li>
+                    <li>DC cable or connection issues</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 5.7 -->
+        <section class="section" id="section-6">
+            <div class="section-header">
+                <span class="section-number">Section 5.7</span>
+                <h2>Health, Safety, and Standards</h2>
+                <p>MCS Overview and regulatory compliance</p>
+            </div>
+
+            <div class="card" style="background: #fee2e2; border-left-color: #ef4444;">
+                <h4>⚡ Electrical Safety Critical Warning</h4>
+                <p><strong>DC voltages remain present during daylight hours even when systems are switched off!</strong></p>
+                <ul>
+                    <li>Always follow safe isolation procedures for AC and DC systems</li>
+                    <li>Use appropriate PPE and insulated tools</li>
+                    <li>Ensure proper labelling in line with UK regulations</li>
+                </ul>
+            </div>
+
+            <h3>Working at Height</h3>
+            <div class="card">
+                <ul>
+                    <li>Roof access planning and risk assessments mandatory</li>
+                    <li>Use of fall protection equipment (harnesses, anchor points)</li>
+                    <li>Safe systems of work and method statements</li>
+                    <li>Weather considerations (wind, rain, ice)</li>
+                    <li>Edge protection and scaffolding where appropriate</li>
+                </ul>
+            </div>
+
+            <h3>Standards and Regulations</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📋 MCS Standards</h4>
+                    <p><strong>MCS 012 / MCS 005:</strong> Product and installation certification requirements</p>
+                </div>
+                <div class="card">
+                    <h4>⚡ IET Wiring Regulations</h4>
+                    <p><strong>BS 7671:</strong> Requirements for Electrical Installations</p>
+                </div>
+                <div class="card">
+                    <h4>🔌 Grid Connection</h4>
+                    <p><strong>Engineering Recommendation G98/G99:</strong> Connection of generating equipment</p>
+                </div>
+                <div class="card">
+                    <h4>🏗️ Building Regulations</h4>
+                    <p><strong>Part P (Electrical Safety)</strong> and structural requirements (England & Wales)</p>
+                </div>
+            </div>
+
+            <h3>Documentation and Handover (MCS Requirement)</h3>
+            <div class="checklist">
+                <h4>Required Documentation Package</h4>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>System schematic and design documentation</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Commissioning test results</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>User manual and maintenance guidance</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>MCS certificate</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Building control notification</span>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox" onchange="toggleCheck(this)">
+                    <span>Warranty information (equipment and workmanship)</span>
+                </label>
+            </div>
+
+            <div class="interactive-box">
+                <h3>✅ Completion</h3>
+                <p>You have completed Module 5: Introduction to Solar PV. You should now understand:</p>
+                <ul>
+                    <li>The fundamentals of photovoltaic technology</li>
+                    <li>System components and electrical characteristics</li>
+                    <li>The photovoltaic effect and energy conversion process</li>
+                    <li>Benefits and limitations of solar PV</li>
+                    <li>Performance monitoring and safety requirements</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" id="prevBtn" onclick="changeSection(-1)" disabled>
+                ← Previous
+            </button>
+            <button class="btn btn-primary" id="nextBtn" onclick="changeSection(1)">
+                Next Section →
+            </button>
+        </div>
+    </main>
+
+    <script>
+        let currentSection = 0;
+        const totalSections = 7;
+        const sectionIds = ['section-0', 'section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6'];
+
+        function showSection(index) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionIds[index]).classList.add('active');
+            document.querySelectorAll('.nav-tab')[index].classList.add('active');
+            
+            // Update current section
+            currentSection = index;
+            updateProgress();
+            updateButtons();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeSection(direction) {
+            const newIndex = currentSection + direction;
+            if (newIndex >= 0 && newIndex < totalSections) {
+                // Mark current as completed if moving forward
+                if (direction > 0) {
+                    document.querySelectorAll('.nav-tab')[currentSection].classList.add('completed');
+                }
+                showSection(newIndex);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentSection + 1) / totalSections) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentSection === 0;
+            document.getElementById('nextBtn').disabled = currentSection === totalSections - 1;
+            
+            if (currentSection === totalSections - 1) {
+                document.getElementById('nextBtn').textContent = 'Course Complete ✓';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Next Section →';
+            }
+        }
+
+        function checkAnswer(element, isCorrect) {
+            const container = element.parentElement;
+            const feedback = container.nextElementSibling;
+            
+            // Reset all options
+            container.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Mark selected
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedback.innerHTML = '<strong>✓ Correct!</strong> Well done.';
+                feedback.style.background = '#d1fae5';
+                feedback.style.color = '#065f46';
+            } else {
+                element.classList.add('incorrect');
+                feedback.innerHTML = '<strong>✗ Incorrect.</strong> Review the material and try again.';
+                feedback.style.background = '#fee2e2';
+                feedback.style.color = '#991b1b';
+            }
+            
+            feedback.classList.add('show');
+        }
+
+        function toggleCheck(checkbox) {
+            const item = checkbox.parentElement;
+            if (checkbox.checked) {
+                item.classList.add('checked');
+            } else {
+                item.classList.remove('checked');
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSection(1);
+            if (e.key === 'ArrowLeft') changeSection(-1);
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

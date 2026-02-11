@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPH Retrofit - Induction Training Course</title>
+    <style>
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2c5282;
+            --accent: #38a169;
+            --warning: #d69e2e;
+            --light: #f7fafc;
+            --dark: #2d3748;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+            border: 2px solid transparent;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30,58,95,0.3);
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .section-header:hover {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-number {
+            background: rgba(255,255,255,0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .section.expanded .section-content {
+            max-height: 2000px;
+        }
+
+        .content-inner {
+            padding: 2rem;
+        }
+
+        h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            font-size: 1.2rem;
+        }
+
+        .director-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .director-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .director-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+        }
+
+        .director-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
+        }
+
+        .director-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .org-chart {
+            background: #f7fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .org-level {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .org-box {
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 2px solid var(--secondary);
+            position: relative;
+            min-width: 200px;
+        }
+
+        .org-box.director {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .org-box.department {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .connector {
+            width: 2px;
+            height: 20px;
+            background: var(--secondary);
+            margin: 0 auto;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .value-card {
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card:hover {
+            transform: scale(1.05);
+        }
+
+        .value-card.fairness {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+
+        .value-card.wisdom {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        .value-card.honesty {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .policy-item {
+            background: #f7fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .policy-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .policy-code {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .safety-alert {
+            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+            border: 2px solid #fc8181;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .safety-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #234e52;
+            position: relative;
+        }
+
+        .quote-box::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            color: #38b2ac;
+            opacity: 0.3;
+        }
+
+        .quote-author {
+            margin-top: 1rem;
+            font-weight: bold;
+            font-style: normal;
+            color: var(--primary);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #2f855a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56,161,105,0.4);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            nav ul { flex-direction: column; align-items: center; }
+            .director-grid { grid-template-columns: 1fr; }
+            .org-level { flex-direction: column; align-items: center; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <header>
+        <div class="container">
+            <h1>🏠 CPH Retrofit</h1>
+            <p class="subtitle">Induction Training Course</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#history" onclick="scrollToSection('history')">Our History</a></li>
+                <li><a href="#structure" onclick="scrollToSection('structure')">Business Structure</a></li>
+                <li><a href="#services" onclick="scrollToSection('services')">What We Do</a></li>
+                <li><a href="#values" onclick="scrollToSection('values')">Core Values</a></li>
+                <li><a href="#hr" onclick="scrollToSection('hr')">HR & Policies</a></li>
+                <li><a href="#safety" onclick="scrollToSection('safety')">Health & Safety</a></li>
+            </ul>
+        </nav>
+
+        <!-- Section 1: History -->
+        <div class="section expanded" id="history">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2><span class="section-number">1.0</span> Who We Are – History & Director's Experience</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="content-inner">
+                    <h3>A Brief History of CPH Retrofit</h3>
+                    <p>CPH Retrofit was established to respond to the growing need for high-quality, practical retrofit solutions that improve building performance while remaining commercially realistic. From the outset, the company has focused on delivering whole-house and fabric-first retrofit approaches that align with evolving standards, carbon-reduction targets, and the real-world constraints of existing buildings.</p>
+                    
+                    <p>Working across residential and mixed-use projects, CPH Retrofit has developed a reputation for combining technical understanding with clear project delivery, supporting clients through assessment, design coordination, and on-site implementation. The company's approach is rooted in <strong>collaboration, quality assurance, and long-term building performance</strong> rather than short-term fixes.</p>
+
+                    <h3>Director Experience</h3>
+                    <p>CPH Retrofit is led by directors who together bring a broad and complementary set of skills across construction, retrofit delivery, and project leadership.</p>
+                    
+                    <div class="director-grid">
+                        <div class="director-card">
+                            <h4>👔 Alex Leighton</h4>
+                            <p>Brings strong experience in <strong>retrofit strategy, coordination, and quality control</strong>, with a focus on ensuring that design intent translates effectively into on-site outcomes. His work emphasises performance, compliance, and continuous improvement across projects.</p>
+                        </div>
+                        <div class="director-card">
+                            <h4>👔 Mark Crozier</h4>
+                            <p>Has extensive experience in <strong>construction and project management</strong>, providing practical oversight of delivery, programming, and cost control. His background supports CPH Retrofit's emphasis on buildability, risk management, and efficient site operations.</p>
+                        </div>
+                        <div class="director-card">
+                            <h4>👔 Sean Crozier</h4>
+                            <p>Contributes expertise in <strong>business development, client liaison, and operational management</strong>, helping to align technical delivery with client objectives and long-term organisational growth. <em>Operations Director heading Technical, Coordination and Administration departments.</em></p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p>Together, the directors combine technical knowledge, hands-on construction experience, and strategic leadership, positioning CPH Retrofit to deliver robust, well-managed retrofit projects that meet both regulatory requirements and client expectations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Business Structure -->
+        <div class="section" id="structure">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2><span class="section-number">1.1</span> Business Structure & Organisation</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="content-inner">
+                    <h3>The Castle Wood Group</h3>
+                    <p>CPH Retrofit are part of a larger group of companies, <strong>The Castle Wood Group</strong>, which includes:</p>
+                    
+                    <div class="highlight-box">
+                        <ul class="checklist">
+                            <li><strong>Cornerstone Technical</strong> – Specialist damp and mould surveying service and PAS2030 Certification consultancy</li>
+                            <li><strong>Nationwide Training Services</strong> – National training company with City & Guilds college status, covering NVQs and apprenticeship courses</li>
+                        </ul>
+                    </div>
+
+                    <h3>Internal CPH Structure</h3>
+                    <p>Internally CPH is split into four key departments:</p>
+
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box director">
+                                <strong>Sean Crozier</strong><br>
+                                <small>Operations Director</small>
+                            </div>
+                        </div>
+                        <div class="connector"></div>
+                        <div class="org-level">
+                            <div class="org-box department">
+                                <strong>Technical</strong>
+                            </div>
+                            <div class="org-box department">
+                                <strong>Retrofit Coordination</strong>
+                            </div>
+                            <div class="org-box department">
+                                <strong>Administration</strong>
+                            </div>
+                            <div class="org-box department" style="background: #805ad5; border-color: #805ad5;">
+                                <strong>Accounts</strong>
+                            </div>
+                        </div>
+                        <div class="connector"></div>
+                        <div class="org-level">
+                            <div class="org-box">
+                                <strong>Lesley Coult</strong><br>
+                                <small>Admin Manager<br>Your Line Manager (if in Admin)</small>
+                            </div>
+                            <div class="org-box">
+                                <strong>Carolyn Crozier</strong><br>
+                                <small>Accounts Head<br>All invoicing queries</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="safety-alert">
+                        <span class="safety-icon">📋</span>
+                        <div>
+                            <strong>Reporting Lines:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                                <li>Technical, Coordination and Administration departments report to <strong>Sean Crozier</strong></li>
+                                <li>If you work in Admin, <strong>Lesley Coult</strong> is your immediate Line Manager</li>
+                                <li>All accounts and invoicing queries go directly to <strong>Carolyn Crozier</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: What We Do -->
+        <div class="section" id="services">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2><span class="section-number">1.2</span> What Does a PAS 2030/2035 Retrofit Business Do?</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="content-inner">
+                    <p>The core services of the business are <strong>Retrofit Assessment, Coordination and Design</strong>. Our primary client base are social housing providers and councils throughout England.</p>
+                    
+                    <div class="highlight-box">
+                        <p>A PAS 2030/2035 retrofit services business plans, designs, manages, and delivers energy-efficiency improvements to existing homes, in a way that is safe, compliant, and genuinely effective.</p>
+                        <p>It's not just about fitting insulation or heat pumps. It's about making homes warmer, cheaper to run, and lower-carbon without causing damage.</p>
+                    </div>
+
+                    <h3>Our Process</h3>
+                    <ul class="checklist">
+                        <li>Complete extensive <strong>pre-installation surveys</strong> (Retrofit Assessments) tailored to each home's needs</li>
+                        <li>Prioritise resident comfort and highest standards of quality</li>
+                        <li>Maintain <strong>transparent communication</strong> – residents kept fully informed at every stage</li>
+                        <li>Install measures (air source heat pumps, solar PV, loft insulation, ventilation systems) according to manufacturer guidance and industry best practice</li>
+                        <li>Minimize disruption and prevent unintended consequences</li>
+                        <li>Rigorous quality checks and ongoing resident feedback</li>
+                    </ul>
+
+                    <h3>Our Impact</h3>
+                    <div class="metric-cards">
+                        <div class="metric-card">
+                            <span class="metric-number">20→2</span>
+                            <span class="metric-label">Tonnes CO₂/year reduction</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-number">D→C</span>
+                            <span class="metric-label">EPC Band Improvement</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-number">C69</span>
+                            <span class="metric-label">Target SAP Score</span>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <p><strong>Fuel Poverty Prevention:</strong> According to UK Government data (Department for Energy Security and Net Zero, 2023), a household is only classed as fuel poor if it has a low energy rating (D–G) and a low income. Homes with band C or higher are not considered fuel poor, as they are efficient enough to keep energy costs manageable.</p>
+                    </div>
+
+                    <div class="quote-box">
+                        Grandpa saves the world one house at a time
+                        <div class="quote-author">— Kylan McDougal, age 8<br>Alex Leighton's grandson</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Core Values -->
+        <div class="section" id="values">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2><span class="section-number">1.3</span> Our Core Values</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="content-inner">
+                    <p>At CPH Retrofit, our values shape everything we do. It's essential to understand not just what we do, but <strong>how</strong> we do it.</p>
+
+                    <div class="values-grid">
+                        <div class="value-card fairness">
+                            <div class="value-icon">⚖️</div>
+                            <h3>Fairness</h3>
+                            <p>We are committed to justice and equality for all. Everyone is treated with respect and without bias.</p>
+                            <p><strong>In practice:</strong> Champion equal treatment, ensure transparent decision-making, and speak up against bias or inequality.</p>
+                        </div>
+                        <div class="value-card wisdom">
+                            <div class="value-icon">🦉</div>
+                            <h3>Wisdom</h3>
+                            <p>Our work requires thoughtful judgement and a thirst for deeper understanding.</p>
+                            <p><strong>In practice:</strong> Seek diverse viewpoints, learn from others' experience, and reflect on what works to continually improve.</p>
+                        </div>
+                        <div class="value-card honesty">
+                            <div class="value-icon">🤝</div>
+                            <h3>Honesty</h3>
+                            <p>Trust is the cornerstone of our service. We expect truthfulness and transparency in every conversation and action.</p>
+                            <p><strong>In practice:</strong> Maintain open communication and personal accountability with customers, suppliers, and team members.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%); border-color: #38b2ac;">
+                        <p style="margin: 0; text-align: center; font-size: 1.1rem;"><strong>At CPH Retrofit we strive for excellence with uncompromising honesty.</strong></p>
+                        <p style="margin: 0.5rem 0 0 0; text-align: center;">These values are not just words—they are the way we work every day, ensuring we deliver the highest standards for every home, every colleague, and every community we serve.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: HR -->
+        <div class="section" id="hr">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2><span class="section-number">1.5</span> Human Resources & Policies</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="content-inner">
+                    <h3>Required Policies & Procedures</h3>
+                    <p>You are required to read and sign to confirm understanding of the following policies and procedures:</p>
+
+                    <h4>Policies (HRP)</h4>
+                    <div class="policy-grid">
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-01</span>
+                            <span>Data Protection & Confidentiality Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-02</span>
+                            <span>Employee Code of Conduct Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-03</span>
+                            <span>Equal Opportunities Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-04</span>
+                            <span>Equal Recruitment and Selection Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-05</span>
+                            <span>Grievance & Disciplinary Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-06</span>
+                            <span>Health & Safety Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-07</span>
+                            <span>Lone Working Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-08</span>
+                            <span>Performance Management & Training Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-09</span>
+                            <span>Remote Working & Flexible Work Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-10</span>
+                            <span>Workplace Harassment & Bullying Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-11</span>
+                            <span>Working Hours & Attendance Policy</span>
+                        </div>
+                        <div class="policy-item">
+                            <span class="policy-code">HRP-12</span>
+                            <span>Accident Reporting</span>
+                        </div>
+                    </div>
+
+                    <h4>Procedures (HRPR)</h4>
+                    <div class="policy-grid">
+                        <div class="policy-item" style="border-left-color: #805ad5;">
+                            <span class="policy-code" style="background: #805ad5;">HRPR-04</span>
+                            <span>Safe Recruitment Procedure</span>
+                        </div>
+                        <div class="policy-item" style="border-left-color: #805ad5;">
+                            <span class="policy-code" style="background: #805ad5;">HRPR-05</span>
+                            <span>Grievance Procedure</span>
+                        </div>
+                        <div class="policy-item" style="border-left-color: #805ad5;">
+                            <span class="policy-code" style="background: #805ad5;">HRPR-12</span>
+                            <span>Accident Procedure</span>
+                        </div>
+                    </div>
+
+                    <div class="safety-alert" style="background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%); border-color: var(--secondary);">
+                        <span class="safety-icon">💻</span>
+                        <div>
+                            <strong>Avensure Dashboard | Avensure PeopleCloud</strong>
+                            <p style="margin-top: 0.5rem;">You will be issued a login to our HR consultants' platform where you can:</p>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                                <li>Request annual leave</li>
+                                <li>View recorded sick days</li>
+                                <li>Access your Contract of Employment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Health & Safety -->
+        <div class="section" id="safety">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2><span class="section-number">1.6</span> Health & Safety on Site</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="content-inner">
+                    <div class="safety-alert pulse">
+                        <span class="safety-icon">⚠️</span>
+                        <div>
+                            <strong>Shared Responsibility</strong>
+                            <p>Health and safety is a shared responsibility. Everyone working in or visiting the office is expected to take reasonable care of themselves and others.</p>
+                        </div>
+                    </div>
+
+                    <h3>Office Layout</h3>
+                    <div class="highlight-box">
+                        <p><strong>Ground Floor:</strong> Senior directors' office, boardroom, kitchen, and gender-neutral accessible toilets</p>
+                        <p><strong>First Floor:</strong> Main office working area</p>
+                    </div>
+
+                    <h3>Key Safety Information</h3>
+                    <div class="metric-cards">
+                        <div class="metric-card" style="background: linear-gradient(135deg, #c53030 0%, #9b2c2c 100%);">
+                            <span class="metric-icon" style="font-size: 2rem;">🚪</span>
+                            <span class="metric-label" style="margin-top: 0.5rem;">Fire Exit via Front Door</span>
+                        </div>
+                        <div class="metric-card" style="background: linear-gradient(135deg, #d69e2e 0%, #b7791f 100%);">
+                            <span class="metric-icon" style="font-size: 2rem;">🧯</span>
+                            <span class="metric-label" style="margin-top: 0.5rem;">Assembly Point: Car Park Opposite</span>
+                        </div>
+                        <div class="metric-card" style="background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);">
+                            <span class="metric-icon" style="font-size: 2rem;">🔔</span>
+                            <span class="metric-label" style="margin-top: 0.5rem;">Alarm Test: Thursdays 3:00 PM</span>
+                        </div>
+                    </div>
+
+                    <h3>Your Responsibilities</h3>
+                    <ul class="checklist">
+                        <li>Be aware of the building layout</li>
+                        <li>Follow safety procedures</li>
+                        <li>Maintain a clean and safe working environment at all times</li>
+                        <li>Leave kitchen clean and tidy after use to prevent hazards</li>
+                        <li>Report any hazards, defects, or concerns promptly</li>
+                    </ul>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #d69e2e;">
+                        <p style="margin: 0;"><strong>Fire Alarm Testing:</strong> The fire alarm is tested weekly every Thursday at 3:00 pm. No action is required during the test unless instructed otherwise.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Welcome to the CPH Retrofit Team</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8; font-size: 0.9rem;">Building a sustainable future, one home at a time</p>
+            <div style="margin-top: 1rem;">
+                <a href="#" class="btn" onclick="window.print(); return false;">Print Induction Pack</a>
+                <a href="#" class="btn" style="background: var(--secondary);" onclick="scrollToTop(); return false;">Back to Top</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle sections
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('expanded');
+        }
+
+        // Smooth scroll to section
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Expand the section
+                element.classList.add('expanded');
+            }
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Highlight active nav item on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Add fade-in animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.section').forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.animation = `fadeIn 0.6s ease-in ${index * 0.1}s forwards`;
+            });
+        });
+    </script>
+</body>
+</html>

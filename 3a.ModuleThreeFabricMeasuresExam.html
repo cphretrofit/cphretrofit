@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAS 2035 Module Four - Certification Exam</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #1e293b;
+            --accent-warm: #f59e0b;
+            --accent-cool: #06b6d4;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #ef4444;
+            --border: #334155;
+            --card-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .exam-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .exam-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-warm), var(--accent-cool));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .exam-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .exam-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .info-item strong {
+            color: var(--accent-cool);
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .question-card.active {
+            border-color: var(--accent-cool);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .question-card.answered {
+            opacity: 0.7;
+        }
+
+        .question-card.answered.correct {
+            border-left: 4px solid var(--success);
+        }
+
+        .question-card.answered.incorrect {
+            border-left: 4px solid var(--warning);
+        }
+
+        .question-number {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--border);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-bottom-left-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .question-card.active .question-number {
+            background: var(--accent-cool);
+            color: var(--primary-dark);
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            padding-right: 3rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            background: var(--primary-dark);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: var(--accent-cool);
+            background: rgba(6, 182, 212, 0.05);
+            transform: translateX(5px);
+        }
+
+        .option.disabled {
+            cursor: default;
+            opacity: 0.6;
+        }
+
+        .option.selected {
+            border-color: var(--accent-cool);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.15);
+        }
+
+        .option.incorrect {
+            border-color: var(--warning);
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .option-marker {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .option:hover:not(.disabled) .option-marker {
+            border-color: var(--accent-cool);
+            color: var(--accent-cool);
+        }
+
+        .option.selected .option-marker {
+            background: var(--accent-cool);
+            border-color: var(--accent-cool);
+            color: var(--primary-dark);
+        }
+
+        .option.correct .option-marker {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .option.incorrect .option-marker {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--success);
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid var(--warning);
+            color: var(--warning);
+        }
+
+        /* Navigation */
+        .exam-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-dark);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--border);
+        }
+
+        .btn-primary {
+            background: var(--accent-warm);
+            color: var(--primary-dark);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .question-dots {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 400px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .dot:hover {
+            background: var(--text-muted);
+            transform: scale(1.2);
+        }
+
+        .dot.active {
+            background: var(--accent-cool);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .dot.answered {
+            background: var(--success);
+        }
+
+        .dot.incorrect {
+            background: var(--warning);
+        }
+
+        /* Results Page */
+        .results-container {
+            display: none;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-cool) calc(var(--score) * 1%), var(--border) 0);
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background: var(--primary-dark);
+            border-radius: 50%;
+        }
+
+        .score-text {
+            position: relative;
+            z-index: 1;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-cool);
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .result-message.pass {
+            color: var(--success);
+        }
+
+        .result-message.fail {
+            color: var(--warning);
+        }
+
+        .breakdown {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .breakdown h3 {
+            color: var(--accent-warm);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .certificate {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 3px solid var(--accent-warm);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .certificate::before {
+            content: "PAS 2035";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 8rem;
+            opacity: 0.03;
+            font-weight: 900;
+            pointer-events: none;
+        }
+
+        .cert-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-warm);
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .cert-details {
+            margin: 2rem 0;
+            font-size: 1.2rem;
+        }
+
+        .cert-id {
+            font-family: monospace;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        /* Timer */
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: monospace;
+            font-size: 1.25rem;
+            color: var(--accent-cool);
+            z-index: 1000;
+        }
+
+        .timer.warning {
+            color: var(--warning);
+            border-color: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Start Screen */
+        .start-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .start-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cool));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .exam-rules {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .exam-rules h3 {
+            color: var(--accent-warm);
+            margin-bottom: 1rem;
+        }
+
+        .exam-rules ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .exam-rules li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .exam-rules li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-cool);
+        }
+
+        @media (max-width: 768px) {
+            .exam-title { font-size: 1.75rem; }
+            .exam-info { flex-direction: column; gap: 0.5rem; }
+            .question-card { padding: 1.5rem; }
+            .question-text { font-size: 1rem; }
+            .exam-nav { padding: 1rem; flex-direction: column; gap: 1rem; }
+            .timer { top: 10px; right: 10px; font-size: 1rem; padding: 0.5rem 1rem; }
+            .question-dots { order: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="timer" id="timer">45:00</div>
+
+    <div class="exam-container">
+        
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <h1>PAS 2035 Certification Exam</h1>
+            <p class="exam-subtitle">Module Four: Domestic Space & Water Heating</p>
+            
+            <div class="exam-rules">
+                <h3>Examination Rules</h3>
+                <ul>
+                    <li>20 multiple choice questions</li>
+                    <li>45 minutes time limit</li>
+                    <li>Pass mark: 70% (14 correct answers)</li>
+                    <li>Immediate feedback after each question</li>
+                    <li>Navigation allowed between questions</li>
+                    <li>Certificate issued upon passing</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary" onclick="startExam()" style="font-size: 1.25rem; padding: 1rem 3rem;">
+                Begin Examination
+            </button>
+        </div>
+
+        <!-- Exam Questions -->
+        <div id="examQuestions" style="display: none;">
+            <header>
+                <h1 class="exam-title">Module Four Examination</h1>
+                <p class="exam-subtitle">Domestic Space & Water Heating – PAS 2035 Retrofit</p>
+                <div class="exam-info">
+                    <div class="info-item">
+                        Questions: <strong id="answeredCount">0/20</strong>
+                    </div>
+                    <div class="info-item">
+                        Current Score: <strong id="currentScore">0%</strong>
+                    </div>
+                    <div class="info-item">
+                        Time Remaining: <strong id="timeDisplay">45:00</strong>
+                    </div>
+                </div>
+            </header>
+
+            <form id="examForm">
+                
+                <!-- Question 1 -->
+                <div class="question-card active" id="q1" data-question="1">
+                    <div class="question-number">Q1</div>
+                    <div class="question-text">
+                        Under PAS 2035, what is the fundamental principle that must be applied before upgrading heating systems?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(1, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Technology-first approach using the highest efficiency boiler available</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(1, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Fabric-first approach improving thermal performance before heating upgrades</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(1, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Cost-first approach selecting the cheapest suitable system</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(1, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Carbon-first approach prioritizing lowest carbon systems regardless of cost</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" id="q2" data-question="2" style="display: none;">
+                    <div class="question-number">Q2</div>
+                    <div class="question-text">
+                        When sizing a replacement heating system under PAS 2035, which heat demand figure should be used?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(2, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">The existing pre-retrofit heat demand plus 20% safety margin</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(2, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">The average between pre and post-retrofit heat demand</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(2, 'C', true)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">The post-retrofit heat demand after fabric improvements</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(2, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">The manufacturer's recommended capacity for the dwelling size</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" id="q3" data-question="3" style="display: none;">
+                    <div class="question-number">Q3</div>
+                    <div class="question-text">
+                        What is the typical seasonal efficiency range for a modern condensing gas boiler (A-rated)?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(3, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">65–75%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(3, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">78–85%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(3, 'C', true)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">88–94%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(3, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">95–100%</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" id="q4" data-question="4" style="display: none;">
+                    <div class="question-number">Q4</div>
+                    <div class="question-text">
+                        For a heat pump to achieve condensing operation and high efficiency, what return temperature is required?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(4, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Above 70°C</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(4, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Below 55°C</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(4, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Exactly 60°C</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(4, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Temperature does not affect condensing operation</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card" id="q5" data-question="5" style="display: none;">
+                    <div class="question-number">Q5</div>
+                    <div class="question-text">
+                        What percentage of total energy use might domestic hot water (DHW) account for in a well-retrofitted home?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(5, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">5–10%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(5, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">30–50%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(5, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">60–70%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(5, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Less than 5%</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card" id="q6" data-question="6" style="display: none;">
+                    <div class="question-number">Q6</div>
+                    <div class="question-text">
+                        What is the typical SCOP (Seasonal Coefficient of Performance) range for a well-designed Air Source Heat Pump (ASHP)?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(6, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">0.8 – 1.2</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(6, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">1.5 – 2.0</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(6, 'C', true)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">2.5 – 4.0</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(6, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">5.0 – 6.0</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-card" id="q7" data-question="7" style="display: none;">
+                    <div class="question-number">Q7</div>
+                    <div class="question-text">
+                        Which assessment procedure is specifically required for PAS 2035 medium- and high-risk retrofit designs?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(7, 'A', true)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Full SAP (Standard Assessment Procedure)</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(7, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">RdSAP (Reduced Data SAP) only</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(7, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Energy Performance Certificate (EPC) rating</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(7, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">BSRIA compliance check</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback7"></div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-card" id="q8" data-question="8" style="display: none;">
+                    <div class="question-number">Q8</div>
+                    <div class="question-text">
+                        Why is seasonal efficiency considered more representative than laboratory efficiency for retrofit design?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(8, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">It is easier to calculate and verify</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(8, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">It accounts for part-load operation, cycling losses, and standby losses</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(8, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">It is always higher than tested efficiency</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(8, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">It is required by boiler manufacturers for warranties</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback8"></div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-card" id="q9" data-question="9" style="display: none;">
+                    <div class="question-number">Q9</div>
+                    <div class="question-text">
+                        What is the primary risk associated with electric resistance heating in domestic properties?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(9, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Carbon monoxide poisoning</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(9, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">High running costs often leading to fuel poverty</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(9, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Explosion risk from storage tanks</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(9, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Low point-of-use efficiency</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback9"></div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-card" id="q10" data-question="10" style="display: none;">
+                    <div class="question-number">Q10</div>
+                    <div class="question-text">
+                        Which heating distribution system is best suited to heat pump operation due to its low temperature requirements?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(10, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Traditional steel panel radiators designed for 80°C flow</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(10, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Underfloor heating operating at 35-45°C</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(10, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Single panel convectors without TRVs</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(10, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Electric fan heaters</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback10"></div>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question-card" id="q11" data-question="11" style="display: none;">
+                    <div class="question-number">Q11</div>
+                    <div class="question-text">
+                        What is the typical seasonal efficiency range for a modern condensing oil boiler?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(11, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">65–75%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(11, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">85–90%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(11, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">92–96%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(11, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">70–80%</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback11"></div>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question-card" id="q12" data-question="12" style="display: none;">
+                    <div class="question-number">Q12</div>
+                    <div class="question-text">
+                        In a hybrid heating system, what is the primary factor determining when to switch between heat pump and boiler?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(12, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">The time of day only</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(12, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Outdoor temperature or heat demand conditions</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(12, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">The color of the heating indicator light</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(12, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Random switching to balance wear</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback12"></div>
+                </div>
+
+                <!-- Question 13 -->
+                <div class="question-card" id="q13" data-question="13" style="display: none;">
+                    <div class="question-number">Q13</div>
+                    <div class="question-text">
+                        By approximately what percentage can effective heating controls improve seasonal efficiency?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(13, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">2–5%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(13, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">5–10%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(13, 'C', true)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">10–25%</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(13, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">40–50%</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback13"></div>
+                </div>
+
+                <!-- Question 14 -->
+                <div class="question-card" id="q14" data-question="14" style="display: none;">
+                    <div class="question-number">Q14</div>
+                    <div class="question-text">
+                        What is the primary disadvantage of hybrid heating systems mentioned in PAS 2035 guidance?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(14, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">They cannot provide space heating</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(14, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Increased system complexity requiring careful control strategy</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(14, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">They are prohibited in new build properties</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(14, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">They require monthly maintenance by manufacturer</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback14"></div>
+                </div>
+
+                <!-- Question 15 -->
+                <div class="question-card" id="q15" data-question="15" style="display: none;">
+                    <div class="question-number">Q15</div>
+                    <div class="question-text">
+                        When retrofitting a property with a combi boiler to a heat pump, what additional component is usually required?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(15, 'A', true)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">A hot water cylinder</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(15, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">A gas storage tank</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(15, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">A chimney liner</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(15, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">No additional components are needed</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback15"></div>
+                </div>
+
+                <!-- Question 16 -->
+                <div class="question-card" id="q16" data-question="16" style="display: none;">
+                    <div class="question-number">Q16</div>
+                    <div class="question-text">
+                        What happens to radiator sizing requirements after significant fabric improvements (retrofit)?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(16, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Radiators must always be doubled in size</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(16, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Existing radiators may be oversized, allowing lower flow temperatures</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(16, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Radiators must be replaced with smaller units</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(16, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Radiator sizing becomes irrelevant</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback16"></div>
+                </div>
+
+                <!-- Question 17 -->
+                <div class="question-card" id="q17" data-question="17" style="display: none;">
+                    <div class="question-number">Q17</div>
+                    <div class="question-text">
+                        Which factor is NOT typically accounted for in seasonal efficiency calculations?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(17, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Part-load operation</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(17, 'B', false)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Cycling losses</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(17, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Standby losses</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(17, 'D', true)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">The color of the boiler casing</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback17"></div>
+                </div>
+
+                <!-- Question 18 -->
+                <div class="question-card" id="q18" data-question="18" style="display: none;">
+                    <div class="question-number">Q18</div>
+                    <div class="question-text">
+                        What is the typical SCOP range for a Ground Source Heat Pump (GSHP) compared to an ASHP?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(18, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Lower than ASHP (1.5–2.0)</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(18, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Higher than ASHP (3.0–4.5)</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(18, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Identical to ASHP (2.5–4.0)</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(18, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Variable and unpredictable</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback18"></div>
+                </div>
+
+                <!-- Question 19 -->
+                <div class="question-card" id="q19" data-question="19" style="display: none;">
+                    <div class="question-number">Q19</div>
+                    <div class="question-text">
+                        Why are oil and LPG boilers considered "transitional technologies" in PAS 2035 retrofit strategies?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(19, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">They are being phased out by government mandate next year</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(19, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">High carbon intensity and running costs make them interim solutions pending fabric improvements</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(19, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">They can only operate for 5 years before requiring replacement</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(19, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">They are banned in all urban areas</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback19"></div>
+                </div>
+
+                <!-- Question 20 -->
+                <div class="question-card" id="q20" data-question="20" style="display: none;">
+                    <div class="question-number">Q20</div>
+                    <div class="question-text">
+                        What is the fundamental relationship between building fabric and heating systems according to PAS 2035 principles?
+                    </div>
+                    <div class="options">
+                        <div class="option" onclick="selectAnswer(20, 'A', false)">
+                            <div class="option-marker">A</div>
+                            <div class="option-text">Heating systems create thermal comfort independent of fabric quality</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(20, 'B', true)">
+                            <div class="option-marker">B</div>
+                            <div class="option-text">Heating systems replace heat lost through fabric; better fabric = smaller heating requirement</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(20, 'C', false)">
+                            <div class="option-marker">C</div>
+                            <div class="option-text">Fabric improvements are only cosmetic and do not affect heating</div>
+                        </div>
+                        <div class="option" onclick="selectAnswer(20, 'D', false)">
+                            <div class="option-marker">D</div>
+                            <div class="option-text">Heating systems and fabric have no relationship in retrofit design</div>
+                        </div>
+                    </div>
+                    <div class="feedback" id="feedback20"></div>
+                </div>
+
+            </form>
+
+            <!-- Results Section -->
+            <div class="results-container" id="resultsContainer">
+                <h2>Examination Results</h2>
+                
+                <div class="score-circle" id="scoreCircle" style="--score: 0;">
+                    <div class="score-text" id="finalScore">0%</div>
+                </div>
+
+                <div class="result-message" id="resultMessage"></div>
+
+                <div class="breakdown">
+                    <h3>Performance Breakdown</h3>
+                    <div class="stat-row">
+                        <span>Correct Answers</span>
+                        <strong id="correctCount">0/20</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>Pass Mark</span>
+                        <strong>70% (14/20)</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>Time Taken</span>
+                        <strong id="timeTaken">00:00</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>Topics Reviewed</span>
+                        <strong>Fabric First, Heating Systems, SAP, Controls</strong>
+                    </div>
+                </div>
+
+                <div class="certificate" id="certificate">
+                    <div class="cert-title">Certificate of Completion</div>
+                    <div class="cert-subtitle">PAS 2035 Retrofit Training - Module Four</div>
+                    <div class="cert-details">
+                        <p>This certifies successful completion of the</p>
+                        <p><strong>Domestic Space & Water Heating Examination</strong></p>
+                        <p>Demonstrating competency in fabric-first retrofit principles,<br>
+                        heating system selection, and PAS 2035 compliance.</p>
+                        <div class="cert-id">Cert ID: PAS2035-M4-<span id="certDate"></span>-<span id="certRandom"></span></div>
+                    </div>
+                    <button onclick="window.print()" class="btn btn-primary" style="margin-top: 1rem;">
+                        Print Certificate
+                    </button>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button onclick="location.reload()" class="btn btn-secondary">
+                        Retake Exam
+                    </button>
+                    <button onclick="window.print()" class="btn btn-primary" style="margin-left: 1rem;">
+                        Print Results
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="exam-nav" id="examNav" style="display: none;">
+        <button class="btn btn-secondary" onclick="prevQuestion()" id="prevBtn" disabled>
+            ← Previous
+        </button>
+        
+        <div class="question-dots" id="questionDots"></div>
+        
+        <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">
+            Next →
+        </button>
+    </div>
+
+    <script>
+        // Exam State
+        let currentQuestion = 1;
+        const totalQuestions = 20;
+        let answers = {};
+        let score = 0;
+        let timeRemaining = 45 * 60; // 45 minutes in seconds
+        let timerInterval;
+        let examSubmitted = false;
+        let startTime;
+
+        // Correct answers mapping
+        const correctAnswers = {
+            1: 'B', 2: 'C', 3: 'C', 4: 'B', 5: 'B',
+            6: 'C', 7: 'A', 8: 'B', 9: 'B', 10: 'B',
+            11: 'B', 12: 'B', 13: 'C', 14: 'B', 15: 'A',
+            16: 'B', 17: 'D', 18: 'B', 19: 'B', 20: 'B'
+        };
+
+        // Feedback messages
+        const feedbackMessages = {
+            1: { correct: "Correct! PAS 2035 mandates a fabric-first approach, improving thermal performance before heating upgrades.", incorrect: "Incorrect. PAS 2035 requires a fabric-first approach, not technology-first or cost-first." },
+            2: { correct: "Correct! Heating systems must be sized using post-retrofit heat demand to avoid oversizing.", incorrect: "Incorrect. Using existing heat demand leads to oversized systems and poor efficiency." },
+            3: { correct: "Correct! Modern condensing gas boilers achieve 88-94% seasonal efficiency.", incorrect: "Incorrect. 88-94% is the correct range for modern condensing boilers." },
+            4: { correct: "Correct! Return temperatures below 55°C are required for condensing operation.", incorrect: "Incorrect. Condensing requires return temperatures below 55°C to extract latent heat." },
+            5: { correct: "Correct! In well-retrofitted homes, DHW can represent 30-50% of total energy use.", incorrect: "Incorrect. As space heating demand drops, DHW proportion increases to 30-50%." },
+            6: { correct: "Correct! ASHPs typically achieve SCOPs of 2.5-4.0.", incorrect: "Incorrect. 2.5-4.0 is the typical SCOP range for well-designed ASHPs." },
+            7: { correct: "Correct! Full SAP is required for medium- and high-risk retrofit designs under PAS 2035.", incorrect: "Incorrect. RdSAP is for existing dwellings/EPCs; full SAP is required for retrofit design." },
+            8: { correct: "Correct! Seasonal efficiency accounts for real-world conditions like part-load and cycling.", incorrect: "Incorrect. Seasonal efficiency specifically includes part-load, cycling, and standby losses." },
+            9: { correct: "Correct! High electricity costs make electric resistance heating a fuel poverty risk.", incorrect: "Incorrect. While 100% efficient at point of use, high running costs create fuel poverty issues." },
+            10: { correct: "Correct! Underfloor heating at 35-45°C is ideal for heat pump efficiency.", incorrect: "Incorrect. Underfloor heating's low temperature requirement matches heat pump capabilities." },
+            11: { correct: "Correct! Modern condensing oil boilers achieve 85-90% seasonal efficiency.", incorrect: "Incorrect. 85-90% is the correct efficiency range for modern condensing oil boilers." },
+            12: { correct: "Correct! Hybrids switch based on outdoor temperature or heat demand conditions.", incorrect: "Incorrect. Switching is determined by conditions, not time or random selection." },
+            13: { correct: "Correct! Controls can improve seasonal efficiency by 10-25%.", incorrect: "Incorrect. The documented improvement range from effective controls is 10-25%." },
+            14: { correct: "Correct! Hybrid complexity requires careful control strategy to achieve savings.", incorrect: "Incorrect. The primary concern is complexity and control strategy, not prohibition." },
+            15: { correct: "Correct! Heat pumps require a cylinder for DHW, unlike combi boilers.", incorrect: "Incorrect. A hot water cylinder is usually required when switching from combi to heat pump." },
+            16: { correct: "Correct! Post-retrofit, radiators may be oversized, enabling lower flow temperatures.", incorrect: "Incorrect. Existing radiators often become oversized, allowing heat pump-compatible temperatures." },
+            17: { correct: "Correct! Boiler casing color has no bearing on seasonal efficiency calculations.", incorrect: "Incorrect. The other options (part-load, cycling, standby) are all included in seasonal efficiency." },
+            18: { correct: "Correct! GSHPs typically achieve higher SCOPs (3.0-4.5) than ASHPs due to stable ground temperatures.", incorrect: "Incorrect. GSHPs generally outperform ASHPs with SCOPs of 3.0-4.5." },
+            19: { correct: "Correct! High carbon/costs make oil/LPG transitional pending fabric improvements.", incorrect: "Incorrect. They are transitional due to carbon intensity and costs, not mandates or bans." },
+            20: { correct: "Correct! Heating replaces heat lost; better fabric reduces heating requirement.", incorrect: "Incorrect. This describes the fundamental fabric-heating relationship in PAS 2035." }
+        };
+
+        function startExam() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('examQuestions').style.display = 'block';
+            document.getElementById('examNav').style.display = 'flex';
+            document.getElementById('timer').style.display = 'block';
+            
+            startTime = Date.now();
+            createDots();
+            startTimer();
+            updateNavButtons();
+        }
+
+        function createDots() {
+            const dotsContainer = document.getElementById('questionDots');
+            for (let i = 1; i <= totalQuestions; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.id = 'dot' + i;
+                dot.onclick = () => goToQuestion(i);
+                dotsContainer.appendChild(dot);
+            }
+            updateDots();
+        }
+
+        function updateDots() {
+            for (let i = 1; i <= totalQuestions; i++) {
+                const dot = document.getElementById('dot' + i);
+                dot.classList.remove('active', 'answered', 'incorrect');
+                
+                if (i === currentQuestion) {
+                    dot.classList.add('active');
+                } else if (answers[i] !== undefined) {
+                    if (answers[i] === correctAnswers[i]) {
+                        dot.classList.add('answered');
+                    } else {
+                        dot.classList.add('incorrect');
+                    }
+                }
+            }
+        }
+
+        function selectAnswer(questionNum, option, isCorrect) {
+            if (answers[questionNum] !== undefined || examSubmitted) return;
+            
+            answers[questionNum] = option;
+            
+            const card = document.getElementById('q' + questionNum);
+            const options = card.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback' + questionNum);
+            
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                const marker = opt.querySelector('.option-marker').textContent;
+                if (marker === option) {
+                    opt.classList.add('selected');
+                    if (isCorrect) {
+                        opt.classList.add('correct');
+                        score++;
+                    } else {
+                        opt.classList.add('incorrect');
+                    }
+                }
+                if (marker === correctAnswers[questionNum] && !isCorrect) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            const fb = feedbackMessages[questionNum];
+            feedback.innerHTML = isCorrect ? 
+                '<strong>✓ Correct!</strong> ' + fb.correct : 
+                '<strong>✗ Incorrect.</strong> ' + fb.incorrect;
+            feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+            
+            card.classList.add('answered', isCorrect ? 'correct' : 'incorrect');
+            
+            updateStats();
+            updateDots();
+            
+            // Auto-advance after 2 seconds if not last question
+            if (questionNum < totalQuestions) {
+                setTimeout(() => {
+                    if (!examSubmitted) nextQuestion();
+                }, 2000);
+            } else {
+                setTimeout(showResults, 2000);
+            }
+        }
+
+        function updateStats() {
+            const answered = Object.keys(answers).length;
+            const percentage = Math.round((score / answered) * 100) || 0;
+            document.getElementById('answeredCount').textContent = answered + '/' + totalQuestions;
+            document.getElementById('currentScore').textContent = percentage + '%';
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.getElementById('q' + currentQuestion).style.display = 'none';
+                currentQuestion++;
+                document.getElementById('q' + currentQuestion).style.display = 'block';
+                document.getElementById('q' + currentQuestion).classList.add('active');
+                updateNavButtons();
+                updateDots();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                document.getElementById('q' + currentQuestion).style.display = 'none';
+                currentQuestion--;
+                document.getElementById('q' + currentQuestion).style.display = 'block';
+                updateNavButtons();
+                updateDots();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function goToQuestion(num) {
+            document.getElementById('q' + currentQuestion).style.display = 'none';
+            currentQuestion = num;
+            document.getElementById('q' + num).style.display = 'block';
+            updateNavButtons();
+            updateDots();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').textContent = 
+                currentQuestion === totalQuestions ? 'Finish Exam' : 'Next →';
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('timer').textContent = display;
+                document.getElementById('timeDisplay').textContent = display;
+                
+                if (timeRemaining <= 300) { // 5 minutes warning
+                    document.getElementById('timer').classList.add('warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    showResults();
+                }
+            }, 1000);
+        }
+
+        function showResults() {
+            if (examSubmitted) return;
+            examSubmitted = true;
+            clearInterval(timerInterval);
+            
+            // Hide exam elements
+            document.getElementById('examForm').style.display = 'none';
+            document.getElementById('examNav').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+            
+            // Show results
+            document.getElementById('resultsContainer').style.display = 'block';
+            
+            // Calculate score
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('scoreCircle').style.setProperty('--score', percentage);
+            document.getElementById('finalScore').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = score + '/' + totalQuestions;
+            
+            // Time taken
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            document.getElementById('timeTaken').textContent = 
+                `${mins}:${secs.toString().padStart(2, '0')}`;
+            
+            // Pass/Fail message
+            const passed = percentage >= 70;
+            const msg = document.getElementById('resultMessage');
+            if (passed) {
+                msg.textContent = 'Congratulations! You have passed the examination.';
+                msg.className = 'result-message pass';
+                document.getElementById('certificate').style.display = 'block';
+                
+                // Generate cert ID
+                const date = new Date();
+                const dateStr = date.getFullYear() + (date.getMonth()+1).toString().padStart(2,'0') + date.getDate().toString().padStart(2,'0');
+                document.getElementById('certDate').textContent = dateStr;
+                document.getElementById('certRandom').textContent = Math.random().toString(36).substring(2, 6).toUpperCase();
+            } else {
+                msg.textContent = 'You did not achieve the pass mark of 70%. Please review the material and retake the exam.';
+                msg.className = 'result-message fail';
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (examSubmitted) return;
+            
+            if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                if (answers[currentQuestion] !== undefined) {
+                    nextQuestion();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            }
+        });
+    </script>
+</body>
+</html>

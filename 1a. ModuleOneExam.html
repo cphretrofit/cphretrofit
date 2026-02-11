@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPH Retrofit - Induction Assessment</title>
+    <style>
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2c5282;
+            --accent: #38a169;
+            --warning: #d69e2e;
+            --error: #e53e3e;
+            --light: #f7fafc;
+            --dark: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .quiz-container {
+            padding: 2rem;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f7fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .question:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: var(--secondary);
+            background: #ebf8ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .option.correct {
+            background: #c6f6d5;
+            border-color: var(--accent);
+            color: #22543d;
+        }
+
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: var(--error);
+            color: #742a2a;
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: #ebf8ff;
+        }
+
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .feedback.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: #2f855a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56,161,105,0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            display: none;
+            padding: 2rem;
+            text-align: center;
+            background: #f7fafc;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            position: relative;
+        }
+
+        .score-circle.pass {
+            background: linear-gradient(135deg, var(--accent) 0%, #2f855a 100%);
+        }
+
+        .score-circle.fail {
+            background: linear-gradient(135deg, var(--error) 0%, #c53030 100%);
+        }
+
+        .result-message {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .result-details {
+            color: #718096;
+            margin-bottom: 1.5rem;
+        }
+
+        .retry-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .retry-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: #744210;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .quiz-container { padding: 1rem; }
+            .question { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏠 CPH Retrofit</h1>
+            <p class="subtitle">Induction Training Assessment</p>
+            <span class="difficulty-badge">Moderate Difficulty</span>
+        </header>
+
+        <div class="quiz-container" id="quizForm">
+            <!-- Question 1 -->
+            <div class="question" data-correct="b">
+                <div class="question-text">
+                    <span class="question-number">1</span>
+                    Which three directors lead CPH Retrofit, and what is Sean Crozier's specific role within the company?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="a">
+                        Alex Leighton, Mark Crozier, and Sean Crozier; Sean is the Finance Director
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="b">
+                        Alex Leighton, Mark Crozier, and Sean Crozier; Sean is the Operations Director
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="c">
+                        Alex Leighton, Mark Crozier, and Carolyn Crozier; Sean is the Technical Director
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="d">
+                        Alex Leighton, Sean Crozier, and Lesley Coult; Sean is the Managing Director
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! Sean Crozier is the Operations Director heading Technical, Coordination and Administration departments." data-incorrect="Incorrect. The three directors are Alex Leighton, Mark Crozier, and Sean Crozier, with Sean serving as Operations Director."></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" data-correct="c">
+                <div class="question-text">
+                    <span class="question-number">2</span>
+                    According to the UK Government's fuel poverty measure (2023), under what conditions is a household considered fuel poor?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="a">
+                        Any household with an EPC rating below Band C
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="b">
+                        Any household with low income regardless of energy rating
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="c">
+                        A household must have both a low energy rating (D-G) AND low income
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="d">
+                        Any household spending more than 10% of income on energy bills
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! Both conditions must be met: low energy rating (D-G) and low income. Homes with Band C or above are not considered fuel poor." data-incorrect="Incorrect. A household is only classed as fuel poor if it has BOTH a low energy rating (D-G) and low income."></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" data-correct="d">
+                <div class="question-text">
+                    <span class="question-number">3</span>
+                    Which two companies are included in The Castle Wood Group alongside CPH Retrofit?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="a">
+                        Cornerstone Construction and Nationwide Property Services
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="b">
+                        Castle Wood Technical and CPH Training Services
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="c">
+                        Cornerstone Retrofit and Nationwide Assessment Services
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="d">
+                        Cornerstone Technical and Nationwide Training Services
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! Cornerstone Technical (damp/mould surveying and PAS2030 consultancy) and Nationwide Training Services (City & Guilds college status)." data-incorrect="Incorrect. The two companies are Cornerstone Technical and Nationwide Training Services."></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question" data-correct="b">
+                <div class="question-text">
+                    <span class="question-number">4</span>
+                    If you work in the Administration department, who is your immediate Line Manager, and who handles all accounts and invoicing queries?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="a">
+                        Sean Crozier manages both Administration and Accounts
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="b">
+                        Lesley Coult is Admin Line Manager; Carolyn Crozier handles Accounts
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="c">
+                        Mark Crozier manages Administration; Alex Leighton handles Accounts
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="d">
+                        Lesley Coult manages both Administration and Accounts
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! Lesley Coult is the Administration Line Manager, while Carolyn Crozier heads up Accounts and all invoicing queries go to her." data-incorrect="Incorrect. Lesley Coult is your Line Manager in Admin, while Carolyn Crozier handles all accounts and invoicing queries separately."></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question" data-correct="a">
+                <div class="question-text">
+                    <span class="question-number">5</span>
+                    What is the minimum target SAP score (EPC rating) that CPH Retrofit aims to achieve for each property, and why is this significant?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="a">
+                        C69 (Band C), because homes at Band C or above are not considered fuel poor
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="b">
+                        C80 (Band B), because this qualifies for maximum government grants
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="c">
+                        D55 (Band D), because this represents the average UK housing stock
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="d">
+                        A92 (Band A), because net-zero targets require this standard
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! C69 (Band C) is the target because government data shows homes rated C or above are not classed as fuel poor." data-incorrect="Incorrect. The target is C69 (Band C), which ensures households are not classified as fuel poor under government measures."></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question" data-correct="c">
+                <div class="question-text">
+                    <span class="question-number">6</span>
+                    What is the core philosophy of CPH Retrofit's approach to retrofitting, as distinct from simply installing individual measures?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="a">
+                        Maximizing profit margins through bulk purchasing of materials
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="b">
+                        Prioritizing speed of installation to minimize resident disruption
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="c">
+                        Whole-house and fabric-first approaches that consider long-term building performance
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="d">
+                        Focusing exclusively on renewable energy technologies like heat pumps
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! CPH focuses on whole-house and fabric-first approaches, prioritizing long-term building performance over short-term fixes." data-incorrect="Incorrect. The core philosophy is whole-house and fabric-first approaches considering long-term performance, not just individual measures or speed."></div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question" data-correct="d">
+                <div class="question-text">
+                    <span class="question-number">7</span>
+                    Which of the following best describes Alex Leighton's area of expertise within the director team?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="a">
+                        Business development and client liaison
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="b">
+                        Construction project management and cost control
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="c">
+                        Financial management and accounts oversight
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="d">
+                        Retrofit strategy, coordination, and quality control
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! Alex Leighton specializes in retrofit strategy, coordination, and quality control, ensuring design intent translates to on-site outcomes." data-incorrect="Incorrect. Alex Leighton's expertise is in retrofit strategy, coordination, and quality control—not business development (Sean) or construction management (Mark)."></div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question" data-correct="b">
+                <div class="question-text">
+                    <span class="question-number">8</span>
+                    What is the significance of the fire alarm testing procedure mentioned in the Health & Safety section?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="a">
+                        Testing occurs daily at 9:00 AM and requires immediate evacuation
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="b">
+                        Weekly testing on Thursdays at 3:00 PM requires no action unless instructed otherwise
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="c">
+                        Monthly testing requires all staff to assemble at the car park
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="d">
+                        Testing is random and unannounced to ensure staff vigilance
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! The alarm is tested weekly every Thursday at 3:00 PM, and no action is required during the test unless specifically instructed." data-incorrect="Incorrect. The fire alarm is tested weekly on Thursdays at 3:00 PM, and staff should take no action unless instructed otherwise."></div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question" data-correct="a">
+                <div class="question-text">
+                    <span class="question-number">9</span>
+                    Which three core values guide CPH Retrofit's work, and how should employees apply the value of 'Wisdom' in practice?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="a">
+                        Fairness, Wisdom, Honesty; seek diverse viewpoints and learn from experience to improve
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="b">
+                        Integrity, Innovation, Excellence; always follow established procedures without question
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="c">
+                        Quality, Safety, Sustainability; prioritize speed over thorough consideration
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="d">
+                        Respect, Responsibility, Results; defer all decisions to senior management
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! The values are Fairness, Wisdom, and Honesty. Wisdom means seeking diverse viewpoints, learning from others, and reflecting to improve." data-incorrect="Incorrect. The three values are Fairness, Wisdom, and Honesty. Wisdom specifically involves seeking diverse viewpoints and learning from experience."></div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question" data-correct="c">
+                <div class="question-text">
+                    <span class="question-number">10</span>
+                    Which HR policy codes relate to Data Protection, and which procedure codes relate to Grievance handling?
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="a">
+                        HRP-03 (Data Protection) and HRPR-03 (Grievance)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="b">
+                        HRP-12 (Data Protection) and HRPR-12 (Grievance)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="c">
+                        HRP-01 (Data Protection) and HRPR-05 (Grievance)
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="d">
+                        HRP-08 (Data Protection) and HRPR-08 (Grievance)
+                    </label>
+                </div>
+                <div class="feedback" data-correct="Correct! HRP-01 is Data Protection & Confidentiality Policy, and HRPR-05 is the Grievance Procedure." data-incorrect="Incorrect. HRP-01 covers Data Protection, while HRPR-05 covers the Grievance Procedure."></div>
+            </div>
+
+            <button class="submit-btn" onclick="submitQuiz()">Submit Assessment</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="score-circle" id="scoreCircle">
+                <span id="scoreText">0/10</span>
+            </div>
+            <div class="result-message" id="resultMessage"></div>
+            <div class="result-details" id="resultDetails"></div>
+            <button class="retry-btn" onclick="retryQuiz()">Retake Assessment</button>
+        </div>
+    </div>
+
+    <script>
+        function submitQuiz() {
+            const questions = document.querySelectorAll('.question');
+            let score = 0;
+            let answered = 0;
+
+            questions.forEach(question => {
+                const selected = question.querySelector('input[type="radio"]:checked');
+                const feedback = question.querySelector('.feedback');
+                const correctAnswer = question.getAttribute('data-correct');
+
+                if (selected) {
+                    answered++;
+                    const options = question.querySelectorAll('.option');
+                    
+                    options.forEach(option => {
+                        const input = option.querySelector('input');
+                        option.classList.remove('correct', 'incorrect', 'selected');
+                        
+                        if (input.value === correctAnswer) {
+                            option.classList.add('correct');
+                        } else if (input.checked && input.value !== correctAnswer) {
+                            option.classList.add('incorrect');
+                        } else if (input.checked) {
+                            option.classList.add('selected');
+                        }
+                    });
+
+                    if (selected.value === correctAnswer) {
+                        score++;
+                        feedback.textContent = feedback.getAttribute('data-correct');
+                        feedback.className = 'feedback show correct';
+                    } else {
+                        feedback.textContent = feedback.getAttribute('data-incorrect');
+                        feedback.className = 'feedback show incorrect';
+                    }
+                }
+            });
+
+            if (answered < questions.length) {
+                alert(`Please answer all questions. You have answered ${answered} out of ${questions.length}.`);
+                return;
+            }
+
+            // Show results
+            const resultsDiv = document.getElementById('results');
+            const scoreCircle = document.getElementById('scoreCircle');
+            const scoreText = document.getElementById('scoreText');
+            const resultMessage = document.getElementById('resultMessage');
+            const resultDetails = document.getElementById('resultDetails');
+
+            resultsDiv.classList.add('show');
+            scoreText.textContent = `${score}/${questions.length}`;
+            
+            if (score >= 7) {
+                scoreCircle.className = 'score-circle pass';
+                resultMessage.textContent = 'Congratulations! You have passed the assessment.';
+                resultDetails.textContent = `You scored ${score} out of ${questions.length} (${(score/questions.length*100).toFixed(0)}%). You demonstrate good understanding of CPH Retrofit's operations, values, and procedures.`;
+            } else {
+                scoreCircle.className = 'score-circle fail';
+                resultMessage.textContent = 'Assessment not passed.';
+                resultDetails.textContent = `You scored ${score} out of ${questions.length} (${(score/questions.length*100).toFixed(0)}%). You need to score at least 7 out of 10 to pass. Please review the induction materials and retake the assessment.`;
+            }
+
+            // Disable submit button
+            document.querySelector('.submit-btn').disabled = true;
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function retryQuiz() {
+            // Reset all selections
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
+            });
+            
+            // Remove all styling
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('correct', 'incorrect', 'selected');
+            });
+            
+            // Hide feedback
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.classList.remove('show');
+            });
+            
+            // Hide results
+            document.getElementById('results').classList.remove('show');
+            
+            // Enable submit button
+            document.querySelector('.submit-btn').disabled = false;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Add selection highlighting
+        document.querySelectorAll('.option input').forEach(input => {
+            input.addEventListener('change', function() {
+                const question = this.closest('.question');
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.closest('.option').classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

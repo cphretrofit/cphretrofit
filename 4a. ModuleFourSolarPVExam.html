@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar PV Module 5 - Certification Exam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gradient-sun: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --gradient-sky: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+
+        .exam-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .exam-header {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exam-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-sun);
+        }
+
+        .exam-title {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .exam-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .exam-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .info-badge {
+            background: #f1f5f9;
+            padding: 0.5rem 1.25rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Timer */
+        .timer-container {
+            background: var(--dark);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .timer-warning {
+            color: #fbbf24;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Progress */
+        .progress-container {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--gradient-sun);
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .question-number {
+            background: var(--gradient-sun);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .question-category {
+            color: var(--gray);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        /* Options */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: var(--secondary);
+            background: #f0f9ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: #fffbeb;
+        }
+
+        .option.correct {
+            border-color: var(--accent);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .option-letter {
+            background: white;
+            border: 2px solid #cbd5e1;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--gray);
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .option.correct .option-letter {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .option-text {
+            font-size: 1.05rem;
+            color: var(--dark);
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-sun);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            background: var(--accent);
+            font-size: 1.1rem;
+            padding: 1rem 3rem;
+        }
+
+        /* Results Page */
+        .results-container {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: conic-gradient(var(--accent) calc(var(--score) * 1%), #e2e8f0 0);
+        }
+
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .score-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .score-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pass { color: var(--accent); }
+        .fail { color: var(--danger); }
+
+        .review-section {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .review-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .review-item.correct { border-left-color: var(--accent); }
+        .review-item.incorrect { border-left-color: var(--danger); }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .start-btn {
+            font-size: 1.25rem;
+            padding: 1.25rem 3rem;
+            margin-top: 2rem;
+        }
+
+        .exam-rules {
+            text-align: left;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .exam-rules h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .exam-rules ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .exam-rules li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .exam-rules li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Question Grid */
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #e2e8f0;
+            color: var(--gray);
+        }
+
+        .grid-item.answered {
+            background: var(--primary);
+            color: white;
+        }
+
+        .grid-item.current {
+            box-shadow: 0 0 0 3px var(--secondary);
+        }
+
+        .grid-item:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .exam-title {
+                font-size: 1.5rem;
+            }
+            
+            .question-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .exam-info {
+                gap: 1rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="start-screen">
+            <div class="exam-title">
+                ☀️ Solar PV Certification
+            </div>
+            <p class="exam-subtitle">Module 5: Introduction to Solar PV Systems</p>
+            
+            <div class="exam-rules">
+                <h3>📋 Exam Guidelines</h3>
+                <ul>
+                    <li>20 multiple choice questions</li>
+                    <li>Time limit: 30 minutes</li>
+                    <li>Pass mark: 70% (14 correct answers)</li>
+                    <li>Questions cover all sections: 5.0 through 5.7</li>
+                    <li>You can navigate between questions</li>
+                    <li>All questions must be answered before submission</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary start-btn" onclick="startExam()">
+                Start Exam →
+            </button>
+        </div>
+
+        <!-- Exam Header (Hidden initially) -->
+        <div id="examHeader" class="exam-header" style="display: none;">
+            <div class="timer-container" id="timer">
+                ⏱️ <span id="timeDisplay">30:00</span>
+            </div>
+            
+            <h1 class="exam-title">Solar PV Certification Exam</h1>
+            <p class="exam-subtitle">Module 5 Assessment</p>
+            
+            <div class="question-grid" id="questionGrid"></div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="exam-info">
+                <div class="info-badge">
+                    <span>📝</span> Question <span id="currentQ">1</span>/20
+                </div>
+                <div class="info-badge">
+                    <span>✓</span> <span id="answeredCount">0</span> Answered
+                </div>
+                <div class="info-badge">
+                    <span>⏳</span> <span id="remainingCount">20</span> Remaining
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer"></div>
+
+        <!-- Results Container -->
+        <div id="resultsContainer" class="results-container">
+            <h2>Exam Complete! 🎉</h2>
+            
+            <div class="score-circle" id="scoreCircle">
+                <div class="score-inner">
+                    <div class="score-percentage" id="scorePercentage">0%</div>
+                    <div class="score-label">Score</div>
+                </div>
+            </div>
+            
+            <div class="result-message" id="resultMessage"></div>
+            <p id="resultDetails"></p>
+            
+            <div class="review-section" id="reviewSection">
+                <h3>Question Review</h3>
+                <div id="reviewList"></div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 2rem;">
+                Retake Exam ↻
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Exam Data - 20 Questions Moderate Difficulty
+        const examData = [
+            {
+                id: 1,
+                category: "5.0 Fundamentals",
+                question: "What does the term 'photovoltaic' literally mean?",
+                options: [
+                    "Photo-electric cell",
+                    "Light-electricity",
+                    "Solar power generation",
+                    "Photonic voltage"
+                ],
+                correct: 1,
+                explanation: "The term comes from Greek 'phos' (light) and the unit 'volt' (electromotive force), literally meaning 'light-electricity'."
+            },
+            {
+                id: 2,
+                category: "5.0 System Types",
+                question: "Which type of solar PV system incorporates Electrical Energy Storage Systems (EESS) while remaining connected to the grid?",
+                options: [
+                    "Stand-alone system",
+                    "Grid-connected system",
+                    "Hybrid system",
+                    "Off-grid system"
+                ],
+                correct: 2,
+                explanation: "Hybrid systems are grid-connected systems that incorporate Electrical Energy Storage Systems (EESS) according to MCS definitions."
+            },
+            {
+                id: 3,
+                category: "5.1 Components",
+                question: "What is the primary function of the generation meter in a solar PV system?",
+                options: [
+                    "To convert DC to AC electricity",
+                    "To measure total electrical energy generated in kWh",
+                    "To isolate the PV array for maintenance",
+                    "To synchronize with the grid frequency"
+                ],
+                correct: 1,
+                explanation: "The generation meter measures total electrical energy generated (kWh), distinct from the inverter which handles conversion."
+            },
+            {
+                id: 4,
+                category: "5.1 Electrical Characteristics",
+                question: "Under Standard Test Conditions (STC), what does 'Wp' represent when rating a PV module?",
+                options: [
+                    "Working power",
+                    "Watt-peak (nominal power)",
+                    "Wattage potential",
+                    "Wired power"
+                ],
+                correct: 1,
+                explanation: "Wp stands for Watt-peak, representing the rated output under Standard Test Conditions (STC)."
+            },
+            {
+                id: 5,
+                category: "5.1 Array Configuration",
+                question: "What is the typical maximum system voltage for domestic solar PV systems according to MCS guidance?",
+                options: [
+                    "600 V DC",
+                    "800 V DC",
+                    "1,000 V DC",
+                    "1,500 V DC"
+                ],
+                correct: 2,
+                explanation: "The typical maximum system voltage for domestic systems is 1,000 V DC according to MCS guidance."
+            },
+            {
+                id: 6,
+                category: "5.1 Design",
+                question: "What is the optimal tilt angle range for a solar PV array to maximize annual yield in the UK?",
+                options: [
+                    "15-25 degrees",
+                    "30-45 degrees",
+                    "50-60 degrees",
+                    "75-90 degrees"
+                ],
+                correct: 1,
+                explanation: "The optimal tilt angle is 30-45 degrees to maximize annual yield, balancing summer and winter sun angles."
+            },
+            {
+                id: 7,
+                category: "5.3 Photovoltaic Effect",
+                question: "In the photovoltaic effect, what happens when photons strike the semiconductor material?",
+                options: [
+                    "They create thermal energy",
+                    "They excite electrons to generate current",
+                    "They reflect off to create light",
+                    "They dissolve the material"
+                ],
+                correct: 1,
+                explanation: "Photons excite electrons in the semiconductor material, which generates an electric current."
+            },
+            {
+                id: 8,
+                category: "5.3 Energy Conversion",
+                question: "What is the correct sequence of energy conversion in a grid-connected solar PV system?",
+                options: [
+                    "Sunlight → AC → DC → Grid",
+                    "Sunlight → DC → AC → Grid",
+                    "Sunlight → DC → Grid → AC",
+                    "Sunlight → AC → Grid → DC"
+                ],
+                correct: 1,
+                explanation: "Solar panels produce DC electricity, which the inverter converts to AC before feeding to the grid or on-site use."
+            },
+            {
+                id: 9,
+                category: "5.3 Inverter Function",
+                question: "Which of the following is NOT a primary function of a solar PV inverter?",
+                options: [
+                    "DC to AC conversion",
+                    "System monitoring and fault detection",
+                    "Storing excess energy in batteries",
+                    "Grid synchronization"
+                ],
+                correct: 2,
+                explanation: "While inverters handle conversion, monitoring, and synchronization, energy storage is handled by separate battery systems (EESS)."
+            },
+            {
+                id: 10,
+                category: "5.4 Benefits",
+                question: "What is the typical expected lifespan of a modern solar PV system?",
+                options: [
+                    "5-10 years",
+                    "10-15 years",
+                    "25+ years",
+                    "50+ years"
+                ],
+                correct: 2,
+                explanation: "Modern solar PV systems typically have a lifespan of 25+ years, with many panels warranted for 25 years."
+            },
+            {
+                id: 11,
+                category: "5.5 Limitations",
+                question: "What is the primary technical limitation of solar PV generation?",
+                options: [
+                    "High noise pollution",
+                    "Intermittent generation (weather/daylight dependent)",
+                    "Requires constant maintenance",
+                    "Produces toxic emissions"
+                ],
+                correct: 1,
+                explanation: "The primary limitation is intermittent generation dependent on weather conditions and daylight hours."
+            },
+            {
+                id: 12,
+                category: "5.5 Installation",
+                question: "Which of the following is a critical installation consideration for roof-mounted systems?",
+                options: [
+                    "Colour matching with roof tiles",
+                    "Structural load capacity and weatherproofing",
+                    "Proximity to television aerials",
+                    "Orientation towards the nearest road"
+                ],
+                correct: 1,
+                explanation: "Structural load capacity and weatherproofing are critical safety and compliance considerations for roof mounting."
+            },
+            {
+                id: 13,
+                category: "5.6 Performance",
+                question: "What does the Performance Ratio (PR) of a solar PV system measure?",
+                options: [
+                    "The ratio of actual output to theoretical maximum output",
+                    "The ratio of summer to winter generation",
+                    "The ratio of DC to AC conversion efficiency",
+                    "The ratio of installed capacity to roof area"
+                ],
+                correct: 0,
+                explanation: "Performance Ratio compares actual energy output to theoretical maximum, accounting for all system losses."
+            },
+            {
+                id: 14,
+                category: "5.6 Monitoring",
+                question: "Which KPI represents the energy produced per kilowatt-peak of installed capacity?",
+                options: [
+                    "Energy yield (kWh)",
+                    "Performance Ratio (PR)",
+                    "Specific yield (kWh/kWp)",
+                    "Capacity factor"
+                ],
+                correct: 2,
+                explanation: "Specific yield (kWh/kWp) normalizes production by system size, allowing comparison between different sized systems."
+            },
+            {
+                id: 15,
+                category: "5.7 Safety",
+                question: "Why is electrical safety particularly critical when working on solar PV systems during daylight?",
+                options: [
+                    "AC voltages are higher during the day",
+                    "DC voltages remain present even when systems are switched off",
+                    "Solar panels become radioactive",
+                    "Inverters overheat"
+                ],
+                correct: 1,
+                explanation: "DC voltages remain present during daylight hours even when systems are switched off, creating a persistent shock hazard."
+            },
+            {
+                id: 16,
+                category: "5.7 Standards",
+                question: "Which standard covers the Requirements for Electrical Installations in the UK?",
+                options: [
+                    "MCS 012",
+                    "BS 7671 (IET Wiring Regulations)",
+                    "Engineering Recommendation G98",
+                    "Part P Building Regulations"
+                ],
+                correct: 1,
+                explanation: "BS 7671 is the IET Wiring Regulations covering requirements for electrical installations."
+            },
+            {
+                id: 17,
+                category: "5.7 Grid Connection",
+                question: "Which Engineering Recommendation covers the connection of generating equipment up to 16A per phase?",
+                options: [
+                    "G59",
+                    "G98",
+                    "G99",
+                    "G100"
+                ],
+                correct: 1,
+                explanation: "Engineering Recommendation G98 covers connection of generating equipment up to 16A per phase (single phase) or 16A per phase (three phase)."
+            },
+            {
+                id: 18,
+                category: "5.1 String Configuration",
+                question: "What is a 'string' in solar PV terminology?",
+                options: [
+                    "A type of inverter",
+                    "A number of PV modules connected in series",
+                    "The cable between inverter and meter",
+                    "A grounding wire"
+                ],
+                correct: 1,
+                explanation: "A string is defined as a number of PV modules connected in series to increase voltage while maintaining current."
+            },
+            {
+                id: 19,
+                category: "5.7 Documentation",
+                question: "Which document is NOT typically required for MCS certification handover?",
+                options: [
+                    "System schematic and design documentation",
+                    "Commissioning test results",
+                    "Original purchase receipts for equipment",
+                    "User manual and maintenance guidance"
+                ],
+                correct: 2,
+                explanation: "While purchase records are good practice, they are not a specific MCS requirement for certification handover."
+            },
+            {
+                id: 20,
+                category: "5.4/5.5 Considerations",
+                question: "What is the primary environmental benefit of solar PV systems?",
+                options: [
+                    "They reduce noise pollution in urban areas",
+                    "They provide renewable and clean energy with low carbon emissions",
+                    "They increase local biodiversity",
+                    "They reduce water consumption"
+                ],
+                correct: 1,
+                explanation: "The primary environmental benefit is providing renewable, clean energy that significantly reduces carbon emissions during operation."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(20).fill(null);
+        let timeRemaining = 1800; // 30 minutes in seconds
+        let timerInterval;
+
+        function startExam() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('examHeader').style.display = 'block';
+            renderQuestions();
+            renderQuestionGrid();
+            showQuestion(0);
+            startTimer();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = examData.map((q, index) => `
+                <div class="question-card" id="question-${index}">
+                    <div class="question-header">
+                        <span class="question-number">Question ${q.id}</span>
+                        <span class="question-category">${q.category}</span>
+                    </div>
+                    
+                    <div class="question-text">${q.question}</div>
+                    
+                    <div class="options-container">
+                        ${q.options.map((opt, optIndex) => `
+                            <div class="option" onclick="selectOption(${index}, ${optIndex})" id="q${index}-opt${optIndex}">
+                                <div class="option-letter">${String.fromCharCode(65 + optIndex)}</div>
+                                <div class="option-text">${opt}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="changeQuestion(-1)" ${index === 0 ? 'disabled' : ''}>
+                            ← Previous
+                        </button>
+                        ${index === examData.length - 1 ? 
+                            `<button class="btn btn-primary btn-submit" onclick="submitExam()">
+                                Submit Exam ✓
+                            </button>` :
+                            `<button class="btn btn-primary" onclick="changeQuestion(1)">
+                                Next →
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('questionGrid');
+            grid.innerHTML = examData.map((_, index) => `
+                <div class="grid-item ${answers[index] !== null ? 'answered' : ''} ${index === 0 ? 'current' : ''}" 
+                     id="grid-${index}"
+                     onclick="jumpToQuestion(${index})">
+                    ${index + 1}
+                </div>
+            `).join('');
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach((card, i) => {
+                card.classList.toggle('active', i === index);
+            });
+            
+            document.querySelectorAll('.grid-item').forEach((item, i) => {
+                item.classList.toggle('current', i === index);
+            });
+            
+            currentQuestion = index;
+            updateProgress();
+            
+            // Restore selected answer if exists
+            if (answers[index] !== null) {
+                highlightOption(index, answers[index]);
+            }
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            answers[questionIndex] = optionIndex;
+            highlightOption(questionIndex, optionIndex);
+            updateGridStatus(questionIndex);
+            updateProgress();
+        }
+
+        function highlightOption(questionIndex, optionIndex) {
+            document.querySelectorAll(`#question-${questionIndex} .option`).forEach((opt, i) => {
+                opt.classList.toggle('selected', i === optionIndex);
+            });
+        }
+
+        function updateGridStatus(index) {
+            const gridItem = document.getElementById(`grid-${index}`);
+            gridItem.classList.add('answered');
+        }
+
+        function changeQuestion(direction) {
+            const newIndex = currentQuestion + direction;
+            if (newIndex >= 0 && newIndex < examData.length) {
+                showQuestion(newIndex);
+            }
+        }
+
+        function jumpToQuestion(index) {
+            showQuestion(index);
+        }
+
+        function updateProgress() {
+            const answered = answers.filter(a => a !== null).length;
+            const progress = (answered / examData.length) * 100;
+            
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('answeredCount').textContent = answered;
+            document.getElementById('remainingCount').textContent = examData.length - answered;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                document.getElementById('timeDisplay').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 300) { // 5 minutes warning
+                    document.getElementById('timer').classList.add('timer-warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            
+            const unanswered = answers.filter(a => a === null).length;
+            if (unanswered > 0) {
+                if (!confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
+                    startTimer();
+                    return;
+                }
+            }
+            
+            calculateResults();
+        }
+
+        function calculateResults() {
+            let correct = 0;
+            const results = examData.map((q, index) => {
+                const isCorrect = answers[index] === q.correct;
+                if (isCorrect) correct++;
+                return {
+                    question: q,
+                    userAnswer: answers[index],
+                    isCorrect: isCorrect
+                };
+            });
+            
+            const percentage = Math.round((correct / examData.length) * 100);
+            const passed = percentage >= 70;
+            
+            displayResults(correct, percentage, passed, results);
+        }
+
+        function displayResults(correct, percentage, passed, results) {
+            document.getElementById('examHeader').style.display = 'none';
+            document.getElementById('questionsContainer').style.display = 'none';
+            
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.classList.add('show');
+            
+            document.getElementById('scoreCircle').style.setProperty('--score', percentage);
+            document.getElementById('scorePercentage').textContent = percentage + '%';
+            
+            const messageEl = document.getElementById('resultMessage');
+            const detailsEl = document.getElementById('resultDetails');
+            
+            if (passed) {
+                messageEl.innerHTML = `<span class="pass">🎉 Congratulations! You Passed!</span>`;
+                detailsEl.textContent = `You answered ${correct} out of 20 questions correctly, meeting the 70% pass requirement.`;
+            } else {
+                messageEl.innerHTML = `<span class="fail">📚 Keep Studying</span>`;
+                detailsEl.textContent = `You answered ${correct} out of 20 questions correctly. You need 14 correct answers (70%) to pass.`;
+            }
+            
+            // Review section
+            const reviewList = document.getElementById('reviewList');
+            reviewList.innerHTML = results.map((r, i) => `
+                <div class="review-item ${r.isCorrect ? 'correct' : 'incorrect'}">
+                    <div class="review-header">
+                        <span>Question ${i + 1}: ${r.isCorrect ? '✓ Correct' : '✗ Incorrect'}</span>
+                        <span>${r.question.category}</span>
+                    </div>
+                    <p><strong>${r.question.question}</strong></p>
+                    <p>Your answer: ${r.userAnswer !== null ? r.question.options[r.userAnswer] : 'Not answered'}</p>
+                    ${!r.isCorrect ? `<p style="color: var(--accent); margin-top: 0.5rem;"><strong>Correct answer:</strong> ${r.question.options[r.question.correct]}</p>` : ''}
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.5rem; font-style: italic;">${r.question.explanation}</p>
+                </div>
+            `).join('');
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('questionsContainer').style.display === 'none') return;
+            
+            if (e.key === 'ArrowRight') changeQuestion(1);
+            if (e.key === 'ArrowLeft') changeQuestion(-1);
+            
+            // Number keys 1-4 for options
+            if (e.key >= '1' && e.key <= '4') {
+                const optIndex = parseInt(e.key) - 1;
+                if (optIndex < examData[currentQuestion].options.length) {
+                    selectOption(currentQuestion, optIndex);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
