@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPH Retrofit - Ventilation & Part F Induction</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2c5282;
+            --accent: #48bb78;
+            --warning: #ed8936;
+            --danger: #e53e3e;
+            --info: #4299e1;
+            --bg: #f7fafc;
+            --card: #ffffff;
+            --text: #2d3748;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .module-card {
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #38a169);
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .content-area {
+            padding: 40px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid var(--info);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            background: #fffaf0;
+            border-left: 4px solid var(--warning);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .danger-box {
+            background: #fff5f5;
+            border-left: 4px solid var(--danger);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin: 25px 0 10px 0;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+            color: #4a5568;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .key-point::before {
+            content: "🔑 KEY POINT";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: #f7fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
+        }
+
+        .card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: #f7fafc;
+        }
+
+        .formula {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 95, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #cbd5e0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quiz-container {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--secondary);
+            background: #ebf8ff;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--secondary);
+            background: #ebf8ff;
+        }
+
+        .quiz-option.correct {
+            border-color: var(--accent);
+            background: #f0fff4;
+        }
+
+        .quiz-option.wrong {
+            border-color: var(--danger);
+            background: #fff5f5;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .completion-badge {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        .completion-badge h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .diagram {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .icon-large {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .content-area { padding: 25px; }
+            .header h1 { font-size: 1.6rem; }
+            .grid-2 { grid-template-columns: 1fr; }
+            table { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 CPH Retrofit Induction</h1>
+            <p>Ventilation & Building Regulations Part F</p>
+        </div>
+
+        <div class="module-card">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Section 1: Introduction -->
+            <div id="section1" class="content-area">
+                <div class="section-title">
+                    Why Ventilation Matters
+                    <span class="section-badge">Section 1 of 6</span>
+                </div>
+
+                <div class="info-box">
+                    <strong>Welcome to your ventilation induction.</strong> Proper ventilation is critical in retrofit projects. As we make homes more airtight to save energy, we must ensure they remain healthy places to live.
+                </div>
+
+                <h2>The Retrofit Ventilation Challenge</h2>
+                <p>Retrofitting insulation and airtightness measures without considering ventilation creates serious risks:</p>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="icon-large">💧</div>
+                        <h4>Condensation & Mould</h4>
+                        <p>Trapped moisture leads to mould growth, damaging property and causing respiratory health issues for occupants.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-large">😤</div>
+                        <h4>Poor Air Quality</h4>
+                        <p>Build-up of CO₂, VOCs (Volatile Organic Compounds), and cooking pollutants affects cognitive function and health.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-large">🏚️</div>
+                        <h4>Building Damage</h4>
+                        <p>Interstitial condensation can rot timber frames, corrode metal, and degrade insulation performance.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-large">⚡</div>
+                        <h4>Energy Waste</h4>
+                        <p>Inadequate ventilation strategy can undo energy savings by forcing windows open or causing damp that reduces insulation effectiveness.</p>
+                    </div>
+                </div>
+
+                <div class="key-point">
+                    <p><strong>The Golden Rule:</strong> For every unit of airtightness improvement, there must be a corresponding ventilation strategy. We don't just seal buildings—we create managed, controlled ventilation systems.</p>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" disabled>← Previous</button>
+                    <button class="btn btn-primary" onclick="nextSection()">Next: Part F Overview →</button>
+                </div>
+            </div>
+
+            <!-- Section 2: Part F Building Regulations -->
+            <div id="section2" class="content-area hidden">
+                <div class="section-title">
+                    Building Regulations Part F
+                    <span class="section-badge">Section 2 of 6</span>
+                </div>
+
+                <h2>What is Part F?</h2>
+                <p>Part F of the Building Regulations (England) covers <strong>Ventilation</strong>. It sets standards for:</p>
+                <ul>
+                    <li>Removing pollutants and moisture from inside buildings</li>
+                    <li>Providing fresh air for occupants</li>
+                    <li>Preventing condensation and mould growth</li>
+                    <li>Ensuring systems operate efficiently</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>⚠️ Legal Requirement:</strong> Compliance with Part F is mandatory. Non-compliance can result in enforcement action, invalidation of warranties, and serious liability issues if occupant health is affected.
+                </div>
+
+                <h3>Part F Volume 1: Dwellings</h3>
+                <p>This is the section most relevant to CPH Retrofit's work. It covers:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Standard</th>
+                            <th>Retrofit Implication</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Whole dwelling ventilation</td>
+                            <td>Minimum continuous supply of fresh air</td>
+                            <td>Must calculate based on floor area and occupancy</td>
+                        </tr>
+                        <tr>
+                            <td>Extract ventilation</td>
+                            <td>Remove pollutants at source (kitchens, bathrooms)</td>
+                            <td>Intermittent or continuous extract required</td>
+                        </tr>
+                        <tr>
+                            <td>Purge ventilation</td>
+                            <td>Rapid ventilation for occasional use</td>
+                            <td>Windows or other openings must provide this</td>
+                        </tr>
+                        <tr>
+                            <td>Condensation control</td>
+                            <td>Prevent moisture damage</td>
+                            <td>Critical in retrofitted, airtight homes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>The Three Ventilation Strategies</h3>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>1. Natural Ventilation</h4>
+                        <p><strong>How:</strong> Trickle vents, windows, air bricks</p>
+                        <p><strong>Best for:</strong> Traditional construction, low airtightness</p>
+                        <p style="color: var(--warning);"><strong>Retrofit note:</strong> Often insufficient for highly insulated homes. May need upgrading.</p>
+                    </div>
+                    <div class="card">
+                        <h4>2. Mechanical Extract Ventilation (MEV)</h4>
+                        <p><strong>How:</strong> Central fan continuously extracts from wet rooms</p>
+                        <p><strong>Best for:</strong> Moderate airtightness (3-5 m³/hr·m² @ 50Pa)</p>
+                        <p style="color: var(--accent);"><strong>Retrofit note:</strong> Common upgrade path. Low energy, effective moisture control.</p>
+                    </div>
+                    <div class="card" style="grid-column: 1 / -1;">
+                        <h4>3. Mechanical Ventilation with Heat Recovery (MVHR)</h4>
+                        <p><strong>How:</strong> Balanced supply and extract with heat recovery</p>
+                        <p><strong>Best for:</strong> High airtightness (&lt;3 m³/hr·m² @ 50Pa), Passivhaus standard</p>
+                        <p style="color: var(--accent);"><strong>Retrofit note:</strong> Gold standard for deep retrofit. Can recover 80-95% of heat. Requires careful design and maintenance.</p>
+                    </div>
+                </div>
+
+                <div class="key-point">
+                    <p><strong>CPH Retrofit Standard:</strong> We assess airtightness before recommending ventilation. If we're achieving &lt;3 m³/hr·m² @ 50Pa, MVHR is mandatory. For 3-5 m³/hr·m², MEV is minimum standard.</p>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevSection()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextSection()">Next: System Types →</button>
+                </div>
+            </div>
+
+            <!-- Section 3: System Types in Detail -->
+            <div id="section3" class="content-area hidden">
+                <div class="section-title">
+                    Ventilation Systems Explained
+                    <span class="section-badge">Section 3 of 6</span>
+                </div>
+
+                <h2>Mechanical Extract Ventilation (MEV)</h2>
+                <p>Centralised system with ducting to multiple extract points.</p>
+
+                <div class="success-box">
+                    <strong>Advantages:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Lower cost than MVHR (£1,500-3,000 vs £4,000-8,000)</li>
+                        <li>Simpler installation (no supply ducting)</li>
+                        <li>Effective moisture removal</li>
+                        <li>Lower maintenance requirements</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <strong>Limitations:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>No heat recovery—extracted heat is lost</li>
+                        <li>Can create negative pressure (draws in cold air through gaps)</li>
+                        <li>Requires background ventilators (trickle vents) in habitable rooms</li>
+                        <li>Less effective in very airtight homes</li>
+                    </ul>
+                </div>
+
+                <h2>Mechanical Ventilation with Heat Recovery (MVHR)</h2>
+                <p>Balanced system extracting stale air and supplying fresh air via heat exchanger.</p>
+
+                <div class="diagram">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🔄</div>
+                    <h3>How MVHR Works</h3>
+                    <p style="max-width: 600px; margin: 0 auto;">
+                        1. Warm, stale air extracted from kitchen, bathrooms, utility<br>
+                        2. Passes through heat exchanger (ceramic or plate)<br>
+                        3. Heat transfers to incoming fresh air without mixing<br>
+                        4. Fresh, warmed air supplied to living rooms, bedrooms<br>
+                        5. Heat recovery efficiency: 80-95%
+                    </p>
+                </div>
+
+                <div class="success-box">
+                    <strong>Advantages:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Excellent energy efficiency—recovers most heat</li>
+                        <li>Constant fresh air supply to all rooms</li>
+                        <li>Filters pollen and dust (benefits allergy sufferers)</li>
+                        <li>No need for trickle vents (cleaner aesthetic)</li>
+                        <li>Best air quality control</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <strong>Critical Requirements:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Home must be airtight (&lt;3 m³/hr·m² @ 50Pa) or efficiency is lost</li>
+                        <li>Requires space for ducting and unit (often loft or cupboard)</li>
+                        <li>Must be commissioned and balanced correctly</li>
+                        <li>Filters need regular changing (every 6-12 months)</li>
+                        <li>Condensate drainage required</li>
+                    </ul>
+                </div>
+
+                <h3>Decentralised MVHR (dMVHR)</h3>
+                <p>Single-room units (e.g., Vent-Axia Lo-Carbon Tempra) that recover heat without ducting.</p>
+                <div class="info-box">
+                    <strong>Use case:</strong> Retrofit where ducting is difficult. Each room has its own unit. Less efficient than centralised but better than extract-only.
+                </div>
+
+                <h2>Intermittent Extract Fans</h2>
+                <p>Traditional bathroom/kitchen fans operating on switches, timers, or humidity sensors.</p>
+
+                <div class="warning-box">
+                    <strong>Part F Compliance Note:</strong> Intermittent fans can comply with Part F, but only if they meet specific flow rates and are used with background ventilators. In retrofitted homes, continuous mechanical ventilation is usually preferable.
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevSection()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextSection()">Next: Design & Installation →</button>
+                </div>
+            </div>
+
+            <!-- Section 4: Design & Installation -->
+            <div id="section4" class="content-area hidden">
+                <div class="section-title">
+                    Design & Installation Standards
+                    <span class="section-badge">Section 4 of 6</span>
+                </div>
+
+                <h2>Part F Ventilation Rates</h2>
+                <p>Minimum whole dwelling ventilation rates (l/s) based on occupancy and floor area:</p>
+
+                <div class="formula">
+                    Whole Dwelling Ventilation =<br>
+                    0.3 × Floor Area (m²) + 4 × Number of Bedrooms
+                </div>
+
+                <p><strong>Example:</strong> A 100m² 3-bedroom house needs (0.3 × 100) + (4 × 3) = 30 + 12 = <strong>42 litres/second</strong> whole dwelling ventilation.</p>
+
+                <h3>Extract Ventilation Rates (Minimum)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Intermittent (l/s)</th>
+                            <th>Continuous (l/s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kitchen (cooker hood)</td>
+                            <td>30</td>
+                            <td>13</td>
+                        </tr>
+                        <tr>
+                            <td>Kitchen (no cooker hood)</td>
+                            <td>60</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>Utility room</td>
+                            <td>30</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>Bathroom</td>
+                            <td>15</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>Sanitary accommodation</td>
+                            <td>6</td>
+                            <td>6</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>CPH Retrofit Installation Standards</h2>
+
+                <div class="key-point">
+                    <p><strong>Ducting Rules:</strong> Rigid ducting preferred over flexible. If flexible used, must be fully extended (no sagging). Maximum 90° bends—use swept bends where possible. Insulate ducting in cold lofts to prevent condensation.</p>
+                </div>
+
+                <h3>Commissioning Requirements</h3>
+                <p>Every mechanical ventilation system must be commissioned (balanced and tested):</p>
+                <ol>
+                    <li><strong>Measure actual flow rates</strong> at each grille/valve</li>
+                    <li><strong>Adjust dampers</strong> to achieve design flows</li>
+                    <li><strong>Check heat recovery efficiency</strong> (MVHR)</li>
+                    <li><strong>Measure specific fan power</strong> (SFP must be &lt;0.6 W/l/s for MVHR)</li>
+                    <li><strong>Issue commissioning certificate</strong> (mandatory for Building Control)</li>
+                </ol>
+
+                <div class="danger-box">
+                    <strong>⚠️ Critical:</strong> An uncommissioned system is non-compliant. CPH Retrofit requires commissioning on every project. The certificate must be filed with project documentation.
+                </div>
+
+                <h3>Common Installation Errors</h3>
+                <div class="grid-2">
+                    <div class="card" style="border-color: var(--danger);">
+                        <h4 style="color: var(--danger);">❌ Wrong</h4>
+                        <ul>
+                            <li>Ducting crushed or kinked</li>
+                            <li>Excessive bends (&gt;3 per run)</li>
+                            <li>Uninsulated ducts in cold spaces</li>
+                            <li>Intake near extractor outlet</li>
+                            <li>No condensate trap on MVHR</li>
+                            <li>Filters not fitted</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-color: var(--accent);">
+                        <h4 style="color: var(--accent);">✓ Right</h4>
+                        <ul>
+                            <li>Smooth, rigid ducting throughout</li>
+                            <li>Gentle bends, maximum 3 per run</li>
+                            <li>25mm insulation minimum on cold side</li>
+                            <li>Intake & exhaust &gt;1m apart</li>
+                            <li>Condensate drain with trap</li>
+                            <li>Filters fitted and dated</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevSection()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextSection()">Next: Maintenance & Troubleshooting →</button>
+                </div>
+            </div>
+
+            <!-- Section 5: Maintenance -->
+            <div id="section5" class="content-area hidden">
+                <div class="section-title">
+                    Maintenance & Troubleshooting
+                    <span class="section-badge">Section 5 of 6</span>
+                </div>
+
+                <h2>Handover to Occupants</h2>
+                <p>Every ventilation system installation must include user training:</p>
+                <ul>
+                    <li>How to change filters (frequency and procedure)</li>
+                    <li>How to boost ventilation (cooking, showering)</li>
+                    <li>What the controls mean</li>
+                    <li>Warning signs of problems</li>
+                    <li>Who to call for service</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>CPH Requirement:</strong> Provide occupants with a simple user guide specific to their system. Include filter change dates in the guide.
+                </div>
+
+                <h2>Maintenance Schedule</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Frequency</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Filters (MVHR)</td>
+                            <td>Every 6-12 months</td>
+                            <td>Replace (vacuuming only extends slightly—replacement needed)</td>
+                        </tr>
+                        <tr>
+                            <td>Grilles/Valves</td>
+                            <td>Annually</td>
+                            <td>Vacuum dust, check operation</td>
+                        </tr>
+                        <tr>
+                            <td>Heat exchanger (MVHR)</td>
+                            <td>Annually</td>
+                            <td>Check for dust, clean if accessible</td>
+                        </tr>
+                        <tr>
+                            <td>Fan unit</td>
+                            <td>Annually</td>
+                            <td>Check for noise, vibration, damage</td>
+                        </tr>
+                        <tr>
+                            <td>Condensate drain</td>
+                            <td>Annually</td>
+                            <td>Check for blockages, clean trap</td>
+                        </tr>
+                        <tr>
+                            <td>Full service</td>
+                            <td>Every 2-3 years</td>
+                            <td>Professional service, flow rate check</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Troubleshooting Common Issues</h2>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>🔇 System Noisy</h4>
+                        <p><strong>Causes:</strong> Fan imbalance, duct vibration, blocked filter</p>
+                        <p><strong>Action:</strong> Check filters, ensure ducts secured with anti-vibration mounts, check fan mounting</p>
+                    </div>
+                    <div class="card">
+                        <h4>💧 Condensation on Windows</h4>
+                        <p><strong>Causes:</strong> System not running, filters blocked, boost not used</p>
+                        <p><strong>Action:</strong> Check power, change filters, educate occupants on boost use</p>
+                    </div>
+                    <div class="card">
+                        <h4>🥶 Cold Draughts</h4>
+                        <p><strong>Causes:</strong> Supply vents too close to seating, flow rates too high, no heat recovery</p>
+                        <p><strong>Action:</strong> Adjust dampers, relocate vents if possible, check commissioning</p>
+                    </div>
+                    <div class="card">
+                        <h4>⚡ High Energy Bills</h4>
+                        <p><strong>Causes:</strong> Filters blocked (fan working harder), system oversized, SFP too high</p>
+                        <p><strong>Action:</strong> Replace filters, check fan power settings, consider upgrade if old system</p>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Mould Warning:</strong> If occupants report mould after retrofit, ventilation is the first suspect. Check: Is system running? Are filters clean? Is boost being used? Is the home more airtight than the ventilation can handle?
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevSection()">← Previous</button>
+                    <button class="btn btn-primary" onclick="nextSection()">Next: Knowledge Check →</button>
+                </div>
+            </div>
+
+            <!-- Section 6: Quiz -->
+            <div id="section6" class="content-area hidden">
+                <div class="section-title">
+                    Knowledge Check
+                    <span class="section-badge">Section 6 of 6</span>
+                </div>
+
+                <p style="margin-bottom: 30px;">Test your understanding of ventilation and Part F. You need 80% to pass (4 out of 5 correct).</p>
+
+                <div id="quizContainer">
+                    <!-- Quiz questions will be inserted here by JavaScript -->
+                </div>
+
+                <div id="quizResults" style="display: none; margin-top: 30px;">
+                    <div id="resultMessage"></div>
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">Retake Quiz</button>
+                </div>
+
+                <div class="navigation" id="quizNav">
+                    <button class="btn btn-secondary" onclick="prevSection()">← Previous</button>
+                    <button class="btn btn-primary" onclick="submitQuiz()" id="submitBtn" disabled>Submit Answers</button>
+                </div>
+            </div>
+
+            <!-- Completion Screen -->
+            <div id="completionScreen" class="content-area hidden">
+                <div class="completion-badge">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🎓</div>
+                    <h2>Induction Complete!</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">You have successfully completed the Ventilation & Part F induction.</p>
+                    <p>Remember: Good ventilation is as important as good insulation. Every retrofit must include a ventilation strategy.</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="restartModule()">Restart Module</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 1;
+        const totalSections = 6;
+        let quizAnswers = {};
+        let quizSubmitted = false;
+
+        const quizQuestions = [
+            {
+                question: "According to Part F, what is the minimum whole dwelling ventilation rate calculation?",
+                options: [
+                    "0.5 × Floor Area + 2 × Bedrooms",
+                    "0.3 × Floor Area + 4 × Bedrooms",
+                    "0.4 × Floor Area + 3 × Bedrooms",
+                    "0.6 × Floor Area + 5 × Bedrooms"
+                ],
+                correct: 1,
+                explanation: "The correct formula is 0.3 × Floor Area (m²) + 4 × Number of Bedrooms. This ensures adequate fresh air based on both space and occupancy."
+            },
+            {
+                question: "At what airtightness level does MVHR become the recommended ventilation strategy?",
+                options: [
+                    "< 5 m³/hr·m² @ 50Pa",
+                    "< 3 m³/hr·m² @ 50Pa",
+                    "< 7 m³/hr·m² @ 50Pa",
+                    "< 1 m³/hr·m² @ 50Pa"
+                ],
+                correct: 1,
+                explanation: "MVHR is recommended when airtightness is better than 3 m³/hr·m² @ 50Pa. Below this threshold, MEV with background ventilators is usually sufficient."
+            },
+            {
+                question: "What is the maximum Specific Fan Power (SFP) allowed for MVHR systems under Part F?",
+                options: [
+                    "0.8 W/l/s",
+                    "0.6 W/l/s",
+                    "1.0 W/l/s",
+                    "0.4 W/l/s"
+                ],
+                correct: 1,
+                explanation: "Part F requires MVHR systems to have a Specific Fan Power (SFP) not exceeding 0.6 W/l/s to ensure energy efficiency."
+            },
+            {
+                question: "How often should MVHR filters typically be changed?",
+                options: [
+                    "Every month",
+                    "Every 3 months",
+                    "Every 6-12 months",
+                    "Every 2 years"
+                ],
+                correct: 2,
+                explanation: "MVHR filters should be changed every 6-12 months depending on the environment. More frequently in dusty/pollen-heavy areas."
+            },
+            {
+                question: "What is the primary risk of improving airtightness without upgrading ventilation?",
+                options: [
+                    "The house will be too warm",
+                    "Condensation, mould, and poor air quality",
+                    "The insulation will be less effective",
+                    "Energy bills will increase"
+                ],
+                correct: 1,
+                explanation: "Without adequate ventilation, improved airtightness traps moisture and pollutants, leading to condensation, mould growth, and health risks."
+            }
+        ];
+
+        function updateProgress() {
+            const progress = (currentSection / totalSections) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function showSection(n) {
+            document.querySelectorAll('.content-area').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`section${n}`).classList.remove('hidden');
+            currentSection = n;
+            updateProgress();
+            
+            if (n === 6) {
+                initQuiz();
+            }
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) {
+                showSection(currentSection + 1);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 1) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        function initQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+            quizAnswers = {};
+            quizSubmitted = false;
+            document.getElementById('quizResults').style.display = 'none';
+            document.getElementById('quizNav').style.display = 'flex';
+            document.getElementById('submitBtn').disabled = true;
+
+            quizQuestions.forEach((q, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'quiz-container';
+                qDiv.style.marginBottom = '30px';
+                
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <div class="quiz-option" onclick="selectQuizOption(${index}, ${optIndex})" id="q${index}-opt${optIndex}">
+                            <strong>${String.fromCharCode(65 + optIndex)}.</strong> ${opt}
+                        </div>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div class="quiz-question">${index + 1}. ${q.question}</div>
+                    <div class="quiz-options">${optionsHtml}</div>
+                    <div class="feedback" id="feedback${index}"></div>
+                `;
+                
+                container.appendChild(qDiv);
+            });
+        }
+
+        function selectQuizOption(questionIndex, optionIndex) {
+            if (quizSubmitted) return;
+            
+            quizAnswers[questionIndex] = optionIndex;
+            
+            // Update visual selection
+            document.querySelectorAll(`[id^="q${questionIndex}-opt"]`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById(`q${questionIndex}-opt${optionIndex}`).classList.add('selected');
+            
+            // Enable submit if all answered
+            if (Object.keys(quizAnswers).length === quizQuestions.length) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function submitQuiz() {
+            quizSubmitted = true;
+            let correct = 0;
+            
+            quizQuestions.forEach((q, index) => {
+                const selected = quizAnswers[index];
+                const isCorrect = selected === q.correct;
+                if (isCorrect) correct++;
+                
+                // Show correct/wrong styling
+                document.getElementById(`q${index}-opt${selected}`).classList.add(isCorrect ? 'correct' : 'wrong');
+                if (!isCorrect) {
+                    document.getElementById(`q${index}-opt${q.correct}`).classList.add('correct');
+                }
+                
+                // Show feedback
+                const feedback = document.getElementById(`feedback${index}`);
+                feedback.innerHTML = `
+                    <strong>${isCorrect ? '✓ Correct' : '✗ Incorrect'}</strong><br>
+                    ${q.explanation}
+                `;
+                feedback.className = `feedback show ${isCorrect ? 'success-box' : 'danger-box'}`;
+            });
+            
+            const percentage = (correct / quizQuestions.length) * 100;
+            const passed = percentage >= 80;
+            
+            document.getElementById('quizNav').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            const resultDiv = document.getElementById('resultMessage');
+            if (passed) {
+                resultDiv.innerHTML = `
+                    <div class="completion-badge">
+                        <h2>🎉 Congratulations!</h2>
+                        <p>You scored ${correct}/${quizQuestions.length} (${percentage}%) and passed the induction.</p>
+                    </div>
+                `;
+                setTimeout(() => {
+                    document.getElementById('completionScreen').classList.remove('hidden');
+                    document.getElementById('section6').classList.add('hidden');
+                }, 2000);
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="danger-box" style="text-align: center;">
+                        <h2>❌ Not Quite</h2>
+                        <p>You scored ${correct}/${quizQuestions.length} (${percentage}%). You need 80% to pass.</p>
+                        <p>Please review the material and try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            initQuiz();
+        }
+
+        function restartModule() {
+            currentSection = 1;
+            showSection(1);
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
