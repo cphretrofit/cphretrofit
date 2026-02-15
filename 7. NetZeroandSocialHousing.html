@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Net Zero & PRS Legislation Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f4c3a;
+            --secondary: #2d8a5e;
+            --accent: #e8f5e9;
+            --warning: #ff9800;
+            --danger: #d32f2f;
+            --text: #1a1a1a;
+            --light: #f5f5f5;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .module {
+            background: white;
+            margin: 30px 0;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .module:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .module-header {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .module-header:hover {
+            background: #0d3d2f;
+        }
+
+        .module-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .module-number {
+            background: rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .module-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .module-content.active {
+            max-height: 3000px;
+        }
+
+        .module-body {
+            padding: 30px;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-left: 4px solid var(--secondary);
+            padding-left: 15px;
+        }
+
+        .info-box {
+            background: var(--accent);
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid var(--warning);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #ffebee;
+            border-left: 4px solid var(--danger);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--secondary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--secondary);
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--secondary);
+            background: var(--accent);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--primary);
+            background: var(--accent);
+        }
+
+        .quiz-option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .checklist li.checked::before {
+            content: '☑';
+            color: var(--secondary);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateX(5px);
+            border-color: var(--secondary);
+        }
+
+        .metric-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .completion-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .completion-badge.show {
+            opacity: 1;
+        }
+
+        .calculator {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid var(--secondary);
+        }
+
+        .calculator-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .result-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--secondary);
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--primary);
+            margin-top: 50px;
+            border-top: 2px solid var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .module-header h2 { font-size: 1.2rem; }
+            .module-body { padding: 20px; }
+            table { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🏠 UK Net Zero & PRS Legislation</h1>
+    <p class="subtitle">Professional Training Course for Landlords and Property Managers</p>
+</header>
+
+<div class="container">
+    <div class="progress-container">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: bold; color: var(--primary);">Course Progress</span>
+            <span id="progress-text">0% Complete</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill">0%</div>
+        </div>
+    </div>
+
+    <!-- Module 1: Introduction to UK Net Zero -->
+    <div class="module" data-module="1">
+        <div class="module-header" onclick="toggleModule(1)">
+            <h2><span class="module-number">1</span> Understanding UK Net Zero Strategy</h2>
+            <span class="toggle-icon" id="icon-1">▼</span>
+            <span class="completion-badge" id="badge-1">✓ Complete</span>
+        </div>
+        <div class="module-content" id="content-1">
+            <div class="module-body">
+                <div class="content-section">
+                    <h3>The UK's Net Zero Commitment</h3>
+                    <p>The UK has committed to achieving <strong>Net Zero greenhouse gas emissions by 2050</strong>. This legally binding target requires significant changes across all sectors, with buildings responsible for approximately <strong>20% of UK emissions</strong>—making the housing sector crucial to success.</p>
+                    
+                    <div class="info-box">
+                        <strong>Key Fact:</strong> Domestic properties account for 66% of building emissions, which is why the government is focusing heavily on improving energy efficiency in the Private Rented Sector (PRS).
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3>Why the Private Rented Sector Matters</h3>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        <li>Over <strong>4.4 million households</strong> rent privately in England and Wales</li>
+                        <li>PRS properties are typically older and less efficient than owner-occupied homes</li>
+                        <li>Tenants in inefficient properties face higher energy bills and fuel poverty</li>
+                        <li>Improving PRS efficiency is essential for meeting 2050 targets</li>
+                    </ul>
+                </div>
+
+                <div class="content-section">
+                    <h3>Key Legislation Overview</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="timeline-date">2008</span>
+                            Energy Performance Certificates (EPCs) introduced as legal requirement
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2015</span>
+                            Minimum Energy Efficiency Standards (MEES) regulations introduced
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2020</span>
+                            MEES enforcement: Minimum EPC rating E required for all tenancies
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2026</span>
+                            New EPC methodology introduced (Home Energy Model)
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2030</span>
+                            New MEES: Minimum EPC C required for all private rented properties
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">1. What percentage of UK building emissions come from domestic properties?</div>
+                    <div class="quiz-options" id="q1-options">
+                        <div class="quiz-option" onclick="selectOption(1, 'A', false)">A) 20%</div>
+                        <div class="quiz-option" onclick="selectOption(1, 'B', true)">B) 66%</div>
+                        <div class="quiz-option" onclick="selectOption(1, 'C', false)">C) 50%</div>
+                        <div class="quiz-option" onclick="selectOption(1, 'D', false)">D) 33%</div>
+                    </div>
+                    <div id="q1-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    <button class="btn" onclick="completeModule(1)">Mark Module Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 2: Current MEES Requirements -->
+    <div class="module" data-module="2">
+        <div class="module-header" onclick="toggleModule(2)">
+            <h2><span class="module-number">2</span> Current MEES Requirements (2020-2025)</h2>
+            <span class="toggle-icon" id="icon-2">▼</span>
+            <span class="completion-badge" id="badge-2">✓ Complete</span>
+        </div>
+        <div class="module-content" id="content-2">
+            <div class="module-body">
+                <div class="content-section">
+                    <h3>Minimum Energy Efficiency Standards (MEES)</h3>
+                    <p>Since <strong>April 2020</strong>, it has been illegal to let a property in England and Wales with an EPC rating below <strong>Band E</strong>. This applies to:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 2;">
+                        <li>All new tenancies</li>
+                        <li>Existing tenancies (renewals and continuations)</li>
+                        <li>Both domestic and non-domestic properties (different thresholds)</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <strong>⚠️ Penalties for Non-Compliance:</strong><br>
+                    • Up to <strong>£5,000</strong> per property for renting out sub-standard properties<br>
+                    • <strong>£200</strong> for failure to provide EPC to tenants<br>
+                    • Invalid Section 21 eviction notices if EPC not provided
+                </div>
+
+                <div class="content-section">
+                    <h3>Valid Exemptions</h3>
+                    <p>Landlords may register exemptions if:</p>
+                    <ul class="checklist" id="exemption-list">
+                        <li onclick="toggleCheck(this)">Property is listed or in a conservation area (and improvements would alter character)</li>
+                        <li onclick="toggleCheck(this)">Required improvements would reduce property value by 5%+</li>
+                        <li onclick="toggleCheck(this)">Third-party consent refused (e.g., freeholder won't allow work)</li>
+                        <li onclick="toggleCheck(this)">Wall insulation would negatively impact structure</li>
+                        <li onclick="toggleCheck(this)">Cost of improvements exceeds £3,500 (current cap)</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">Click items to check them off your understanding.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>EPC Requirements Checklist</h3>
+                    <table>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Details</th>
+                            <th>Penalty</th>
+                        </tr>
+                        <tr>
+                            <td>Valid EPC</td>
+                            <td>Must be valid for 10 years</td>
+                            <td>£200 fine</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum Rating</td>
+                            <td>Band E or higher</td>
+                            <td>Up to £5,000</td>
+                        </tr>
+                        <tr>
+                            <td>Provision to Tenants</td>
+                            <td>Must provide before tenancy starts</td>
+                            <td>Section 21 invalid</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing</td>
+                            <td>EPC rating must be included in adverts</td>
+                            <td>Enforcement action</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">2. What is the current minimum EPC rating required for legally letting a property?</div>
+                    <div class="quiz-options" id="q2-options">
+                        <div class="quiz-option" onclick="selectOption(2, 'A', false)">A) Band D</div>
+                        <div class="quiz-option" onclick="selectOption(2, 'B', true)">B) Band E</div>
+                        <div class="quiz-option" onclick="selectOption(2, 'C', false)">C) Band C</div>
+                        <div class="quiz-option" onclick="selectOption(2, 'D', false)">D) Band F</div>
+                    </div>
+                    <div id="q2-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    <button class="btn" onclick="completeModule(2)">Mark Module Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 3: Future Changes 2030 -->
+    <div class="module" data-module="3">
+        <div class="module-header" onclick="toggleModule(3)">
+            <h2><span class="module-number">3</span> Future Standards: EPC C by 2030</h2>
+            <span class="toggle-icon" id="icon-3">▼</span>
+            <span class="completion-badge" id="badge-3">✓ Complete</span>
+        </div>
+        <div class="module-content" id="content-3">
+            <div class="module-body">
+                <div class="content-section">
+                    <h3>The 2030 Target</h3>
+                    <p>The government has confirmed that <strong>all privately rented properties in England and Wales must achieve a minimum EPC rating of C by 1 October 2030</strong>. This applies to both new and existing tenancies simultaneously.</p>
+                    
+                    <div class="warning-box">
+                        <strong>Important Update (January 2026):</strong><br>
+                        • Single implementation date: <strong>1 October 2030</strong> (no separate dates for new/existing tenancies)<br>
+                        • Maximum fine increased to <strong>£30,000</strong> per property<br>
+                        • Cost cap set at <strong>£10,000</strong> per property every 10 years
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3>Transitional Arrangements</h3>
+                    <div class="info-box">
+                        <strong>Early Action Protection:</strong> Properties that achieve EPC C under the <em>current</em> methodology before <strong>1 October 2029</strong> will be considered compliant until that EPC expires (up to 10 years).
+                    </div>
+                    <p>This means landlords acting now can lock in compliance for up to a decade, even after the new metrics are introduced.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>New EPC Methodology (From 2026)</h3>
+                    <p>The EPC system is being overhauled with the <strong>Home Energy Model</strong>. New metrics will include:</p>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">🏗️ Fabric Performance</div>
+                        <p>Measures thermal efficiency of the building envelope (insulation, windows, airtightness). This will be the <strong>primary metric</strong> for compliance.</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">🔥 Heating System</div>
+                        <p>Assesses efficiency and emissions of heating sources. Properties with fossil fuel heating will not be able to achieve Band C on this metric alone.</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">📱 Smart Readiness</div>
+                        <p>Evaluates potential for smart technologies and ability to use smart tariffs. Requires microgeneration or energy storage for Band C.</p>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3>Cost Cap Calculator</h3>
+                    <div class="calculator">
+                        <p>Calculate your maximum required investment:</p>
+                        <label>Property Value (£):</label>
+                        <input type="number" class="calculator-input" id="prop-value" placeholder="e.g., 200000">
+                        <button class="btn" onclick="calculateCap()">Calculate Cost Cap</button>
+                        <div class="result-box" id="calc-result">
+                            <strong>Standard Cost Cap:</strong> £10,000<br>
+                            <strong>Your Cost Cap:</strong> <span id="your-cap"></span><br>
+                            <small>If property value is under £100,000, cap is 10% of property value.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">3. By what date must all rental properties achieve EPC C rating?</div>
+                    <div class="quiz-options" id="q3-options">
+                        <div class="quiz-option" onclick="selectOption(3, 'A', false)">A) 1 October 2028</div>
+                        <div class="quiz-option" onclick="selectOption(3, 'B', false)">B) 1 April 2030</div>
+                        <div class="quiz-option" onclick="selectOption(3, 'C', true)">C) 1 October 2030</div>
+                        <div class="quiz-option" onclick="selectOption(3, 'D', false)">D) 1 January 2029</div>
+                    </div>
+                    <div id="q3-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    <button class="btn" onclick="completeModule(3)">Mark Module Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 4: Exemptions and Special Cases -->
+    <div class="module" data-module="4">
+        <div class="module-header" onclick="toggleModule(4)">
+            <h2><span class="module-number">4</span> Exemptions and Special Provisions</h2>
+            <span class="toggle-icon" id="icon-4">▼</span>
+            <span class="completion-badge" id="badge-4">✓ Complete</span>
+        </div>
+        <div class="module-content" id="content-4">
+            <div class="module-body">
+                <div class="content-section">
+                    <h3>New Exemption Categories (Post-2030)</h3>
+                    <p>The government has introduced new exemption types to address practical challenges:</p>
+                    
+                    <table>
+                        <tr>
+                            <th>Exemption Type</th>
+                            <th>Description</th>
+                            <th>Duration</th>
+                        </tr>
+                        <tr>
+                            <td>Cost Cap</td>
+                            <td>Spent £10,000 (or 10% of value if under £100k) without reaching C</td>
+                            <td>10 years</td>
+                        </tr>
+                        <tr>
+                            <td>Negative Impact</td>
+                            <td>Specific measure would negatively impact the property</td>
+                            <td>5 years</td>
+                        </tr>
+                        <tr>
+                            <td>Solid Wall Insulation</td>
+                            <td>Cannot install solid wall insulation (new specific exemption)</td>
+                            <td>5 years</td>
+                        </tr>
+                        <tr>
+                            <td>Third Party Consent</td>
+                            <td>Freeholder, lender, or planning authority refuses consent</td>
+                            <td>5 years</td>
+                        </tr>
+                        <tr>
+                            <td>Portfolio Approach</td>
+                            <td>Large landlords can average spend across portfolio (under consideration)</td>
+                            <td>TBC</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="content-section">
+                    <h3>Special Property Types</h3>
+                    <div class="warning-box">
+                        <strong>Listed Buildings & Conservation Areas:</strong><br>
+                        Heritage properties are not automatically exempt. Landlords must demonstrate that specific energy efficiency measures would unacceptably alter the character or appearance. Each measure must be assessed individually.
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Short-Term Lets:</strong><br>
+                        MEES will <strong>not</strong> apply to short-term lets (e.g., Airbnb, holiday cottages). However, these properties will still require an EPC for marketing purposes.
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3>Rural and Off-Grid Properties</h3>
+                    <p>Special considerations for properties not connected to mains gas:</p>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        <li>Fabric performance remains the primary metric (not heating system)</li>
+                        <li>Landlords not forced to install heat pumps if impractical</li>
+                        <li>Smart readiness alternatives available where connectivity is poor</li>
+                        <li>Oil heating can remain if upgrades would exceed cost cap</li>
+                    </ul>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">4. How long is the Cost Cap exemption valid once registered?</div>
+                    <div class="quiz-options" id="q4-options">
+                        <div class="quiz-option" onclick="selectOption(4, 'A', false)">A) 5 years</div>
+                        <div class="quiz-option" onclick="selectOption(4, 'B', true)">B) 10 years</div>
+                        <div class="quiz-option" onclick="selectOption(4, 'C', false)">C) 3 years</div>
+                        <div class="quiz-option" onclick="selectOption(4, 'D', false)">D) Until property is sold</div>
+                    </div>
+                    <div id="q4-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    <button class="btn" onclick="completeModule(4)">Mark Module Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 5: Practical Compliance -->
+    <div class="module" data-module="5">
+        <div class="module-header" onclick="toggleModule(5)">
+            <h2><span class="module-number">5</span> Practical Compliance and Improvement</h2>
+            <span class="toggle-icon" id="icon-5">▼</span>
+            <span class="completion-badge" id="badge-5">✓ Complete</span>
+        </div>
+        <div class="module-content" id="content-5">
+            <div class="module-body">
+                <div class="content-section">
+                    <h3>Priority Improvements (Best ROI)</h3>
+                    <p>To achieve EPC C efficiently, focus on these measures in order of cost-effectiveness:</p>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">1. Lighting (Cost: £50-150)</div>
+                        <p>Replace all halogen bulbs with LEDs. Potential EPC improvement: 1-5 points.</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">2. Heating Controls (Cost: £150-400)</div>
+                        <p>Install smart thermostats and thermostatic radiator valves (TRVs). Potential improvement: 5-10 points.</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">3. Loft Insulation (Cost: £400-1,500)</div>
+                        <p>Top up to 270mm depth. Potential improvement: 10-20 points.</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">4. Cavity Wall Insulation (Cost: £500-2,500)</div>
+                        <p>If property has cavity walls. Potential improvement: 10-20 points.</p>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-title">5. Windows (Cost: £3,000-8,000)</div>
+                        <p>Upgrade to double/triple glazing. Significant impact on fabric performance metric.</p>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3>Financial Support Available</h3>
+                    <div class="info-box">
+                        <strong>Warm Homes Plan (2026 onwards):</strong><br>
+                        • Grants for heat pumps (up to £7,500)<br>
+                        • Low/zero interest loans for energy efficiency<br>
+                        • Targeted support for fuel-poor households<br>
+                        • Local authority delivery schemes
+                    </div>
+                    <p><strong>Note:</strong> Expenditure from <strong>1 October 2025</strong> onwards counts toward the cost cap exemption, so early action is financially strategic.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3>Action Plan for Landlords</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="timeline-date">Immediate (2025)</span>
+                            Check current EPC ratings. Commission new EPCs if current ones expire before 2029.
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2025-2027</span>
+                            Implement low-cost measures (LEDs, heating controls, draught-proofing). Start planning major works.
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2027-2029</span>
+                            Complete major improvements (insulation, windows). Ensure EPC C achieved before October 2029 for 10-year compliance.
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">2029-2030</span>
+                            Final compliance check. Register exemptions if applicable. Prepare for new metric assessments.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">5. From what date does expenditure count toward the cost cap exemption?</div>
+                    <div class="quiz-options" id="q5-options">
+                        <div class="quiz-option" onclick="selectOption(5, 'A', false)">A) 1 January 2025</div>
+                        <div class="quiz-option" onclick="selectOption(5, 'B', false)">B) 1 February 2025</div>
+                        <div class="quiz-option" onclick="selectOption(5, 'C', true)">C) 1 October 2025</div>
+                        <div class="quiz-option" onclick="selectOption(5, 'D', false)">D) 1 January 2026</div>
+                    </div>
+                    <div id="q5-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    <button class="btn" onclick="completeModule(5)">Complete Course</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">🎓 Course Completion Certificate</p>
+        <p>Upon completing all modules, you have demonstrated understanding of UK Net Zero legislation and PRS MEES requirements.</p>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+            <strong>Sources:</strong> UK Government Warm Homes Plan 2026, DESNZ Consultation Responses, 
+            National Housing Federation, CLA Guidance<br>
+            <em>Last Updated: February 2026</em>
+        </p>
+    </footer>
+</div>
+
+<script>
+    let completedModules = new Set();
+    const totalModules = 5;
+
+    function toggleModule(moduleNum) {
+        const content = document.getElementById(`content-${moduleNum}`);
+        const icon = document.getElementById(`icon-${moduleNum}`);
+        
+        if (content.classList.contains('active')) {
+            content.classList.remove('active');
+            icon.textContent = '▼';
+        } else {
+            // Close others
+            document.querySelectorAll('.module-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.toggle-icon').forEach(el => el.textContent = '▼');
+            
+            content.classList.add('active');
+            icon.textContent = '▲';
+        }
+    }
+
+    function selectOption(questionNum, option, isCorrect) {
+        const options = document.getElementById(`q${questionNum}-options`).children;
+        const feedback = document.getElementById(`q${questionNum}-feedback`);
+        
+        // Reset all options
+        for (let opt of options) {
+            opt.classList.remove('selected', 'correct', 'incorrect');
+        }
+        
+        // Highlight selected
+        event.target.classList.add('selected');
+        
+        if (isCorrect) {
+            event.target.classList.add('correct');
+            feedback.innerHTML = '<span style="color: #4caf50;">✓ Correct! Well done.</span>';
+            feedback.style.display = 'block';
+        } else {
+            event.target.classList.add('incorrect');
+            feedback.innerHTML = '<span style="color: #f44336;">✗ Incorrect. Please review the material and try again.</span>';
+            feedback.style.display = 'block';
+        }
+    }
+
+    function completeModule(moduleNum) {
+        completedModules.add(moduleNum);
+        document.getElementById(`badge-${moduleNum}`).classList.add('show');
+        updateProgress();
+        
+        // Visual feedback
+        const btn = event.target;
+        btn.textContent = '✓ Completed';
+        btn.style.background = '#4caf50';
+        btn.disabled = true;
+        
+        // Auto-scroll to next module if available
+        if (moduleNum < totalModules) {
+            setTimeout(() => {
+                toggleModule(moduleNum + 1);
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                alert('🎉 Congratulations! You have completed the UK Net Zero & PRS Legislation training course.');
+            }, 500);
+        }
+    }
+
+    function updateProgress() {
+        const percentage = Math.round((completedModules.size / totalModules) * 100);
+        document.getElementById('progress-fill').style.width = percentage + '%';
+        document.getElementById('progress-fill').textContent = percentage + '%';
+        document.getElementById('progress-text').textContent = percentage + '% Complete';
+    }
+
+    function toggleCheck(element) {
+        element.classList.toggle('checked');
+    }
+
+    function calculateCap() {
+        const value = parseFloat(document.getElementById('prop-value').value);
+        const resultBox = document.getElementById('calc-result');
+        const yourCapSpan = document.getElementById('your-cap');
+        
+        if (!value || value <= 0) {
+            alert('Please enter a valid property value');
+            return;
+        }
+        
+        let cap = 10000;
+        if (value < 100000) {
+            cap = value * 0.10;
+        }
+        
+        yourCapSpan.textContent = '£' + cap.toLocaleString('en-GB', {maximumFractionDigits: 0});
+        resultBox.classList.add('show');
+    }
+
+    // Initialize first module open
+    window.onload = function() {
+        toggleModule(1);
+    };
+</script>
+
+</body>
+</html>

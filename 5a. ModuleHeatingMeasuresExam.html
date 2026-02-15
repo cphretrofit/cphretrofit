@@ -3,664 +3,1182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module Three: Key Characteristics of Domestic Energy Efficiency Measures</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <title>CPH Retrofit - Ventilation & Part F Certification Exam</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2c5282;
+            --accent: #48bb78;
+            --danger: #e53e3e;
+            --warning: #ed8936;
+            --info: #4299e1;
+            --bg: #f7fafc;
+            --card: #ffffff;
+            --text: #2d3748;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #e2e8f0;
-            overflow-x: hidden;
-        }
-        h1, h2, h3, .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        /* Animations */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
         }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
-        /* Interactive Card Hover */
-        .measure-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .measure-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-color: #3b82f6;
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
-        /* Toggle Switch */
-        .toggle-checkbox:checked {
+        .exam-card {
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .timer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
             right: 0;
-            border-color: #10b981;
+            height: 6px;
+            background: var(--border);
+            z-index: 1000;
         }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #10b981;
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #38a169);
+            transition: width 1s linear;
+            width: 100%;
         }
-        
-        /* Thermometer Animation */
-        .thermometer-fill {
-            transition: height 1s ease-in-out;
+
+        .timer-fill.warning {
+            background: linear-gradient(90deg, var(--warning), #dd6b20);
+        }
+
+        .timer-fill.danger {
+            background: linear-gradient(90deg, var(--danger), #c53030);
+        }
+
+        .timer-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer-display.warning {
+            color: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        .timer-display.danger {
+            color: var(--danger);
+            animation: pulse 0.5s infinite;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            margin-top: 6px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .exam-content {
+            padding: 40px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-badge {
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            position: relative;
+            padding: 18px 20px 18px 60px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 1.05rem;
+        }
+
+        .option:hover {
+            border-color: var(--secondary);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .option.selected {
+            border-color: var(--secondary);
+            background: #ebf8ff;
+        }
+
+        .option input {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .option-label {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 95, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #cbd5e0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+
+        .start-screen, .results-container {
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .exam-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .info-card p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .rules-box {
+            background: #fffaf0;
+            border-left: 4px solid var(--warning);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .rules-box h3 {
+            color: var(--warning);
+            margin-bottom: 15px;
+        }
+
+        .rules-box ul {
+            margin-left: 20px;
+            color: #744210;
+        }
+
+        .rules-box li {
+            margin-bottom: 10px;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: scaleIn 0.6s ease;
+        }
+
+        .score-circle.pass {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            box-shadow: 0 10px 40px rgba(72, 187, 120, 0.4);
+        }
+
+        .score-circle.fail {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            color: white;
+            box-shadow: 0 10px 40px rgba(229, 62, 62, 0.4);
+        }
+
+        .score-circle.resit {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+            box-shadow: 0 10px 40px rgba(237, 137, 54, 0.4);
+        }
+
+        .score-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 1.1rem;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .result-message {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .result-details {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .review-section {
+            text-align: left;
+            margin-top: 40px;
+            max-height: 600px;
+            overflow-y: auto;
+            border-top: 2px solid var(--border);
+            padding-top: 30px;
+        }
+
+        .review-item {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid transparent;
+        }
+
+        .review-item.correct {
+            border-left-color: var(--accent);
+            background: #f0fff4;
+        }
+
+        .review-item.wrong {
+            border-left-color: var(--danger);
+            background: #fff5f5;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            align-items: center;
+        }
+
+        .review-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .review-status.correct {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .review-status.wrong {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .review-question {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .review-answer {
+            font-size: 0.95rem;
+            color: #4a5568;
+            margin-top: 8px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 8px;
+        }
+
+        .correct-answer {
+            color: #22543d;
+            font-weight: 600;
+        }
+
+        .your-answer {
+            color: #742a2a;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #4a5568;
+            border-left: 3px solid var(--info);
+        }
+
+        .resit-warning {
+            background: #fffaf0;
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #744210;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.6rem; }
+            .exam-content { padding: 25px; }
+            .question-text { font-size: 1.1rem; }
+            .option { padding: 15px 15px 15px 50px; }
+            .navigation { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .timer-display { top: 10px; right: 10px; padding: 8px 16px; font-size: 1rem; }
         }
     </style>
 </head>
-<body class="antialiased selection:bg-blue-500 selection:text-white">
+<body>
+    <div class="timer-bar">
+        <div class="timer-fill" id="timerFill"></div>
+    </div>
+    
+    <div class="timer-display" id="timerDisplay">
+        <span>⏱️</span>
+        <span id="timeText">60:00</span>
+    </div>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-panel border-b border-slate-700/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-400 rounded-lg flex items-center justify-center text-white font-bold">M3</div>
-                    <span class="font-display font-bold text-xl tracking-tight">Retrofit<span class="text-blue-400">Academy</span></span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#introduction" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Introduction</a>
-                        <a href="#physics" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Physics</a>
-                        <a href="#materials" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Materials</a>
-                        <a href="#measures" class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Measures</a>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 CPH Retrofit Certification</h1>
+            <p>Ventilation & Building Regulations Part F</p>
+        </div>
+
+        <div class="exam-card">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <h2>Ventilation & Part F Examination</h2>
+                <p style="color: #718096; margin-bottom: 30px;">Demonstrate your knowledge of ventilation systems, Part F compliance, and CPH Retrofit standards.</p>
+                
+                <div class="exam-info">
+                    <div class="info-card">
+                        <h3>30</h3>
+                        <p>Questions</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>70%</h3>
+                        <p>Pass Mark<br>(21/30 correct)</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>60</h3>
+                        <p>Minutes<br>Time Limit</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>1</h3>
+                        <p>Resit<br>Allowed</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-900"></div>
-        </div>
-        
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="inline-block mb-4 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-semibold tracking-wide uppercase fade-in-up">
-                PAS 2035 Certified
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight fade-in-up" style="transition-delay: 100ms;">
-                Module Three:<br>
-                <span class="gradient-text">Domestic Energy Efficiency</span>
-            </h1>
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-400 fade-in-up" style="transition-delay: 200ms;">
-                Master the key characteristics of building fabric improvements. Learn the physics of heat loss, material selection, and the PAS 2035 risk-based approach to retrofit.
-            </p>
-            <div class="mt-10 flex justify-center gap-4 fade-in-up" style="transition-delay: 300ms;">
-                <a href="#introduction" class="px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-500/25">
-                    Start Learning
-                </a>
-                <button onclick="scrollToCalculator()" class="px-8 py-3 rounded-lg glass-panel hover:bg-slate-800 text-slate-300 font-semibold transition-all border border-slate-600">
-                    Try U-Value Calc
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Introduction & PAS 2035 Context -->
-    <section id="introduction" class="py-20 bg-slate-900/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="fade-in-up">
-                    <h2 class="text-3xl font-bold mb-6 text-white">The PAS 2035 Framework</h2>
-                    <p class="text-slate-400 mb-6 text-lg leading-relaxed">
-                        PAS 2035 is the UK standard for retrofitting domestic dwellings. It mandates a <strong class="text-emerald-400">"Whole House, Fabric First"</strong> approach. This means we prioritize the building envelope before adding expensive heating technologies.
-                    </p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                                <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </div>
-                            <span class="ml-3 text-slate-300">Deliver genuine energy and carbon savings</span>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                                <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </div>
-                            <span class="ml-3 text-slate-300">Protect occupant health and comfort</span>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center mt-1">
-                                <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </div>
-                            <span class="ml-3 text-slate-300">Avoid unintended consequences (damp, mould, structural damage)</span>
-                        </li>
+                <div class="rules-box">
+                    <h3>⚠️ Examination Rules</h3>
+                    <ul>
+                        <li>You have <strong>60 minutes</strong> to complete all 30 questions</li>
+                        <li>You must achieve <strong>70% (21 correct)</strong> to pass</li>
+                        <li>If you fail, you may resit <strong>once</strong> immediately</li>
+                        <li>If you fail the resit, you must wait 24 hours and retake the induction</li>
+                        <li>The timer cannot be paused once started</li>
+                        <li>You can navigate between questions using Previous/Next buttons</li>
+                        <li>All answers will be revealed with explanations after submission</li>
                     </ul>
                 </div>
-                <div class="relative fade-in-up" style="transition-delay: 200ms;">
-                    <div class="glass-panel rounded-2xl p-8 border border-slate-700">
-                        <h3 class="text-xl font-semibold mb-4 text-blue-400">What is the Building Fabric?</h3>
-                        <p class="text-slate-400 mb-6">The physical envelope separating internal conditioned space from the external environment.</p>
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
-                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🏠</div>
-                                <div class="text-sm font-medium text-slate-300">Roofs</div>
-                            </div>
-                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
-                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🧱</div>
-                                <div class="text-sm font-medium text-slate-300">Walls</div>
-                            </div>
-                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
-                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🏗️</div>
-                                <div class="text-sm font-medium text-slate-300">Floors</div>
-                            </div>
-                            <div class="bg-slate-800/50 p-4 rounded-lg text-center hover:bg-slate-800 transition-colors cursor-default group">
-                                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🪟</div>
-                                <div class="text-sm font-medium text-slate-300">Openings</div>
-                            </div>
-                        </div>
+
+                <div style="background: #ebf8ff; border-left: 4px solid var(--info); padding: 20px; border-radius: 8px; text-align: left; margin: 20px 0;">
+                    <strong style="color: var(--primary);">Topics Covered:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px; color: #4a5568;">
+                        <li>Part F Building Regulations requirements</li>
+                        <li>Ventilation system types (MEV, MVHR, Natural)</li>
+                        <li>Airflow calculations and commissioning</li>
+                        <li>Installation standards and common errors</li>
+                        <li>Maintenance procedures and troubleshooting</li>
+                        <li>Health and safety considerations</li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-primary" onclick="startExam()" style="margin-top: 20px; font-size: 1.2rem; padding: 18px 50px;">
+                    Start Examination →
+                </button>
+            </div>
+
+            <!-- Exam Screen -->
+            <div id="examScreen" class="hidden">
+                <div class="exam-content">
+                    <div class="question-header">
+                        <span class="question-number" id="questionNumber">Question 1 of 30</span>
+                        <span class="section-badge" id="sectionBadge">Part F Basics</span>
+                    </div>
+
+                    <div class="question-text" id="questionText"></div>
+
+                    <div class="options" id="optionsContainer"></div>
+
+                    <div class="navigation">
+                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+                            ← Previous
+                        </button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">
+                            Next →
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="results-container hidden">
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-number" id="scoreNumber">0%</div>
+                    <div class="score-label" id="scoreLabel">Score</div>
+                </div>
+
+                <div class="result-message" id="resultMessage"></div>
+                <div class="result-details" id="resultDetails"></div>
+
+                <div id="resitSection" class="hidden">
+                    <div class="resit-warning">
+                        <strong>⚠️ Resit Available</strong>
+                        <p>You have one opportunity to resit this exam immediately. The questions will be the same but shuffled.</p>
+                    </div>
+                    <button class="btn btn-warning" onclick="startResit()" style="margin: 10px;">
+                        🔄 Start Resit Exam
+                    </button>
+                </div>
+
+                <div style="display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="toggleReview()">
+                        📋 Review Answers
+                    </button>
+                    <button class="btn btn-secondary" onclick="restartExam()">
+                        🏠 Return to Start
+                    </button>
+                </div>
+
+                <div id="reviewContainer" class="review-section hidden"></div>
             </div>
         </div>
-    </section>
-
-    <!-- Interactive Physics Section -->
-    <section id="physics" class="py-20 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-up">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Basic Building Physics</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto">Heat flows from warm to cold. Understanding the three mechanisms of heat loss is crucial for effective retrofit design.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Conduction Card -->
-                <div class="glass-panel rounded-xl p-6 border-t-4 border-orange-500 fade-in-up hover:bg-slate-800/50 transition-all cursor-pointer group" onclick="togglePhysics('conduction')">
-                    <div class="h-12 w-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Conduction</h3>
-                    <p class="text-slate-400 text-sm mb-4">Heat flow through solid elements (walls, roofs, floors).</p>
-                    <div id="physics-detail-conduction" class="hidden mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300">
-                        <strong>Solution:</strong> Insulation materials trap air pockets to slow this transfer. Lower thermal conductivity (λ) means better resistance.
-                    </div>
-                    <button class="text-orange-400 text-xs font-semibold uppercase tracking-wider mt-2 group-hover:text-orange-300">Learn More</button>
-                </div>
-
-                <!-- Convection Card -->
-                <div class="glass-panel rounded-xl p-6 border-t-4 border-blue-500 fade-in-up hover:bg-slate-800/50 transition-all cursor-pointer group" style="transition-delay: 100ms;" onclick="togglePhysics('convection')">
-                    <div class="h-12 w-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Convection</h3>
-                    <p class="text-slate-400 text-sm mb-4">Heat loss via air movement (draughts, uncontrolled ventilation).</p>
-                    <div id="physics-detail-convection" class="hidden mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300">
-                        <strong>Solution:</strong> Airtightness measures. Sealing gaps around windows, doors, and service penetrations.
-                    </div>
-                    <button class="text-blue-400 text-xs font-semibold uppercase tracking-wider mt-2 group-hover:text-blue-300">Learn More</button>
-                </div>
-
-                <!-- Radiation Card -->
-                <div class="glass-panel rounded-xl p-6 border-t-4 border-purple-500 fade-in-up hover:bg-slate-800/50 transition-all cursor-pointer group" style="transition-delay: 200ms;" onclick="togglePhysics('radiation')">
-                    <div class="h-12 w-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Radiation</h3>
-                    <p class="text-slate-400 text-sm mb-4">Heat emitted from warm internal surfaces to colder external ones.</p>
-                    <div id="physics-detail-radiation" class="hidden mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300">
-                        <strong>Solution:</strong> Low-emissivity (Low-E) coatings on glazing reflect heat back into the room.
-                    </div>
-                    <button class="text-purple-400 text-xs font-semibold uppercase tracking-wider mt-2 group-hover:text-purple-300">Learn More</button>
-                </div>
-            </div>
-
-            <!-- U-Value Visualizer -->
-            <div class="mt-20 glass-panel rounded-2xl p-8 border border-slate-700 fade-in-up">
-                <div class="flex flex-col md:flex-row gap-12 items-center">
-                    <div class="flex-1">
-                        <h3 class="text-2xl font-bold mb-4 text-white">Understanding U-Values</h3>
-                        <p class="text-slate-400 mb-6">
-                            A U-value measures the rate of heat loss through a building element. 
-                            <br><span class="text-emerald-400 font-semibold">Lower is Better.</span>
-                        </p>
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-sm font-medium text-slate-300">Uninsulated Wall</span>
-                                    <span class="text-sm font-bold text-red-400">2.1 W/m²K</span>
-                                </div>
-                                <div class="w-full bg-slate-700 rounded-full h-2.5">
-                                    <div class="bg-red-500 h-2.5 rounded-full" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-sm font-medium text-slate-300">Basic Insulation</span>
-                                    <span class="text-sm font-bold text-yellow-400">0.45 W/m²K</span>
-                                </div>
-                                <div class="w-full bg-slate-700 rounded-full h-2.5">
-                                    <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 40%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-sm font-medium text-slate-300">PAS 2035 Target</span>
-                                    <span class="text-sm font-bold text-emerald-400">0.18 W/m²K</span>
-                                </div>
-                                <div class="w-full bg-slate-700 rounded-full h-2.5">
-                                    <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 10%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex-1 w-full">
-                        <div class="bg-slate-800 p-6 rounded-xl border border-slate-600">
-                            <h4 class="text-lg font-semibold mb-4 text-center">U-Value Impact Simulator</h4>
-                            <div class="flex justify-center mb-6">
-                                <div class="relative h-64 w-32 bg-slate-700 rounded-full border-4 border-slate-600 overflow-hidden">
-                                    <div id="thermometer-liquid" class="absolute bottom-0 w-full bg-gradient-to-t from-blue-600 to-red-500 thermometer-fill" style="height: 80%"></div>
-                                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                        <span class="text-2xl font-bold text-white drop-shadow-md">£££</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <label class="block text-sm font-medium text-slate-300">Select Wall Type:</label>
-                                <select id="u-value-select" onchange="updateThermometer()" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none">
-                                    <option value="2.1">Uninsulated Solid Wall (2.1)</option>
-                                    <option value="0.45">Cavity Wall (0.45)</option>
-                                    <option value="0.30">IWI / EWI Standard (0.30)</option>
-                                    <option value="0.18">High Performance (0.18)</option>
-                                </select>
-                                <p class="text-xs text-slate-500 text-center mt-2">Visual representation of relative heat loss (energy cost)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Materials Table -->
-    <section id="materials" class="py-20 bg-slate-900/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 fade-in-up">
-                <h2 class="text-3xl font-bold mb-4">Common Insulation Materials</h2>
-                <p class="text-slate-400">Material selection must balance thermal performance (λ), moisture risk, and installation quality.</p>
-            </div>
-
-            <div class="glass-panel rounded-xl overflow-hidden border border-slate-700 fade-in-up">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-800/80 text-slate-300 text-sm uppercase tracking-wider">
-                                <th class="p-4 font-semibold border-b border-slate-700">Material</th>
-                                <th class="p-4 font-semibold border-b border-slate-700">Thermal Conductivity (λ W/mK)</th>
-                                <th class="p-4 font-semibold border-b border-slate-700">PAS 2035 Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-700 text-slate-300 text-sm">
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-4 font-medium text-white">Mineral Wool (Glass/Rock)</td>
-                                <td class="p-4">0.032 – 0.040</td>
-                                <td class="p-4 text-slate-400">Vapour open, tolerant of irregular substrates</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-4 font-medium text-white">PIR Rigid Board</td>
-                                <td class="p-4">0.022 – 0.026</td>
-                                <td class="p-4 text-slate-400">High performance, requires careful detailing</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-4 font-medium text-white">EPS (Expanded Polystyrene)</td>
-                                <td class="p-4">0.030 – 0.038</td>
-                                <td class="p-4 text-slate-400">Common for EWI, cost effective</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-4 font-medium text-white">Phenolic Foam</td>
-                                <td class="p-4 text-emerald-400 font-bold">0.018 – 0.022</td>
-                                <td class="p-4 text-slate-400">Very low λ value, thinner build ups</td>
-                            </tr>
-                            <tr class="hover:bg-slate-800/50 transition-colors">
-                                <td class="p-4 font-medium text-white">Wood Fibre</td>
-                                <td class="p-4">0.038 – 0.045</td>
-                                <td class="p-4 text-slate-400">Hygroscopic, supports moisture buffering</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Key Measures Grid -->
-    <section id="measures" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-up">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Key Retrofit Measures</h2>
-                <p class="text-slate-400">Select a measure to view PAS 2035 characteristics, U-values, and risk controls.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Loft Insulation -->
-                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up">
-                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop" alt="Loft Insulation" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded">Low Risk</div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2">Loft Insulation (Cold Roof)</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-1">Installed at ceiling level. High carbon savings with low cost and disruption.</p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">Target Depth</span>
-                                <span class="text-white font-medium">270–300 mm</span>
-                            </div>
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">U-Value (Target)</span>
-                                <span class="text-emerald-400 font-medium">~0.16 W/m²K</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
-                            <p class="text-xs text-slate-400">Blocking eaves ventilation can cause condensation.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- IWI -->
-                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 100ms;">
-                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2031&auto=format&fit=crop" alt="Internal Wall" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Med/High Risk</div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2">Internal Wall Insulation (IWI)</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-1">Applied to internal face of walls. Suitable where external appearance must be retained.</p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">System</span>
-                                <span class="text-white font-medium">Insulated PB / Stud</span>
-                            </div>
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">U-Value</span>
-                                <span class="text-emerald-400 font-medium">0.30–0.18 W/m²K</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
-                            <p class="text-xs text-slate-400">Interstitial condensation. Vapour control layers are critical.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- EWI -->
-                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 200ms;">
-                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1518005068251-37900150dfca?q=80&w=2072&auto=format&fit=crop" alt="External Wall" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Medium Risk</div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2">External Wall Insulation (EWI)</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-1">Applied to external face. Excellent whole-wall performance and reduces thermal bridging.</p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">Materials</span>
-                                <span class="text-white font-medium">EPS, MW, Phenolic</span>
-                            </div>
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">U-Value</span>
-                                <span class="text-emerald-400 font-medium">0.30–0.18 W/m²K</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
-                            <p class="text-xs text-slate-400">Planning/aesthetic issues. Detailing around openings essential.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Underfloor -->
-                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up">
-                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" alt="Floor Insulation" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">Medium Risk</div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2">Underfloor Insulation</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-1">Reduces heat loss through ground floors, particularly suspended timber.</p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">Ventilation</span>
-                                <span class="text-white font-medium">Airex Smart Bricks</span>
-                            </div>
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">U-Value</span>
-                                <span class="text-emerald-400 font-medium">0.25–0.18 W/m²K</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
-                            <p class="text-xs text-slate-400">Never block sub-floor ventilation. Risk of rot.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Room in Roof -->
-                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 100ms;">
-                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=2070&auto=format&fit=crop" alt="Attic Room" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">High Risk</div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2">Room in Roof Insulation</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-1">Insulation for habitable spaces in the roof. Complex junctions increase risk.</p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">Location</span>
-                                <span class="text-white font-medium">Between/Below Rafters</span>
-                            </div>
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">U-Value</span>
-                                <span class="text-emerald-400 font-medium">0.20–0.15 W/m²K</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
-                            <p class="text-xs text-slate-400">Overheating risk assessment may be required.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Glazing -->
-                <div class="measure-card glass-panel rounded-xl overflow-hidden border border-slate-700 flex flex-col fade-in-up" style="transition-delay: 200ms;">
-                    <div class="h-48 bg-slate-800 relative overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop" alt="Windows" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded">Low Risk</div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2">Glazing & Doors</h3>
-                        <p class="text-slate-400 text-sm mb-4 flex-1">Part of the thermal envelope influencing ventilation, daylight, and solar gain.</p>
-                        
-                        <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">Target</span>
-                                <span class="text-white font-medium">Double/Triple Low-E</span>
-                            </div>
-                            <div class="flex justify-between text-sm border-b border-slate-700 pb-2">
-                                <span class="text-slate-500">U-Value (Window)</span>
-                                <span class="text-emerald-400 font-medium">~1.2 to 0.8 W/m²K</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                            <h4 class="text-xs font-bold text-red-400 uppercase mb-1">Key Risk</h4>
-                            <p class="text-xs text-slate-400">Installation quality affects airtightness. Maintain background ventilation.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Summary Section -->
-    <section class="py-20 bg-gradient-to-b from-slate-900 to-blue-900/20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
-            <h2 class="text-3xl font-bold mb-8">PAS 2035 Summary</h2>
-            <div class="glass-panel p-8 rounded-2xl border border-blue-500/30">
-                <p class="text-lg text-slate-300 mb-8">
-                    Under PAS 2035, fabric measures must be assessed as part of a whole dwelling retrofit plan, designed with moisture and ventilation risks in mind, and installed to a high standard of workmanship.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold">1</div>
-                        <div>
-                            <h4 class="font-bold text-white">Whole House Plan</h4>
-                            <p class="text-sm text-slate-400">Assess the dwelling as a system, not individual parts.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold">2</div>
-                        <div>
-                            <h4 class="font-bold text-white">Risk Management</h4>
-                            <p class="text-sm text-slate-400">Design out moisture, condensation, and ventilation issues.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-400 font-bold">3</div>
-                        <div>
-                            <h4 class="font-bold text-white">Quality Workmanship</h4>
-                            <p class="text-sm text-slate-400">Installation standards are critical for performance.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p class="mt-8 text-slate-500 text-sm">
-                Improving the building fabric is the foundation of safe, effective, and long-lasting domestic retrofit.
-            </p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 py-12 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
-                <span class="font-display font-bold text-xl text-slate-200">Retrofit<span class="text-blue-500">Academy</span></span>
-                <p class="text-slate-500 text-sm mt-1">Module Three: Key Characteristics of Domestic Energy Efficiency Measures</p>
-            </div>
-            <div class="text-slate-600 text-sm">
-                &copy; 2023 Training Material. Based on PAS 2035.
-            </div>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Intersection Observer for Scroll Animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
+        const examData = [
+            // Part F Basics (Questions 1-5)
+            {
+                section: "Part F Basics",
+                question: "What does Part F of the Building Regulations primarily cover?",
+                options: ["Fire safety", "Ventilation", "Structural integrity", "Energy efficiency"],
+                answer: 1,
+                explanation: "Part F specifically covers ventilation requirements, ensuring adequate air quality and moisture control in buildings."
+            },
+            {
+                section: "Part F Basics",
+                question: "Compliance with Part F is:",
+                options: ["Optional for retrofit projects", "Recommended but not enforced", "Mandatory and legally required", "Only required for new builds"],
+                answer: 2,
+                explanation: "Part F compliance is mandatory. Non-compliance can result in enforcement action and liability issues."
+            },
+            {
+                section: "Part F Basics",
+                question: "Which document covers ventilation requirements for dwellings?",
+                options: ["Part F Volume 1", "Part F Volume 2", "Part L", "Part B"],
+                answer: 0,
+                explanation: "Part F Volume 1 covers dwellings (houses and flats), while Volume 2 covers buildings other than dwellings."
+            },
+            {
+                section: "Part F Basics",
+                question: "What are the three types of ventilation defined in Part F?",
+                options: ["Whole dwelling, extract, and purge", "Supply, extract, and balanced", "Natural, mechanical, and hybrid", "Continuous, intermittent, and boost"],
+                answer: 0,
+                explanation: "Part F defines three types: whole dwelling ventilation (continuous fresh air), extract ventilation (pollutant removal at source), and purge ventilation (rapid occasional ventilation)."
+            },
+            {
+                section: "Part F Basics",
+                question: "What is the primary purpose of purge ventilation?",
+                options: ["Continuous air supply", "Remove pollutants at source", "Rapid ventilation for occasional use", "Heat recovery"],
+                answer: 2,
+                explanation: "Purge ventilation provides rapid ventilation for occasional use, typically through openable windows or doors."
+            },
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+            // Ventilation Strategies (Questions 6-10)
+            {
+                section: "Ventilation Strategies",
+                question: "At what airtightness level is MVHR typically recommended?",
+                options: ["< 5 m³/hr·m² @ 50Pa", "< 3 m³/hr·m² @ 50Pa", "< 7 m³/hr·m² @ 50Pa", "< 10 m³/hr·m² @ 50Pa"],
+                answer: 1,
+                explanation: "MVHR is recommended when airtightness is better than 3 m³/hr·m² @ 50Pa to ensure heat recovery efficiency."
+            },
+            {
+                section: "Ventilation Strategies",
+                question: "What is the main disadvantage of Mechanical Extract Ventilation (MEV)?",
+                options: ["High installation cost", "No heat recovery", "Requires no maintenance", "Only works in summer"],
+                answer: 1,
+                explanation: "MEV extracts warm air without recovering the heat, unlike MVHR which recovers 80-95% of heat."
+            },
+            {
+                section: "Ventilation Strategies",
+                question: "Which ventilation strategy requires background ventilators (trickle vents) in habitable rooms?",
+                options: ["MVHR", "MEV", "Natural ventilation only", "All mechanical systems"],
+                answer: 1,
+                explanation: "MEV requires background ventilators to provide fresh air to habitable rooms as it only extracts from wet rooms."
+            },
+            {
+                section: "Ventilation Strategies",
+                question: "What is the heat recovery efficiency range for a good MVHR unit?",
+                options: ["50-60%", "60-75%", "80-95%", "95-100%"],
+                answer: 2,
+                explanation: "Modern MVHR units can recover 80-95% of heat from extracted air, making them highly efficient."
+            },
+            {
+                section: "Ventilation Strategies",
+                question: "Decentralised MVHR (dMVHR) is best suited for:",
+                options: ["Large commercial buildings", "Retrofit where ducting is difficult", "New build passivhaus", "Industrial applications"],
+                answer: 1,
+                explanation: "dMVHR units are ideal for retrofit where installing ducting is challenging, as they work room-by-room without central ducting."
+            },
 
-        document.querySelectorAll('.fade-in-up').forEach(el => {
-            observer.observe(el);
-        });
+            // Calculations & Rates (Questions 11-15)
+            {
+                section: "Calculations & Rates",
+                question: "What is the formula for minimum whole dwelling ventilation rate?",
+                options: ["0.5 × Floor Area + 2 × Bedrooms", "0.3 × Floor Area + 4 × Bedrooms", "0.4 × Floor Area + 3 × Bedrooms", "0.6 × Floor Area + 5 × Bedrooms"],
+                answer: 1,
+                explanation: "The Part F formula is 0.3 × Floor Area (m²) + 4 × Number of Bedrooms, ensuring adequate fresh air based on space and occupancy."
+            },
+            {
+                section: "Calculations & Rates",
+                question: "A 100m² house with 3 bedrooms requires what minimum whole dwelling ventilation rate?",
+                options: ["30 l/s", "36 l/s", "42 l/s", "48 l/s"],
+                answer: 2,
+                explanation: "Calculation: (0.3 × 100) + (4 × 3) = 30 + 12 = 42 litres per second."
+            },
+            {
+                section: "Calculations & Rates",
+                question: "What is the minimum intermittent extract rate for a kitchen with a cooker hood?",
+                options: ["15 l/s", "30 l/s", "45 l/s", "60 l/s"],
+                answer: 1,
+                explanation: "Part F requires 30 l/s for kitchens with cooker hoods (intermittent use), or 60 l/s without a hood."
+            },
+            {
+                section: "Calculations & Rates",
+                question: "What is the maximum Specific Fan Power (SFP) allowed for MVHR systems?",
+                options: ["0.4 W/l/s", "0.6 W/l/s", "0.8 W/l/s", "1.0 W/l/s"],
+                answer: 1,
+                explanation: "Part F requires MVHR systems to have SFP not exceeding 0.6 W/l/s to ensure energy efficiency."
+            },
+            {
+                section: "Calculations & Rates",
+                question: "Continuous extract ventilation in a bathroom requires minimum:",
+                options: ["4 l/s", "6 l/s", "8 l/s", "10 l/s"],
+                answer: 2,
+                explanation: "Part F requires 8 l/s continuous extract in bathrooms, or 15 l/s intermittent."
+            },
 
-        // Physics Detail Toggle
-        function togglePhysics(type) {
-            const detailId = `physics-detail-${type}`;
-            const element = document.getElementById(detailId);
-            
-            // Close others
-            ['conduction', 'convection', 'radiation'].forEach(t => {
-                if (t !== type) {
-                    document.getElementById(`physics-detail-${t}`).classList.add('hidden');
-                }
-            });
+            // Installation Standards (Questions 16-20)
+            {
+                section: "Installation Standards",
+                question: "What type of ducting is preferred for ventilation systems?",
+                options: ["Flexible ducting", "Rigid ducting", "PVC pipe", "Aluminium foil"],
+                answer: 1,
+                explanation: "Rigid ducting is preferred as it maintains smooth airflow. Flexible ducting creates turbulence and resistance if not fully extended."
+            },
+            {
+                section: "Installation Standards",
+                question: "Ducting in cold lofts must be:",
+                options: ["Painted white", "Insulated", "Grounded", "Sealed with tape only"],
+                answer: 1,
+                explanation: "Ducting in cold spaces must be insulated (minimum 25mm) to prevent condensation forming on the outside of the duct."
+            },
+            {
+                section: "Installation Standards",
+                question: "What is the maximum number of 90° bends recommended per duct run?",
+                options: ["2", "3", "4", "No limit"],
+                answer: 1,
+                explanation: "Maximum 3 bends per run is recommended. Use swept bends rather than sharp 90° elbows where possible."
+            },
+            {
+                section: "Installation Standards",
+                question: "MVHR intake and exhaust terminals must be positioned:",
+                options: ["Next to each other for efficiency", "At least 1 metre apart", "On the same wall", "Inside the building"],
+                answer: 1,
+                explanation: "Intake and exhaust must be at least 1m apart to prevent recirculation of stale air into the fresh air supply."
+            },
+            {
+                section: "Installation Standards",
+                question: "What happens if flexible ducting is not fully extended?",
+                options: ["Improved airflow", "Reduced airflow and turbulence", "Better noise reduction", "Increased heat recovery"],
+                answer: 1,
+                explanation: "Unextended flexible ducting creates ridges that cause turbulence, significantly reducing airflow efficiency."
+            },
 
-            // Toggle current
-            element.classList.toggle('hidden');
+            // Commissioning (Questions 21-25)
+            {
+                section: "Commissioning",
+                question: "Commissioning of ventilation systems is:",
+                options: ["Optional for experienced installers", "Required only for MVHR", "Mandatory for all mechanical systems", "Only needed for warranty"],
+                answer: 2,
+                explanation: "Commissioning is mandatory for all mechanical ventilation systems under Part F and must be documented."
+            },
+            {
+                section: "Commissioning",
+                question: "What must be measured during commissioning?",
+                options: ["Only fan speed", "Actual flow rates at each grille", "Room temperature only", "Electricity consumption only"],
+                answer: 1,
+                explanation: "Actual flow rates must be measured at each supply and extract grille to ensure design rates are achieved."
+            },
+            {
+                section: "Commissioning",
+                question: "What document is required after commissioning?",
+                options: ["Invoice only", "Commissioning certificate", "Warranty card", "User manual"],
+                answer: 1,
+                explanation: "A commissioning certificate is mandatory and must be filed with Building Control and project documentation."
+            },
+            {
+                section: "Commissioning",
+                question: "Balancing the system means:",
+                options: ["Making sure it doesn't fall over", "Adjusting dampers to achieve design flows", "Painting it evenly", "Leveling the unit"],
+                answer: 1,
+                explanation: "Balancing involves adjusting dampers to ensure each room receives the designed airflow rate."
+            },
+            {
+                section: "Commissioning",
+                question: "An uncommissioned system is:",
+                options: ["Acceptable if it seems to work", "Non-compliant with Building Regulations", "Covered by insurance", "Eligible for warranty"],
+                answer: 1,
+                explanation: "An uncommissioned system is non-compliant. CPH Retrofit requires commissioning on every project."
+            },
+
+            // Maintenance & Troubleshooting (Questions 26-30)
+            {
+                section: "Maintenance",
+                question: "How often should MVHR filters be changed?",
+                options: ["Every month", "Every 3 months", "Every 6-12 months", "Every 2 years"],
+                answer: 2,
+                explanation: "MVHR filters should be changed every 6-12 months depending on environmental conditions and manufacturer specifications."
+            },
+            {
+                section: "Maintenance",
+                question: "What is the first sign that ventilation filters need changing?",
+                options: ["System runs quieter", "Reduced airflow or increased noise", "Warmer air supply", "Lower electricity bills"],
+                answer: 1,
+                explanation: "Blocked filters cause the fan to work harder, resulting in increased noise and reduced airflow."
+            },
+            {
+                section: "Maintenance",
+                question: "If occupants report condensation on windows after retrofit, what should you check first?",
+                options: ["The heating system", "The ventilation system operation", "The window seals", "The insulation thickness"],
+                answer: 1,
+                explanation: "Post-retrofit condensation usually indicates inadequate ventilation. Check if the system is running, filters are clean, and boost is being used."
+            },
+            {
+                section: "Maintenance",
+                question: "What maintenance task is required annually for MVHR?",
+                options: ["Replace the heat exchanger", "Clean or check the heat exchanger", "Replace all ducting", "Paint the unit"],
+                answer: 1,
+                explanation: "The heat exchanger should be checked annually and cleaned if accessible, though it typically doesn't need replacement."
+            },
+            {
+                section: "Maintenance",
+                question: "What is the most common cause of noisy ventilation systems?",
+                options: ["Oversized unit", "Blocked filters or loose ducting", "Too much insulation", "High outdoor temperatures"],
+                answer: 1,
+                explanation: "Noisy systems are usually caused by blocked filters making the fan work harder, or ducting that has come loose and vibrates."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(examData.length).fill(null);
+        let examStarted = false;
+        let timeRemaining = 3600; // 60 minutes in seconds
+        let timerInterval;
+        let attemptNumber = 1;
+        let examFinished = false;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
 
-        // Thermometer Simulator Logic
-        function updateThermometer() {
-            const select = document.getElementById('u-value-select');
-            const liquid = document.getElementById('thermometer-liquid');
-            const value = parseFloat(select.value);
+        function startExam() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('examScreen').classList.remove('hidden');
+            examStarted = true;
+            examFinished = false;
             
-            // Map U-value to height percentage (Lower U = Lower Heat Loss = Lower Liquid)
-            // 2.1 -> 90%
-            // 0.18 -> 10%
-            const maxU = 2.1;
-            const minU = 0.18;
-            const maxHeight = 90;
-            const minHeight = 10;
+            // Shuffle questions for resit
+            if (attemptNumber > 1) {
+                shuffleArray(examData);
+            }
+            
+            loadQuestion();
+            startTimer();
+        }
 
-            // Linear interpolation
-            const percentage = maxHeight - ((value - minU) / (maxU - minU)) * (maxHeight - minHeight);
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam(true); // Auto-submit when time runs out
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timeText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timeText').textContent = timeText;
+            document.title = `CPH Exam - ${timeText} remaining`;
             
-            liquid.style.height = `${Math.max(minHeight, Math.min(maxHeight, percentage))}%`;
+            const timerFill = document.getElementById('timerFill');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const percentage = (timeRemaining / 3600) * 100;
+            timerFill.style.width = `${percentage}%`;
             
-            // Change color based on severity
-            if(value > 1.0) {
-                liquid.className = "absolute bottom-0 w-full bg-gradient-to-t from-red-900 to-red-500 thermometer-fill";
-            } else if (value > 0.4) {
-                liquid.className = "absolute bottom-0 w-full bg-gradient-to-t from-yellow-700 to-yellow-400 thermometer-fill";
-            } else {
-                liquid.className = "absolute bottom-0 w-full bg-gradient-to-t from-emerald-900 to-emerald-500 thermometer-fill";
+            if (timeRemaining < 300) { // Less than 5 minutes
+                timerFill.className = 'timer-fill danger';
+                timerDisplay.className = 'timer-display danger';
+            } else if (timeRemaining < 600) { // Less than 10 minutes
+                timerFill.className = 'timer-fill warning';
+                timerDisplay.className = 'timer-display warning';
             }
         }
 
-        function scrollToCalculator() {
-            document.getElementById('physics').scrollIntoView({ behavior: 'smooth' });
+        function loadQuestion() {
+            const data = examData[currentQuestion];
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${examData.length}`;
+            document.getElementById('sectionBadge').textContent = data.section;
+            document.getElementById('questionText').textContent = data.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const labels = ['A', 'B', 'C', 'D'];
+            data.options.forEach((option, index) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                if (userAnswers[currentQuestion] === index) {
+                    div.classList.add('selected');
+                }
+                div.onclick = () => selectOption(index);
+                div.innerHTML = `
+                    <input type="radio" name="answer" ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
+                    <span class="option-label"><strong>${labels[index]}.</strong> ${option}</span>
+                `;
+                optionsContainer.appendChild(div);
+            });
+
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            
+            if (currentQuestion === examData.length - 1) {
+                document.getElementById('nextBtn').textContent = 'Submit Exam ✓';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Next →';
+            }
+
+            updateProgress();
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            updateThermometer();
+        function selectOption(index) {
+            userAnswers[currentQuestion] = index;
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt, i) => {
+                opt.classList.remove('selected');
+                if (i === index) opt.classList.add('selected');
+                opt.querySelector('input').checked = i === index;
+            });
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < examData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                submitExam(false);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / examData.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function submitExam(autoSubmit = false) {
+            clearInterval(timerInterval);
+            examFinished = true;
+            
+            const unanswered = userAnswers.filter(a => a === null).length;
+            if (!autoSubmit && unanswered > 0) {
+                if (!confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
+                    startTimer(); // Resume timer if they cancel
+                    return;
+                }
+            }
+
+            document.getElementById('examScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+            
+            showResults();
+        }
+
+        function showResults() {
+            let correct = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === examData[index].answer) correct++;
+            });
+
+            const percentage = Math.round((correct / examData.length) * 100);
+            const passed = percentage >= 70;
+            const timeUsed = 3600 - timeRemaining;
+            const minutesUsed = Math.floor(timeUsed / 60);
+            const secondsUsed = timeUsed % 60;
+
+            const scoreCircle = document.getElementById('scoreCircle');
+            const resultMessage = document.getElementById('resultMessage');
+            const resultDetails = document.getElementById('resultDetails');
+            const resitSection = document.getElementById('resitSection');
+
+            if (passed) {
+                scoreCircle.className = 'score-circle pass';
+                resultMessage.textContent = '🎉 Congratulations! You Passed!';
+                resultMessage.style.color = '#48bb78';
+                resultDetails.innerHTML = `
+                    You scored <strong>${correct}/${examData.length} (${percentage}%)</strong><br>
+                    Pass mark: 70% (21/30)<br>
+                    Time used: ${minutesUsed}m ${secondsUsed}s<br>
+                    <span style="color: #48bb78; font-weight: 600;">You are certified in Ventilation & Part F!</span>
+                `;
+                resitSection.classList.add('hidden');
+            } else {
+                if (attemptNumber === 1) {
+                    scoreCircle.className = 'score-circle resit';
+                    resultMessage.textContent = '❌ First Attempt Failed';
+                    resultMessage.style.color = '#ed8936';
+                    resultDetails.innerHTML = `
+                        You scored <strong>${correct}/${examData.length} (${percentage}%)</strong><br>
+                        Required: 70% (21/30)<br>
+                        You need ${21 - correct} more correct answers to pass.<br>
+                        <span style="color: #ed8936; font-weight: 600;">You have one resit available.</span>
+                    `;
+                    resitSection.classList.remove('hidden');
+                } else {
+                    scoreCircle.className = 'score-circle fail';
+                    resultMessage.textContent = '❌ Exam Failed';
+                    resultMessage.style.color = '#e53e3e';
+                    resultDetails.innerHTML = `
+                        You scored <strong>${correct}/${examData.length} (${percentage}%)</strong> on your resit.<br>
+                        Required: 70% (21/30)<br>
+                        <span style="color: #e53e3e; font-weight: 600;">You must wait 24 hours and retake the induction.</span>
+                    `;
+                    resitSection.classList.add('hidden');
+                }
+            }
+
+            document.getElementById('scoreNumber').textContent = `${percentage}%`;
+            generateReview();
+        }
+
+        function generateReview() {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = '<h3 style="margin-bottom: 20px; color: var(--primary); text-align: center;">Detailed Answer Review</h3>';
+
+            userAnswers.forEach((answer, index) => {
+                const data = examData[index];
+                const isCorrect = answer === data.answer;
+                const labels = ['A', 'B', 'C', 'D'];
+                
+                const reviewItem = document.createElement('div');
+                reviewItem.className = `review-item ${isCorrect ? 'correct' : 'wrong'}`;
+                
+                let yourAnswerText = '';
+                if (answer !== null) {
+                    yourAnswerText = `${labels[answer]}. ${data.options[answer]}`;
+                } else {
+                    yourAnswerText = 'No answer selected';
+                }
+                
+                reviewItem.innerHTML = `
+                    <div class="review-header">
+                        <span style="color: #718096; font-size: 0.9rem;">Question ${index + 1} • ${data.section}</span>
+                        <span class="review-status ${isCorrect ? 'correct' : 'wrong'}">
+                            ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                        </span>
+                    </div>
+                    <div class="review-question">${data.question}</div>
+                    <div class="review-answer your-answer">
+                        <strong>Your answer:</strong> ${yourAnswerText}
+                    </div>
+                    ${!isCorrect ? `
+                        <div class="review-answer correct-answer">
+                            <strong>Correct answer:</strong> ${labels[data.answer]}. ${data.options[data.answer]}
+                        </div>
+                    ` : ''}
+                    <div class="explanation">
+                        <strong>Explanation:</strong> ${data.explanation}
+                    </div>
+                `;
+                
+                container.appendChild(reviewItem);
+            });
+        }
+
+        function toggleReview() {
+            const review = document.getElementById('reviewContainer');
+            review.classList.toggle('hidden');
+            if (!review.classList.contains('hidden')) {
+                review.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function startResit() {
+            if (attemptNumber >= 2) return;
+            
+            attemptNumber = 2;
+            currentQuestion = 0;
+            userAnswers = new Array(examData.length).fill(null);
+            timeRemaining = 3600;
+            examFinished = false;
+            
+            // Reset timer display
+            document.getElementById('timerFill').className = 'timer-fill';
+            document.getElementById('timerDisplay').className = 'timer-display';
+            updateTimerDisplay();
+            
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('reviewContainer').classList.add('hidden');
+            document.getElementById('examScreen').classList.remove('hidden');
+            
+            startExam();
+        }
+
+        function restartExam() {
+            // Reset everything
+            attemptNumber = 1;
+            currentQuestion = 0;
+            userAnswers = new Array(examData.length).fill(null);
+            timeRemaining = 3600;
+            examStarted = false;
+            examFinished = false;
+            clearInterval(timerInterval);
+            
+            document.getElementById('timerFill').className = 'timer-fill';
+            document.getElementById('timerDisplay').className = 'timer-display';
+            document.getElementById('timeText').textContent = '60:00';
+            document.title = 'CPH Retrofit - Ventilation & Part F Certification Exam';
+            
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('examScreen').classList.add('hidden');
+            document.getElementById('reviewContainer').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!examStarted || examFinished) return;
+            
+            if (e.key === 'ArrowLeft' && currentQuestion > 0) {
+                previousQuestion();
+            } else if (e.key === 'ArrowRight') {
+                if (currentQuestion < examData.length - 1) {
+                    nextQuestion();
+                }
+            } else if (e.key >= '1' && e.key <= '4') {
+                selectOption(parseInt(e.key) - 1);
+            }
         });
     </script>
 </body>

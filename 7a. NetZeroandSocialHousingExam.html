@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Net Zero & PRS Legislation - Certification Exam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f4c3a;
+            --secondary: #2d8a5e;
+            --accent: #e8f5e9;
+            --warning: #ff9800;
+            --danger: #d32f2f;
+            --success: #4caf50;
+            --text: #1a1a1a;
+            --light: #f5f5f5;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .exam-info {
+            background: white;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item strong {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .question-container {
+            background: white;
+            margin: 20px 0;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 18px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            border-color: var(--secondary);
+            background: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: var(--accent);
+            font-weight: 600;
+        }
+
+        .option-letter {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: var(--secondary);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #5a6268;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .start-screen h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .exam-rules {
+            text-align: left;
+            max-width: 600px;
+            margin: 30px auto;
+            background: var(--accent);
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .exam-rules h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .exam-rules ul {
+            margin-left: 20px;
+            line-height: 2;
+        }
+
+        .candidate-form {
+            max-width: 500px;
+            margin: 30px auto;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .results-screen.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 30px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid;
+            position: relative;
+        }
+
+        .score-circle.pass {
+            border-color: var(--success);
+            background: #e8f5e9;
+        }
+
+        .score-circle.fail {
+            border-color: var(--danger);
+            background: #ffebee;
+        }
+
+        .score-percentage {
+            font-size: 3.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .score-circle.pass .score-percentage {
+            color: var(--success);
+        }
+
+        .score-circle.fail .score-percentage {
+            color: var(--danger);
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .result-message.pass {
+            color: var(--success);
+        }
+
+        .result-message.fail {
+            color: var(--danger);
+        }
+
+        /* Certificate */
+        .certificate {
+            display: none;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border: 8px solid var(--primary);
+            padding: 60px;
+            margin: 30px 0;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .certificate.show {
+            display: block;
+            animation: fadeIn 1s ease;
+        }
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(15, 76, 58, 0.3);
+            pointer-events: none;
+        }
+
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .certificate-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-family: 'Georgia', serif;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .certificate-subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+        }
+
+        .certificate-body {
+            text-align: center;
+            margin: 40px 0;
+            line-height: 2;
+            font-size: 1.2rem;
+        }
+
+        .certificate-name {
+            font-size: 2.2rem;
+            font-family: 'Georgia', serif;
+            color: var(--primary);
+            margin: 20px 0;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            padding: 0 40px 10px;
+        }
+
+        .certificate-details {
+            margin: 30px 0;
+            font-size: 1.1rem;
+        }
+
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid rgba(15, 76, 58, 0.2);
+        }
+
+        .signature-block {
+            text-align: center;
+        }
+
+        .signature-line {
+            border-top: 2px solid var(--primary);
+            width: 200px;
+            margin: 10px auto;
+            padding-top: 5px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .certificate-seal {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 120px;
+            height: 120px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            transform: rotate(-15deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 4px solid #c8a415;
+        }
+
+        .review-section {
+            text-align: left;
+            margin-top: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .review-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid;
+            background: white;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .review-item.correct {
+            border-color: var(--success);
+        }
+
+        .review-item.incorrect {
+            border-color: var(--danger);
+        }
+
+        .review-question {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .review-answer {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .review-answer strong {
+            color: var(--text);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .certificate, .certificate * {
+                visibility: visible;
+            }
+            .certificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                border: none;
+                box-shadow: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.6rem; }
+            .certificate { padding: 30px 20px; }
+            .certificate-title { font-size: 1.8rem; }
+            .certificate-name { font-size: 1.6rem; }
+            .certificate-seal { 
+                width: 80px; 
+                height: 80px; 
+                font-size: 0.7rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🏠 UK Net Zero & PRS Legislation</h1>
+    <p class="subtitle">Professional Certification Examination</p>
+</header>
+
+<div class="container">
+    <!-- Exam Info Bar -->
+    <div class="exam-info">
+        <div class="info-item">
+            <strong>20</strong>
+            <span>Questions</span>
+        </div>
+        <div class="info-item">
+            <strong>70%</strong>
+            <span>Pass Mark</span>
+        </div>
+        <div class="info-item">
+            <strong>14/20</strong>
+            <span>Required to Pass</span>
+        </div>
+        <div class="info-item">
+            <strong>Unlimited</strong>
+            <span>Time Allowed</span>
+        </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div class="start-screen" id="start-screen">
+        <h2>Certification Examination</h2>
+        <p style="font-size: 1.1rem; color: #666; margin-bottom: 20px;">
+            Demonstrate your knowledge of UK Net Zero strategy and Private Rented Sector energy efficiency legislation.
+        </p>
+
+        <div class="exam-rules">
+            <h3>📋 Examination Rules</h3>
+            <ul>
+                <li>You must answer <strong>14 out of 20 questions correctly</strong> to pass (70%)</li>
+                <li>You can navigate between questions using the Previous/Next buttons</li>
+                <li>You must select an answer before proceeding to the next question</li>
+                <li>You can review and change answers before final submission</li>
+                <li>Upon passing, you will receive a printable certificate</li>
+                <li>There is no time limit for this examination</li>
+            </ul>
+        </div>
+
+        <div class="candidate-form">
+            <div class="form-group">
+                <label for="candidate-name">Full Name (as it will appear on certificate):</label>
+                <input type="text" id="candidate-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="candidate-email">Email Address:</label>
+                <input type="email" id="candidate-email" placeholder="Enter your email address" required>
+            </div>
+        </div>
+
+        <button class="btn" onclick="startExam()" style="margin-top: 20px; font-size: 1.2rem; padding: 16px 40px;">
+            Start Examination ▶
+        </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progress-container" style="display: none;">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <!-- Questions -->
+    <div id="questions-container"></div>
+
+    <!-- Results Screen -->
+    <div class="results-screen" id="results-screen">
+        <h2>Examination Results</h2>
+        
+        <div class="score-circle" id="score-circle">
+            <div class="score-percentage" id="score-percentage">0%</div>
+            <div class="score-label" id="score-label">Score</div>
+        </div>
+
+        <div class="result-message" id="result-message"></div>
+
+        <p id="result-details" style="font-size: 1.1rem; margin-bottom: 30px;"></p>
+
+        <div id="certificate-actions" style="display: none;">
+            <button class="btn" onclick="window.print()" style="margin: 10px;">
+                🖨️ Print Certificate
+            </button>
+            <button class="btn btn-secondary" onclick="location.reload()" style="margin: 10px;">
+                🔄 Retake Exam
+            </button>
+        </div>
+
+        <div id="fail-actions" style="display: none;">
+            <button class="btn" onclick="location.reload()" style="margin: 10px;">
+                🔄 Retake Exam
+            </button>
+            <button class="btn btn-secondary" onclick="showReview()" style="margin: 10px;">
+                📋 Review Answers
+            </button>
+        </div>
+
+        <!-- Certificate -->
+        <div class="certificate" id="certificate">
+            <div class="certificate-header">
+                <div class="certificate-title">Certificate</div>
+                <div class="certificate-subtitle">of Professional Competence</div>
+            </div>
+
+            <div class="certificate-body">
+                <p>This is to certify that</p>
+                <div class="certificate-name" id="cert-name"></div>
+                <p>has successfully completed the examination in</p>
+                <p style="font-size: 1.4rem; font-weight: bold; color: var(--primary); margin: 15px 0;">
+                    UK Net Zero Strategy &<br>Private Rented Sector Legislation
+                </p>
+                <p>and demonstrated proficiency in Minimum Energy Efficiency Standards (MEES),<br>
+                EPC regulations, and Net Zero compliance requirements.</p>
+                
+                <div class="certificate-details">
+                    <p><strong>Score:</strong> <span id="cert-score"></span> (Pass)</p>
+                    <p><strong>Date:</strong> <span id="cert-date"></span></p>
+                    <p><strong>Certificate ID:</strong> <span id="cert-id"></span></p>
+                </div>
+            </div>
+
+            <div class="certificate-footer">
+                <div class="signature-block">
+                    <div class="signature-line">Examination Board</div>
+                    <div style="font-size: 0.9rem; color: #666;">UK Housing Compliance Authority</div>
+                </div>
+                <div class="signature-block">
+                    <div class="signature-line">Chief Assessor</div>
+                    <div style="font-size: 0.9rem; color: #666;">Professional Standards</div>
+                </div>
+            </div>
+
+            <div class="certificate-seal">
+                OFFICIAL<br>CERTIFIED
+            </div>
+        </div>
+
+        <!-- Review Section -->
+        <div class="review-section" id="review-section" style="display: none;">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">Answer Review</h3>
+            <div id="review-content"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Question Bank
+    const questions = [
+        {
+            question: "What is the UK's legally binding target year for achieving Net Zero greenhouse gas emissions?",
+            options: ["2040", "2050", "2030", "2060"],
+            correct: 1,
+            explanation: "The UK has committed to achieving Net Zero by 2050."
+        },
+        {
+            question: "What percentage of UK building emissions come from domestic properties?",
+            options: ["33%", "50%", "66%", "75%"],
+            correct: 2,
+            explanation: "Domestic properties account for 66% of building emissions."
+        },
+        {
+            question: "What is the current minimum EPC rating required to legally let a property in England and Wales?",
+            options: ["Band D", "Band E", "Band F", "Band C"],
+            correct: 1,
+            explanation: "Since April 2020, the minimum EPC rating is Band E."
+        },
+        {
+            question: "By what date must all private rented properties achieve a minimum EPC rating of C?",
+            options: ["1 April 2030", "1 October 2028", "1 October 2030", "1 January 2029"],
+            correct: 2,
+            explanation: "All private rented properties must achieve EPC C by 1 October 2030."
+        },
+        {
+            question: "What is the maximum penalty for non-compliance with MEES after 2030?",
+            options: ["£5,000", "£10,000", "£15,000", "£30,000"],
+            correct: 3,
+            explanation: "The maximum penalty increases to £30,000 per property after 2030."
+        },
+        {
+            question: "What is the standard cost cap for energy efficiency improvements per property?",
+            options: ["£3,500", "£5,000", "£10,000", "£15,000"],
+            correct: 2,
+            explanation: "The cost cap is set at £10,000 per property every 10 years."
+        },
+        {
+            question: "For properties valued under £100,000, what is the cost cap calculation?",
+            options: ["5% of property value", "10% of property value", "£3,500", "£5,000"],
+            correct: 1,
+            explanation: "For properties under £100,000, the cap is 10% of property value."
+        },
+        {
+            question: "From what date does expenditure count toward the cost cap exemption?",
+            options: ["1 January 2025", "1 February 2025", "1 October 2025", "1 January 2026"],
+            correct: 2,
+            explanation: "Expenditure from 1 October 2025 counts toward the cost cap."
+        },
+        {
+            question: "How long is a Cost Cap exemption valid once registered?",
+            options: ["3 years", "5 years", "10 years", "Until property is sold"],
+            correct: 2,
+            explanation: "The Cost Cap exemption is valid for 10 years."
+        },
+        {
+            question: "What is the new primary metric for EPC compliance from 2026?",
+            options: ["Heating System", "Smart Readiness", "Fabric Performance", "Carbon Emissions"],
+            correct: 2,
+            explanation: "Fabric Performance will be the primary metric for compliance."
+        },
+        {
+            question: "Which of the following is NOT a valid exemption category?",
+            options: ["Third-party consent refused", "Property value under £50,000", "Negative impact on property", "Solid wall insulation impractical"],
+            correct: 1,
+            explanation: "Property value alone is not an exemption; the cost cap applies instead."
+        },
+        {
+            question: "What happens if a landlord lets a property below the required EPC rating?",
+            options: ["Warning letter only", "£200 fine", "Up to £5,000 penalty (current) or £30,000 (post-2030)", "Automatic property confiscation"],
+            correct: 2,
+            explanation: "Penalties range up to £5,000 currently, increasing to £30,000 after 2030."
+        },
+        {
+            question: "What is required to achieve Band C on the Smart Readiness metric?",
+            options: ["Smart thermostat only", "Microgeneration or energy storage", "Smart meter installation", "High-speed internet"],
+            correct: 1,
+            explanation: "Properties need microgeneration or energy storage for Smart Readiness Band C."
+        },
+        {
+            question: "Are short-term lets (e.g., Airbnb) subject to MEES requirements?",
+            options: ["Yes, all the same requirements", "No, MEES does not apply", "Only if let for more than 90 days per year", "Only in London"],
+            correct: 1,
+            explanation: "MEES does not apply to short-term lets, though EPCs are still required for marketing."
+        },
+        {
+            question: "What is the 'early action protection' deadline for locking in compliance under current metrics?",
+            options: ["1 October 2028", "1 October 2029", "1 January 2030", "1 October 2030"],
+            correct: 1,
+            explanation: "Properties achieving EPC C before 1 October 2029 are compliant until that EPC expires."
+        },
+        {
+            question: "Which improvement typically offers the best return on investment for EPC ratings?",
+            options: ["Heat pump installation", "LED lighting", "Double glazing", "Solar panels"],
+            correct: 1,
+            explanation: "LED lighting is low cost (£50-150) and can improve EPC by 1-5 points."
+        },
+        {
+            question: "What is the validity period of an EPC certificate?",
+            options: ["5 years", "7 years", "10 years", "Lifetime of ownership"],
+            correct: 2,
+            explanation: "EPCs are valid for 10 years from the date of issue."
+        },
+        {
+            question: "Can listed buildings be exempt from MEES requirements?",
+            options: ["Yes, automatically exempt", "No, must comply fully", "Only if specific improvements would alter character", "Only Grade I listed buildings"],
+            correct: 2,
+            explanation: "Listed buildings are not automatically exempt; alterations must affect character."
+        },
+        {
+            question: "What is the Warm Homes Plan?",
+            options: ["A tenant heating assistance scheme", "A government grant program for energy efficiency from 2026", "A landlord insurance requirement", "A building regulation standard"],
+            correct: 1,
+            explanation: "The Warm Homes Plan provides grants and loans for energy efficiency from 2026."
+        },
+        {
+            question: "What is the penalty for failing to provide an EPC to tenants?",
+            options: ["£100", "£200", "£500", "£1,000"],
+            correct: 1,
+            explanation: "The penalty for failing to provide an EPC is £200."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let candidateName = '';
+
+    function startExam() {
+        const nameInput = document.getElementById('candidate-name');
+        const emailInput = document.getElementById('candidate-email');
+        
+        if (!nameInput.value.trim() || !emailInput.value.trim()) {
+            alert('Please enter both your name and email address to begin.');
+            return;
+        }
+        
+        candidateName = nameInput.value.trim();
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('progress-container').style.display = 'block';
+        
+        renderQuestions();
+        showQuestion(0);
+        updateProgress();
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-container';
+            questionDiv.id = `question-${index}`;
+            
+            let optionsHtml = '';
+            q.options.forEach((opt, optIndex) => {
+                const letter = String.fromCharCode(65 + optIndex);
+                optionsHtml += `
+                    <div class="option" onclick="selectOption(${index}, ${optIndex})" id="q${index}-opt${optIndex}">
+                        <div class="option-letter">${letter}</div>
+                        <div>${opt}</div>
+                    </div>
+                `;
+            });
+            
+            questionDiv.innerHTML = `
+                <div class="question-header">
+                    <span class="question-number">Question ${index + 1} of ${questions.length}</span>
+                    <span style="color: #666;">Select one answer</span>
+                </div>
+                <div class="question-text">${q.question}</div>
+                <div class="options">${optionsHtml}</div>
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>
+                        ← Previous
+                    </button>
+                    <button class="btn" onclick="${index === questions.length - 1 ? 'submitExam()' : 'nextQuestion()'}" id="nav-btn-${index}">
+                        ${index === questions.length - 1 ? 'Submit Exam' : 'Next →'}
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+        });
+    }
+
+    function showQuestion(index) {
+        document.querySelectorAll('.question-container').forEach(q => q.classList.remove('active'));
+        document.getElementById(`question-${index}`).classList.add('active');
+        currentQuestion = index;
+        
+        // Restore selection if exists
+        if (userAnswers[index] !== null) {
+            selectOption(index, userAnswers[index], false);
+        }
+        
+        updateProgress();
+    }
+
+    function selectOption(questionIndex, optionIndex, update = true) {
+        // Clear previous selection
+        document.querySelectorAll(`#question-${questionIndex} .option`).forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        
+        // Select new option
+        document.getElementById(`q${questionIndex}-opt${optionIndex}`).classList.add('selected');
+        
+        if (update) {
+            userAnswers[questionIndex] = optionIndex;
+        }
+    }
+
+    function nextQuestion() {
+        if (userAnswers[currentQuestion] === null) {
+            alert('Please select an answer before proceeding.');
+            return;
+        }
+        showQuestion(currentQuestion + 1);
+    }
+
+    function prevQuestion() {
+        if (currentQuestion > 0) {
+            showQuestion(currentQuestion - 1);
+        }
+    }
+
+    function updateProgress() {
+        const answered = userAnswers.filter(a => a !== null).length;
+        const percentage = (answered / questions.length) * 100;
+        document.getElementById('progress-fill').style.width = percentage + '%';
+    }
+
+    function submitExam() {
+        if (userAnswers[currentQuestion] === null) {
+            alert('Please select an answer for this question before submitting.');
+            return;
+        }
+        
+        if (!confirm('Are you sure you want to submit your exam? You cannot change answers after submission.')) {
+            return;
+        }
+        
+        calculateResults();
+    }
+
+    function calculateResults() {
+        let correct = 0;
+        userAnswers.forEach((answer, index) => {
+            if (answer === questions[index].correct) {
+                correct++;
+            }
+        });
+        
+        const percentage = Math.round((correct / questions.length) * 100);
+        const passed = percentage >= 70;
+        
+        displayResults(correct, percentage, passed);
+    }
+
+    function displayResults(correct, percentage, passed) {
+        document.getElementById('progress-container').style.display = 'none';
+        document.querySelectorAll('.question-container').forEach(q => q.style.display = 'none');
+        
+        const resultsScreen = document.getElementById('results-screen');
+        resultsScreen.classList.add('show');
+        
+        const scoreCircle = document.getElementById('score-circle');
+        const scorePercentage = document.getElementById('score-percentage');
+        const resultMessage = document.getElementById('result-message');
+        const resultDetails = document.getElementById('result-details');
+        
+        scorePercentage.textContent = percentage + '%';
+        
+        if (passed) {
+            scoreCircle.classList.add('pass');
+            scoreCircle.classList.remove('fail');
+            resultMessage.textContent = '🎉 Congratulations! You have PASSED the examination.';
+            resultMessage.classList.add('pass');
+            resultMessage.classList.remove('fail');
+            resultDetails.innerHTML = `You answered <strong>${correct} out of ${questions.length}</strong> questions correctly.<br>You have demonstrated competency in UK Net Zero and PRS legislation.`;
+            
+            document.getElementById('certificate-actions').style.display = 'block';
+            document.getElementById('fail-actions').style.display = 'none';
+            
+            generateCertificate(correct, percentage);
+        } else {
+            scoreCircle.classList.add('fail');
+            scoreCircle.classList.remove('pass');
+            resultMessage.textContent = '❌ Unfortunately, you did not pass the examination.';
+            resultMessage.classList.add('fail');
+            resultMessage.classList.remove('pass');
+            resultDetails.innerHTML = `You answered <strong>${correct} out of ${questions.length}</strong> questions correctly.<br>You needed 14 correct answers (70%) to pass.`;
+            
+            document.getElementById('certificate-actions').style.display = 'none';
+            document.getElementById('fail-actions').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function generateCertificate(score, percentage) {
+        const certificate = document.getElementById('certificate');
+        certificate.classList.add('show');
+        
+        document.getElementById('cert-name').textContent = candidateName;
+        document.getElementById('cert-score').textContent = `${percentage}% (${score}/20)`;
+        document.getElementById('cert-date').textContent = new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        document.getElementById('cert-id').textContent = 'UK-NZ-' + Date.now().toString().slice(-8);
+    }
+
+    function showReview() {
+        const reviewSection = document.getElementById('review-section');
+        const reviewContent = document.getElementById('review-content');
+        
+        reviewSection.style.display = 'block';
+        reviewContent.innerHTML = '';
+        
+        questions.forEach((q, index) => {
+            const userAnswer = userAnswers[index];
+            const isCorrect = userAnswer === q.correct;
+            const status = isCorrect ? 'correct' : 'incorrect';
+            const correctLetter = String.fromCharCode(65 + q.correct);
+            const userLetter = userAnswer !== null ? String.fromCharCode(65 + userAnswer) : 'None';
+            
+            const reviewItem = document.createElement('div');
+            reviewItem.className = `review-item ${status}`;
+            reviewItem.innerHTML = `
+                <div class="review-question">Q${index + 1}: ${q.question}</div>
+                <div class="review-answer">
+                    Your answer: <strong>${userLetter}</strong> | 
+                    Correct answer: <strong>${correctLetter}</strong><br>
+                    <em>${q.explanation}</em>
+                </div>
+            `;
+            reviewContent.appendChild(reviewItem);
+        });
+        
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>
