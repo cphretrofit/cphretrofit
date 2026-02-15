@@ -1,5 +1,3 @@
-# Generating the HTML file for the exam
-html_content = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -656,19 +654,3 @@ html_content = """
     </script>
 </body>
 </html>
-"""
-
-# Write to file
-with open('/mnt/kimi/output/professional_exam.html', 'w') as f:
-    f.write(html_content)
-
-print("✅ Exam generated successfully!")
-print("📁 File saved to: /mnt/kimi/output/professional_exam.html")
-print("\nFeatures included:")
-print("• 30 Moderate Difficulty Questions (General Knowledge/Business/Tech)")
-print("• 80% Pass Rate Requirement (24/30 correct)")
-print("• 45-minute Timer (Auto-submit)")
-print("• Dynamic Certificate Generation (Name + Score + Date)")
-print("• Print-friendly CSS for saving PDF")
-print("• Responsive Design (Mobile/Desktop)")
-print("• Navigation (Previous/Next/Submit)")
