@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAS 2035 Professional Certification Exam</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --secondary: #f59e0b;
+            --danger: #dc2626;
+            --success: #059669;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #f0f9ff 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .exam-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .exam-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .exam-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .exam-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .exam-header p {
+            opacity: 0.95;
+            font-size: 1.125rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .exam-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            font-size: 0.875rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        .question-card.answered {
+            border-color: #e5e7eb;
+            opacity: 0.8;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 1.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: #f0fdfa;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: #f0fdfa;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: #d1fae5;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .option input {
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .option-label {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--light);
+            border-color: #d1d5db;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #047857;
+        }
+
+        /* Review Screen */
+        .review-screen {
+            display: none;
+            background: white;
+            border-radius: 1rem;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .review-screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: conic-gradient(var(--primary) calc(var(--score) * 1%), #e5e7eb 0);
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 0.75rem;
+        }
+
+        .result-message.pass {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .result-message.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-box {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+            font-weight: 600;
+        }
+
+        /* Certificate */
+        .certificate-container {
+            display: none;
+            margin-top: 3rem;
+        }
+
+        .certificate-container.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .certificate {
+            background: linear-gradient(135deg, #fef9c3 0%, #fde047 100%);
+            border: 8px solid #eab308;
+            border-radius: 1rem;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .certificate::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        .cert-header {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 3rem;
+        }
+
+        .cert-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cert-subtitle {
+            font-size: 1.25rem;
+            color: #a16207;
+            font-weight: 600;
+        }
+
+        .cert-body {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin: 3rem 0;
+        }
+
+        .cert-presented {
+            font-size: 1.125rem;
+            color: #713f12;
+            margin-bottom: 1rem;
+        }
+
+        .cert-recipient {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #92400e;
+            border-bottom: 3px solid #eab308;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            min-width: 400px;
+        }
+
+        .cert-description {
+            font-size: 1.125rem;
+            color: #713f12;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cert-details {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+            border-top: 2px solid rgba(234, 179, 8, 0.3);
+            padding-top: 2rem;
+        }
+
+        .cert-detail {
+            text-align: center;
+        }
+
+        .cert-detail-label {
+            font-size: 0.875rem;
+            color: #a16207;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-detail-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .cert-seal {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            width: 100px;
+            height: 100px;
+            background: #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 0.875rem;
+            text-align: center;
+            line-height: 1.2;
+            transform: rotate(-15deg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            border: 4px solid #b91c1c;
+        }
+
+        .input-group {
+            margin: 2rem 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Question Review List */
+        .question-review {
+            margin-top: 2rem;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .review-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .review-status {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .review-status.correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .review-status.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .review-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .review-answer {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .certificate, .certificate * {
+                visibility: visible;
+            }
+            .certificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .exam-header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .certificate {
+                padding: 2rem;
+            }
+            
+            .cert-recipient {
+                min-width: auto;
+                font-size: 1.75rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cert-details {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="exam-container">
+        <!-- Header -->
+        <div class="exam-header">
+            <h1>PAS 2035 Professional Certification</h1>
+            <p>Advanced Assessment: Domestic Energy Efficiency Measures</p>
+            <div class="exam-meta">
+                <span class="meta-item">⏱️ 45 Minutes</span>
+                <span class="meta-item">📝 30 Questions</span>
+                <span class="meta-item">🎯 80% Pass Mark</span>
+                <span class="meta-item">📊 Moderate-Hard Difficulty</span>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Question <span id="currentQ">1</span> of 30</span>
+                <span id="answeredCount">0 answered</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Review Screen -->
+        <div class="review-screen" id="reviewScreen">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Exam Complete</h2>
+            <p style="color: #6b7280; margin-bottom: 2rem;">Review your performance below</p>
+            
+            <div class="score-circle" id="scoreCircle" style="--score: 0;">
+                <div class="score-content">
+                    <div class="score-number" id="finalScore">0%</div>
+                    <div class="score-label">Score</div>
+                </div>
+            </div>
+
+            <div id="resultMessage" class="result-message"></div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="correctCount">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="incorrectCount">0</div>
+                    <div class="stat-label">Incorrect</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="timeTaken">--</div>
+                    <div class="stat-label">Time Taken</div>
+                </div>
+            </div>
+
+            <div class="question-review" id="questionReview"></div>
+
+            <div style="margin-top: 3rem;">
+                <button class="btn btn-primary" id="certBtn" onclick="showCertificate()" style="display: none;">
+                    🏆 Generate Certificate
+                </button>
+                <button class="btn btn-secondary" onclick="retakeExam()" style="margin-left: 1rem;">
+                    🔄 Retake Exam
+                </button>
+            </div>
+        </div>
+
+        <!-- Certificate Section -->
+        <div class="certificate-container" id="certificateSection">
+            <div class="input-group">
+                <label>Enter your full name for the certificate:</label>
+                <input type="text" id="recipientName" placeholder="e.g., John Smith" maxlength="40">
+            </div>
+            
+            <button class="btn btn-success" onclick="generateCertificate()" style="margin-bottom: 2rem;">
+                ✨ Generate Final Certificate
+            </button>
+
+            <div id="certificateOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Under PAS 2035, what is the maximum allowable U-value for a newly insulated solid wall to meet current compliance standards?",
+                options: ["0.30 W/m²K", "0.18 W/m²K", "0.55 W/m²K", "0.70 W/m²K"],
+                correct: 0,
+                explanation: "PAS 2035 typically requires solid wall insulation to achieve 0.30 W/m²K or better, with 0.18 W/m²K being the high-performance target."
+            },
+            {
+                q: "Which phenomenon occurs when warm moist air condenses on a cold surface within a wall structure?",
+                options: ["Thermal bridging", "Interstitial condensation", "Solar gain", "Stack effect"],
+                correct: 1,
+                explanation: "Interstitial condensation occurs when water vapour condenses within the fabric of the building, a major risk in IWI applications."
+            },
+            {
+                q: "What is the primary advantage of Phenolic foam over PIR board in retrofit applications?",
+                options: ["Lower cost", "Better fire resistance", "Lower thermal conductivity allowing thinner profiles", "Higher compressive strength"],
+                correct: 2,
+                explanation: "Phenolic foam (0.018-0.022 W/mK) has lower thermal conductivity than PIR (0.022-0.026 W/mK), enabling thinner build-ups for the same U-value."
+            },
+            {
+                q: "In a cold roof construction, where is the critical vapour control layer positioned?",
+                options: ["Above the rafters", "Below the ceiling plasterboard", "Between insulation layers", "At the eaves"],
+                correct: 1,
+                explanation: "In cold roof construction (loft insulation at ceiling level), the VCL is positioned on the warm side, typically below the ceiling plasterboard or integrated with it."
+            },
+            {
+                q: "What is the minimum recommended continuous ventilation gap required above insulation in a room-in-roof construction?",
+                options: ["10mm", "25mm", "50mm", "75mm"],
+                correct: 2,
+                explanation: "PAS 2035 requires a minimum 50mm continuous ventilation gap above insulation in room-in-roof applications to prevent condensation and timber decay."
+            },
+            {
+                q: "Which insulation material is described as 'hygroscopic' and supports moisture buffering?",
+                options: ["XPS", "PIR board", "Wood fibre", "EPS"],
+                correct: 2,
+                explanation: "Wood fibre is hygroscopic, meaning it can absorb and release moisture, helping to regulate humidity and buffer moisture within the construction."
+            },
+            {
+                q: "What is the primary risk associated with blocking sub-floor ventilation in suspended timber floor insulation?",
+                options: ["Increased heat loss", "Timber rot and structural decay", "Noise transmission", "Pest infestation"],
+                correct: 1,
+                explanation: "Blocking sub-floor ventilation prevents moisture escape, leading to elevated humidity levels that cause timber rot and potential structural failure."
+            },
+            {
+                q: "Under PAS 2035, which professional role is responsible for the overall retrofit design and risk assessment?",
+                options: ["Retrofit Installer", "Retrofit Coordinator", "Retrofit Assessor", "Retrofit Evaluator"],
+                correct: 1,
+                explanation: "The Retrofit Coordinator oversees the entire project, ensuring compliance with PAS 2035, managing risks, and coordinating between assessors and installers."
+            },
+            {
+                q: "What is the approximate U-value improvement when upgrading from single glazing (4.8 W/m²K) to modern triple glazing (0.8 W/m²K)?",
+                options: ["60%", "75%", "83%", "90%"],
+                correct: 2,
+                explanation: "The improvement is (4.8-0.8)/4.8 = 83.3% reduction in heat loss through the glazing element."
+            },
+            {
+                q: "Which of the following is NOT a valid method for achieving airtightness in domestic retrofit?",
+                options: ["Tape and membrane systems", "Wet plaster finishes", "Expanding foam sealants", "Removing all ventilation"],
+                correct: 3,
+                explanation: "Removing all ventilation is dangerous and non-compliant. Airtightness must be balanced with controlled ventilation (MVHR or background vents)."
+            },
+            {
+                q: "What is the 'dew point' in building physics?",
+                options: ["The temperature at which insulation becomes wet", "The temperature at which water vapour condenses into liquid", "The point where external walls meet the ground", "The depth of insulation required"],
+                correct: 1,
+                explanation: "The dew point is the temperature at which air becomes saturated with water vapour and condensation begins to form."
+            },
+            {
+                q: "In External Wall Insulation (EWI), why is the dew point moved outward compared to Internal Wall Insulation (IWI)?",
+                options: ["EWI uses thicker insulation", "The existing wall remains warmer, keeping the dew point in the insulation layer", "EWI has better airtightness", "External walls are naturally warmer"],
+                correct: 1,
+                explanation: "EWI keeps the existing wall structure warmer, moving the dew point into the insulation layer where it can harmlessly evaporate, unlike IWI where it may form within the wall."
+            },
+            {
+                q: "What is the primary function of Airex Smart Air Bricks in underfloor insulation?",
+                options: ["Increase structural strength", "Recover heat from outgoing air while maintaining ventilation", "Prevent pest entry", "Reduce noise transmission"],
+                correct: 1,
+                explanation: "Smart Air Bricks contain heat exchangers that recover warmth from outgoing air while still providing necessary sub-floor ventilation to prevent rot."
+            },
+            {
+                q: "Which junction detail is most critical to address when installing Internal Wall Insulation to prevent thermal bridging?",
+                options: ["Window reveals", "Floor/wall junction", "Ceiling junction", "All of the above"],
+                correct: 3,
+                explanation: "All junctions are critical in IWI. Floors, ceilings, windows, and party walls all require careful detailing to prevent thermal bridging and condensation."
+            },
+            {
+                q: "What is the typical thermal conductivity (λ) range for mineral wool insulation?",
+                options: ["0.018-0.022 W/mK", "0.022-0.026 W/mK", "0.032-0.040 W/mK", "0.050-0.060 W/mK"],
+                correct: 2,
+                explanation: "Mineral wool (glass or rock) typically has thermal conductivity between 0.032-0.040 W/mK, making it less thermally efficient than foam boards but more vapour-permeable."
+            },
+            {
+                q: "Under PAS 2035, what is required when a retrofit measure increases the risk of overheating?",
+                options: ["Install air conditioning", "Conduct an overheating risk assessment", "Increase insulation thickness", "Remove the measure"],
+                correct: 1,
+                explanation: "PAS 2035 requires an overheating risk assessment when measures such as room-in-roof insulation or high-performance glazing may increase summer overheating risk."
+            },
+            {
+                q: "What is the 'whole house' approach in PAS 2035?",
+                options: ["Insulating every surface simultaneously", "Considering the interaction of all measures on the dwelling's performance", "Using the same insulation material throughout", "Completing all work in one day"],
+                correct: 1,
+                explanation: "The whole house approach considers how individual measures interact, ensuring that improving one element doesn't negatively impact others (e.g., airtightness vs. ventilation)."
+            },
+            {
+                q: "Which factor is most likely to cause a reduction in the installed performance of mineral wool loft insulation?",
+                options: ["Using the wrong colour", "Compression of the material", "Orientation of the rolls", "Time of year installed"],
+                correct: 1,
+                explanation: "Compressing mineral wool reduces its trapped air pockets, significantly reducing thermal performance. It should be installed at specified thicknesses without compression."
+            },
+            {
+                q: "What is the primary purpose of a vapour control layer (VCL) in retrofit construction?",
+                options: ["To prevent all moisture entry", "To control the diffusion of water vapour from inside to outside", "To provide structural support", "To increase thermal mass"],
+                correct: 1,
+                explanation: "A VCL restricts (but doesn't completely block) water vapour movement from the warm interior to colder external layers, preventing condensation within the structure."
+            },
+            {
+                q: "In which scenario would wood fibre insulation be preferred over PIR board?",
+                options: ["When lowest cost is required", "When maximum thermal performance in thin profile is needed", "When working with historic solid walls requiring moisture buffering", "When installing below ground level"],
+                correct: 2,
+                explanation: "Wood fibre's hygroscopic properties make it ideal for historic buildings with solid walls, as it can buffer moisture and allow the wall to breathe and dry out."
+            },
+            {
+                q: "What is the significance of the 'λ' (lambda) value in insulation specification?",
+                options: ["It indicates fire resistance", "It measures thermal conductivity - lower is better", "It shows compressive strength", "It determines colour options"],
+                correct: 1,
+                explanation: "Lambda (λ) represents thermal conductivity in W/mK. Lower values indicate better insulating properties (less heat flow through the material)."
+            },
+            {
+                q: "Which of the following describes 'thermal bridging'?",
+                options: ["A heating system fault", "Localized path of high heat flow bypassing insulation", "A type of insulation material", "The gap between floorboards"],
+                correct: 1,
+                explanation: "Thermal bridging occurs where insulation is interrupted or thinner, creating a path for heat to bypass the insulation (e.g., at studs, joists, or junctions)."
+            },
+            {
+                q: "What is the minimum recommended U-value for replacement windows under current PAS 2035 guidance?",
+                options: ["2.8 W/m²K", "1.6 W/m²K", "1.2 W/m²K", "0.8 W/m²K"],
+                correct: 2,
+                explanation: "Current guidance typically requires replacement windows to achieve 1.2-1.4 W/m²K (double glazed with Low-E) or better, with 2.8 W/m²K being typical of older double glazing."
+            },
+            {
+                q: "Why is EPS (Expanded Polystyrene) commonly used for EWI despite having higher thermal conductivity than PIR?",
+                options: ["It is cheaper and more cost-effective for large projects", "It has better structural strength", "It is easier to cut on site", "It is the only fire-safe option"],
+                correct: 0,
+                explanation: "EPS (0.030-0.038 W/mK) is less thermally efficient than PIR but significantly cheaper, making it cost-effective for large-scale EWI projects where thickness is less critical."
+            },
+            {
+                q: "What risk is specifically associated with 'cold bridging' at window reveals in IWI installations?",
+                options: ["Improved security", "Condensation and mould growth on window frames", "Increased daylight", "Better sound insulation"],
+                correct: 1,
+                explanation: "If window reveals are not properly insulated and sealed, the cold bridge can cause surface temperatures to drop below dew point, leading to condensation and mould."
+            },
+            {
+                q: "Under PAS 2035, what must be assessed before installing any insulation measure?",
+                options: ["Only the cost", "The condition of existing building fabric and moisture risks", "The colour scheme", "The neighbour's permission"],
+                correct: 1,
+                explanation: "A pre-installation assessment must evaluate the existing fabric condition, identify defects, and assess moisture risks to ensure the measure is suitable and won't cause harm."
+            },
+            {
+                q: "What is the primary disadvantage of XPS (Extruded Polystyrene) compared to EPS in retrofit applications?",
+                options: ["Lower compressive strength", "Limited vapour permeability", "Higher cost", "Poor moisture resistance"],
+                correct: 1,
+                explanation: "XPS has limited vapour permeability compared to EPS, which can trap moisture in certain applications. However, XPS has better moisture resistance and compressive strength."
+            },
+            {
+                q: "In a 'warm roof' construction (room-in-roof), where is the insulation positioned?",
+                options: ["At ceiling level only", "Between and/or below the rafters", "On top of the roof tiles", "In the eaves only"],
+                correct: 1,
+                explanation: "Warm roof construction places insulation between and/or below rafters, bringing the roof space into the thermal envelope, unlike cold roof where insulation is at ceiling level."
+            },
+            {
+                q: "What is the purpose of 'warm edge spacers' in high-performance glazing?",
+                options: ["To increase window weight", "To reduce thermal bridging at the glass edge", "To improve sound insulation", "To strengthen the glass"],
+                correct: 1,
+                explanation: "Warm edge spacers (plastic or composite) replace aluminium spacers at the glass edge, reducing thermal bridging and improving the window's overall U-value."
+            },
+            {
+                q: "Which combination of risks is PAS 2035 specifically designed to prevent through its whole-house approach?",
+                options: ["High costs and long installation times", "Unintended consequences such as damp, mould, and structural damage", "Noise and light pollution", "Theft and vandalism"],
+                correct: 1,
+                explanation: "PAS 2035's risk-based approach specifically aims to prevent unintended consequences like damp, mould, poor indoor air quality, and structural damage that can result from poorly designed retrofit."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(30).fill(null);
+        let startTime = Date.now();
+        let examSubmitted = false;
+
+        function initExam() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                if (index === 0) card.classList.add('active');
+                card.id = `question-${index}`;
+                
+                card.innerHTML = `
+                    <span class="question-number">Question ${index + 1}</span>
+                    <div class="question-text">${q.q}</div>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <div class="option" onclick="selectAnswer(${index}, ${i}, this)">
+                                <input type="radio" name="q${index}" id="q${index}o${i}">
+                                <label class="option-label" for="q${index}o${i}">${opt}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>
+                            ← Previous
+                        </button>
+                        <button class="btn btn-primary" onclick="${index === 29 ? 'submitExam()' : 'nextQuestion()'}">
+                            ${index === 29 ? 'Submit Exam ✓' : 'Next →'}
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            updateProgress();
+        }
+
+        function selectAnswer(qIndex, optionIndex, element) {
+            if (examSubmitted) return;
+            
+            answers[qIndex] = optionIndex;
+            
+            // Update UI
+            const card = document.getElementById(`question-${qIndex}`);
+            const options = card.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+            
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 29) {
+                document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+                currentQuestion++;
+                document.getElementById(`question-${currentQuestion}`).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+                currentQuestion--;
+                document.getElementById(`question-${currentQuestion}`).classList.add('active');
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function updateProgress() {
+            const answered = answers.filter(a => a !== null).length;
+            const progress = ((currentQuestion + 1) / 30) * 100;
+            
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('answeredCount').textContent = `${answered} answered`;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function submitExam() {
+            const answered = answers.filter(a => a !== null).length;
+            if (answered < 30) {
+                if (!confirm(`You have answered ${answered} of 30 questions. Are you sure you want to submit?`)) {
+                    return;
+                }
+            }
+            
+            examSubmitted = true;
+            const endTime = Date.now();
+            const timeTaken = Math.floor((endTime - startTime) / 1000);
+            const minutes = Math.floor(timeTaken / 60);
+            const seconds = timeTaken % 60;
+            
+            // Calculate score
+            let correct = 0;
+            answers.forEach((answer, index) => {
+                if (answer === questions[index].correct) correct++;
+            });
+            
+            const percentage = Math.round((correct / 30) * 100);
+            const passed = percentage >= 80;
+            
+            // Hide questions, show review
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            document.getElementById('reviewScreen').classList.add('active');
+            
+            // Update score display
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+            document.getElementById('scoreCircle').style.setProperty('--score', percentage);
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = 30 - correct;
+            document.getElementById('timeTaken').textContent = `${minutes}m ${seconds}s`;
+            
+            // Result message
+            const msg = document.getElementById('resultMessage');
+            if (passed) {
+                msg.className = 'result-message pass';
+                msg.innerHTML = `✓ Congratulations! You passed with ${percentage}%<br><small>You are eligible for professional certification</small>`;
+                document.getElementById('certBtn').style.display = 'inline-flex';
+            } else {
+                msg.className = 'result-message fail';
+                msg.innerHTML = `✗ You did not pass. Required: 80%, You scored: ${percentage}%<br><small>Review the material and try again</small>`;
+            }
+            
+            // Generate question review
+            const reviewDiv = document.getElementById('questionReview');
+            reviewDiv.innerHTML = '<h3 style="margin-bottom: 1rem;">Question Review</h3>';
+            
+            answers.forEach((answer, index) => {
+                const isCorrect = answer === questions[index].correct;
+                const item = document.createElement('div');
+                item.className = 'review-item';
+                item.innerHTML = `
+                    <div class="review-status ${isCorrect ? 'correct' : 'incorrect'}">
+                        ${isCorrect ? '✓' : '✕'}
+                    </div>
+                    <div class="review-text">
+                        Q${index + 1}: ${isCorrect ? 'Correct' : 'Incorrect'}
+                        ${!isCorrect ? `<div class="review-answer">Your answer: ${answer !== null ? questions[index].options[answer] : 'Not answered'}<br>Correct: ${questions[index].options[questions[index].correct]}</div>` : ''}
+                    </div>
+                `;
+                reviewDiv.appendChild(item);
+            });
+            
+            window.scrollTo(0, 0);
+        }
+
+        function showCertificate() {
+            document.getElementById('certificateSection').classList.add('active');
+            document.getElementById('certBtn').style.display = 'none';
+            window.scrollTo(0, document.getElementById('certificateSection').offsetTop);
+        }
+
+        function generateCertificate() {
+            const name = document.getElementById('recipientName').value.trim();
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            const date = new Date().toLocaleDateString('en-GB', { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            const certId = 'PAS-' + Date.now().toString(36).toUpperCase();
+            
+            const certificateHTML = `
+                <div class="certificate">
+                    <div class="cert-header">
+                        <div class="cert-icon">🏆</div>
+                        <div class="cert-title">Certificate of Competence</div>
+                        <div class="cert-subtitle">PAS 2035 Domestic Energy Efficiency</div>
+                    </div>
+                    
+                    <div class="cert-body">
+                        <div class="cert-presented">This certifies that</div>
+                        <div class="cert-recipient">${name}</div>
+                        <div class="cert-description">
+                            has successfully completed the Professional Certification Examination in<br>
+                            <strong>PAS 2035: Key Characteristics of Domestic Energy Efficiency Measures</strong><br>
+                            demonstrating comprehensive knowledge of building fabric retrofit,<br>
+                            moisture risk management, and whole-house approaches.
+                        </div>
+                    </div>
+                    
+                    <div class="cert-details">
+                        <div class="cert-detail">
+                            <div class="cert-detail-label">Date</div>
+                            <div class="cert-detail-value">${date}</div>
+                        </div>
+                        <div class="cert-detail">
+                            <div class="cert-detail-label">Score</div>
+                            <div class="cert-detail-value">${document.getElementById('finalScore').textContent}</div>
+                        </div>
+                        <div class="cert-detail">
+                            <div class="cert-detail-label">Certificate ID</div>
+                            <div class="cert-detail-value">${certId}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="cert-seal">
+                        PAS<br>2035<br>CERTIFIED
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-primary" onclick="window.print()">
+                        🖨️ Print Certificate
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadCertificate()" style="margin-left: 1rem;">
+                        💾 Download PDF
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('certificateOutput').innerHTML = certificateHTML;
+            window.scrollTo(0, document.getElementById('certificateOutput').offsetTop);
+        }
+
+        function downloadCertificate() {
+            alert('In a production environment, this would generate a PDF download. For now, please use the Print function and select "Save as PDF" as the printer.');
+        }
+
+        function retakeExam() {
+            location.reload();
+        }
+
+        // Initialize
+        initExam();
+    </script>
+</body>
+</html>

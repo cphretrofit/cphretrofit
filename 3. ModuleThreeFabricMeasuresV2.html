@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAS 2035: Domestic Energy Efficiency Retrofit - Professional Training</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --secondary: #f59e0b;
+            --danger: #dc2626;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #f0f9ff 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation & Progress */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 3rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d9488;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Main Content */
+        .course-container {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-30px, -30px) rotate(180deg); }
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h3 {
+            color: var(--dark);
+            font-size: 1.25rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        /* Interactive Elements */
+        .accordion {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .accordion-header {
+            background: var(--light);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+            background: #e5e7eb;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1rem;
+        }
+
+        .accordion-content.active {
+            max-height: 500px;
+            padding: 1rem;
+        }
+
+        .icon {
+            transition: transform 0.3s;
+        }
+
+        .accordion-header.active .icon {
+            transform: rotate(180deg);
+        }
+
+        /* Lists */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .warning-list li::before {
+            content: '⚠';
+            color: var(--secondary);
+        }
+
+        .danger-list li::before {
+            content: '✕';
+            color: var(--danger);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: #f9fafb;
+        }
+
+        /* Value Boxes */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .value-box {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 2px solid #99f6e4;
+            transition: transform 0.3s;
+        }
+
+        .value-box:hover {
+            transform: scale(1.05);
+        }
+
+        .value-box.danger {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fecaca;
+        }
+
+        .value-box.warning {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fde68a;
+        }
+
+        .value-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .value-box.danger .value-number {
+            color: var(--danger);
+        }
+
+        .value-box.warning .value-number {
+            color: #d97706;
+        }
+
+        .value-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Image Containers */
+        .image-container {
+            margin: 2rem 0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            text-align: center;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-question {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #f0fdfa;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--primary);
+            background: #f0fdfa;
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--danger);
+            background: #fee2e2;
+        }
+
+        .quiz-option input {
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: var(--primary);
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Comparison Tool */
+        .comparison-slider {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: stretch;
+        }
+
+        .comparison-item {
+            flex: 1;
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .comparison-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .comparison-item.selected {
+            border-color: var(--primary);
+            background: #f0fdfa;
+        }
+
+        .comparison-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .pros-cons {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .pros-cons strong {
+            color: var(--primary);
+        }
+
+        /* Heat Flow Animation */
+        .heat-flow-demo {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heat-house {
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            position: relative;
+            background: #f3f4f6;
+            border: 4px solid var(--dark);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heat-house::before {
+            content: '🏠';
+            font-size: 4rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .heat-wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: heatWave 2s infinite;
+        }
+
+        .heat-wave:nth-child(1) { animation-delay: 0s; border-color: rgba(245, 158, 11, 0.3); }
+        .heat-wave:nth-child(2) { animation-delay: 0.5s; border-color: rgba(245, 158, 11, 0.2); }
+        .heat-wave:nth-child(3) { animation-delay: 1s; border-color: rgba(245, 158, 11, 0.1); }
+
+        @keyframes heatWave {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .heat-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .heat-label {
+            padding: 0.5rem 1rem;
+            background: var(--light);
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-wrap: wrap;
+                padding: 0.75rem;
+            }
+
+            .progress-container {
+                order: 3;
+                width: 100%;
+                margin: 0.5rem 0 0 0;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .comparison-slider {
+                flex-direction: column;
+            }
+
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+        }
+
+        /* Completion Certificate */
+        .certificate {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 4px solid #f59e0b;
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificate::before {
+            content: '🏆';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+
+        .certificate h2 {
+            color: #92400e;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .certificate-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 2px dotted var(--primary);
+            cursor: help;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+            font-size: 0.875rem;
+            z-index: 100;
+            font-weight: normal;
+        }
+
+        /* Risk Indicators */
+        .risk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .risk-low {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Interactive Calculator */
+        .calculator {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .calc-result {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: none;
+        }
+
+        .calc-result.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="logo">
+            <span>⚡</span>
+            PAS 2035 Training
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="progress-text" id="progressText">0%</span>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-secondary" onclick="previousSection()" id="prevBtn" disabled>Previous</button>
+            <button class="btn btn-primary" onclick="nextSection()" id="nextBtn">Next</button>
+        </div>
+    </nav>
+
+    <!-- Course Content -->
+    <div class="course-container">
+
+        <!-- Section 1: Introduction -->
+        <section class="section active" id="section-1">
+            <div class="hero">
+                <h1>PAS 2035: Domestic Energy Efficiency</h1>
+                <p>Master the UK framework for whole-house retrofit and building fabric improvements</p>
+                <span class="badge">Module 3: Key Characteristics of Measures</span>
+            </div>
+
+            <div class="card">
+                <h2>🎯 Learning Objectives</h2>
+                <p style="margin-bottom: 1.5rem;">By the end of this module, you will be able to:</p>
+                <ul class="feature-list">
+                    <li>Understand the PAS 2035 "fabric first" approach and whole-house retrofit methodology</li>
+                    <li>Identify key building fabric elements and their thermal performance characteristics</li>
+                    <li>Evaluate insulation materials based on thermal conductivity and moisture risk</li>
+                    <li>Assess appropriate measures for different building types and contexts</li>
+                    <li>Recognize critical risks and control measures for each retrofit solution</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>📋 Course Structure</h2>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>1. Introduction to PAS 2035 & Building Physics</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Understanding the regulatory framework, heat transfer mechanisms, and U-values.</p>
+                    </div>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>2. Insulation Materials</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Comparative analysis of mineral wool, PIR, EPS, phenolic foam, and wood fibre.</p>
+                    </div>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>3. Specific Measures</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Deep dive into Loft, IWI, EWI, Underfloor, Room-in-Roof, and Glazing solutions.</p>
+                    </div>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>4. Assessment & Certification</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Interactive quizzes, case studies, and final assessment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn btn-primary" style="font-size: 1.125rem; padding: 1rem 2rem;" onclick="nextSection()">
+                    Start Learning →
+                </button>
+            </div>
+        </section>
+
+        <!-- Section 2: PAS 2035 Context -->
+        <section class="section" id="section-2">
+            <div class="card">
+                <h2>🏛️ PAS 2035 Context</h2>
+                <p style="margin-bottom: 1.5rem; font-size: 1.125rem;">
+                    PAS 2035 is the <span class="tooltip" data-tooltip="Publicly Available Specification">PAS</span> framework for retrofitting domestic dwellings for improved energy efficiency in the UK.
+                </p>
+                
+                <div style="background: #f0fdfa; padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                    <h3 style="margin-top: 0; color: var(--primary);">The "Fabric First" Approach</h3>
+                    <p>Under PAS 2035, improvements to the <strong>building fabric are prioritized</strong> before adding heating or renewable technologies. This ensures:</p>
+                </div>
+
+                <div class="value-grid">
+                    <div class="value-box">
+                        <span class="value-number">✓</span>
+                        <div class="value-label">Genuine Energy & Carbon Savings</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">✓</span>
+                        <div class="value-label">Protected Occupant Health</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">✓</span>
+                        <div class="value-label">Avoided Unintended Consequences</div>
+                    </div>
+                </div>
+
+                <div class="alert" style="background: #fef3c7; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; border-left: 4px solid #f59e0b;">
+                    <strong>⚠️ Critical:</strong> Poorly designed retrofit can cause damp, mould, and structural damage. PAS 2035 mandates a <strong>whole-house, risk-based approach</strong>.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🏗️ What is Building Fabric?</h2>
+                <p>The physical envelope separating internal conditioned space from the external environment:</p>
+                
+                <div class="comparison-slider" style="margin-top: 1.5rem;">
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>🏠 Roofs</h4>
+                        <p>Loft insulation, room-in-roof solutions</p>
+                        <div class="pros-cons">
+                            <strong>High heat loss potential</strong><br>
+                            Up to 25% of total heat loss
+                        </div>
+                    </div>
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>🧱 Walls</h4>
+                        <p>Solid and cavity wall construction</p>
+                        <div class="pros-cons">
+                            <strong>Largest surface area</strong><br>
+                            Typically 35-45% of heat loss
+                        </div>
+                    </div>
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>🔲 Floors</h4>
+                        <p>Solid and suspended timber floors</p>
+                        <div class="pros-cons">
+                            <strong>Often overlooked</strong><br>
+                            10-20% of heat loss
+                        </div>
+                    </div>
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>🪟 Openings</h4>
+                        <p>Windows, doors, rooflights</p>
+                        <div class="pros-cons">
+                            <strong>High U-values</strong><br>
+                            But necessary for daylight/ventilation
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🌡️ Basic Building Physics</h2>
+                <p>Heat flows from warm to cold through three mechanisms:</p>
+                
+                <div class="heat-flow-demo">
+                    <div class="heat-house">
+                        <div class="heat-wave"></div>
+                        <div class="heat-wave"></div>
+                        <div class="heat-wave"></div>
+                    </div>
+                    <div class="heat-labels">
+                        <div class="heat-label">🔥 Conduction (through solids)</div>
+                        <div class="heat-label">💨 Convection (air movement)</div>
+                        <div class="heat-label">☀️ Radiation (surface emission)</div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Understanding U-Values</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p style="margin-bottom: 1rem;">A U-value expresses the rate of heat loss through a building element (W/m²K). <strong>Lower is better.</strong></p>
+                        <div style="background: #f3f4f6; padding: 1rem; border-radius: 0.5rem;">
+                            <strong>Example:</strong> A wall with U-value 0.30 W/m²K loses <em>twice as much heat</em> as one with 0.15 W/m²K for the same temperature difference.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Check -->
+            <div class="quiz-container">
+                <div class="quiz-question">Quick Check: What does PAS 2035 prioritize before adding renewable technologies?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, false)">
+                        <input type="radio" name="q1"> Smart heating controls
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, true)">
+                        <input type="radio" name="q1"> Building fabric improvements
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false)">
+                        <input type="radio" name="q1"> Solar PV panels
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false)">
+                        <input type="radio" name="q1"> Battery storage systems
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-1"></div>
+            </div>
+        </section>
+
+        <!-- Section 3: Materials -->
+        <section class="section" id="section-3">
+            <div class="card">
+                <h2>🔬 Common Insulation Materials</h2>
+                <p style="margin-bottom: 1.5rem;">Material selection must consider <strong>moisture risk, vapour permeability, and installation quality</strong>—not just thermal performance.</p>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Thermal Conductivity (λ W/mK)</th>
+                            <th>PAS 2035 Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Mineral Wool</strong><br>(Glass/Rock)</td>
+                            <td>0.032–0.040</td>
+                            <td>Vapour open, tolerant of irregular substrates</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PIR Rigid Board</strong></td>
+                            <td>0.022–0.026</td>
+                            <td>High performance, requires careful detailing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>EPS</strong></td>
+                            <td>0.030–0.038</td>
+                            <td>Common for EWI, cost effective</td>
+                        </tr>
+                        <tr>
+                            <td><strong>XPS</strong></td>
+                            <td>0.029–0.034</td>
+                            <td>Moisture resistant, limited vapour permeability</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phenolic Foam</strong></td>
+                            <td><span style="color: var(--primary); font-weight: bold;">0.018–0.022</span></td>
+                            <td>Very low λ value, thinner build-ups possible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wood Fibre</strong></td>
+                            <td>0.038–0.045</td>
+                            <td>Hygroscopic, supports moisture buffering</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.insulationmarketplace.com/bd7aee16b62c55f03fd0936dbf23c27534de4d5e.webp" alt="Insulation Materials">
+                    <div class="image-caption">Various insulation materials used in domestic retrofit applications</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⚖️ Material Selection Guide</h2>
+                <p>Click each scenario to reveal the recommended material approach:</p>
+                
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>High Moisture Risk Environment</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Recommendation:</strong> Wood fibre or mineral wool (vapour open)</p>
+                        <p>These materials allow moisture to escape, reducing interstitial condensation risk in solid wall constructions.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Limited Space Available</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Recommendation:</strong> Phenolic foam or PIR board</p>
+                        <p>Lower thermal conductivity means thinner boards achieve the same U-value, crucial for internal wall insulation where floor area is precious.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>External Wall Insulation (EWI)</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Recommendation:</strong> EPS or Mineral Wool systems</p>
+                        <p>EPS offers cost-effectiveness for large projects; mineral wool provides better fire performance and breathability.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Loft Insulation -->
+        <section class="section" id="section-4">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>🏠 Loft Insulation (Cold Roof)</h2>
+                    <span class="risk-badge risk-low">Low Risk</span>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Insulation installed at ceiling level, leaving the loft space outside the thermal envelope. This is the most cost-effective fabric measure available.</p>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.familyhandyman.com/374e32a7ab20b3e25e929d68c11947469f8f61d1.jpg" alt="Loft Insulation Installation">
+                    <div class="image-caption">Loft insulation installation between and over ceiling joists</div>
+                </div>
+
+                <div class="value-grid">
+                    <div class="value-box danger">
+                        <span class="value-number">2.0</span>
+                        <div class="value-label">W/m²K Uninsulated</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">0.16</span>
+                        <div class="value-label">W/m²K With 270mm</div>
+                    </div>
+                    <div class="value-box warning">
+                        <span class="value-number">270mm</span>
+                        <div class="value-label">Target Depth</div>
+                    </div>
+                </div>
+
+                <h3>Key Installation Requirements</h3>
+                <ul class="feature-list">
+                    <li>Installed between and over ceiling joists to avoid thermal bridging</li>
+                    <li>Maintain eaves ventilation (25mm continuous gap minimum)</li>
+                    <li>Insulate loft hatches with minimum 100mm insulation</li>
+                    <li>Seal services penetrations (lighting, wiring)</li>
+                    <li>Do not compress insulation (reduces effectiveness)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>⚠️ Critical Risks & Controls</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                    <div style="background: #fef2f2; padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid var(--danger);">
+                        <h4 style="color: var(--danger); margin-bottom: 0.5rem;">Risk: Blocked Ventilation</h4>
+                        <p style="font-size: 0.9rem;">Can cause condensation, rot in rafters, and mould growth.</p>
+                    </div>
+                    <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid #10b981;">
+                        <h4 style="color: #065f46; margin-bottom: 0.5rem;">Control: Eaves Vents</h4>
+                        <p style="font-size: 0.9rem;">Install continuous 25mm eaves ventilation paths. Use rafter trays if necessary.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Internal Wall Insulation -->
+        <section class="section" id="section-5">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>🧱 Internal Wall Insulation (IWI)</h2>
+                    <span class="risk-badge risk-high">Medium-High Risk</span>
+                </div>
+
+                <p style="margin-bottom: 1.5rem;">Applied to the internal face of external walls, commonly used for solid wall dwellings where external appearance must be retained.</p>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/1.bp.blogspot.com/13183caf478ddbe378f8fb9c83291e2d6be09938.jpg" alt="Internal Wall Insulation">
+                    <div class="image-caption">Internal Wall Insulation system showing vapour control layer and insulation board</div>
+                </div>
+
+                <div class="comparison-slider">
+                    <div class="comparison-item" style="flex: 1;">
+                        <h4>✅ Benefits</h4>
+                        <ul class="feature-list" style="font-size: 0.9rem;">
+                            <li>Retains external appearance</li>
+                            <li>Can be phased room-by-room</li>
+                            <li>No planning permission issues</li>
+                            <li>Weather-independent installation</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-item danger" style="flex: 1; border-color: var(--danger); background: #fef2f2;">
+                        <h4 style="color: var(--danger);">⚠️ Critical Risks</h4>
+                        <ul class="feature-list danger-list" style="font-size: 0.9rem;">
+                            <li>Interstitial condensation</li>
+                            <li>Thermal bridging at floors/partitions</li>
+                            <li>Reduced internal floor area</li>
+                            <li>Vapour control critical</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="value-grid">
+                    <div class="value-box danger">
+                        <span class="value-number">2.1</span>
+                        <div class="value-label">W/m²K Solid Wall</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">0.30</span>
+                        <div class="value-label">W/m²K Basic IWI</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">0.18</span>
+                        <div class="value-label">W/m²K High Perf</div>
+                    </div>
+                </div>
+
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem; border-left: 4px solid #f59e0b;">
+                    <strong>🏗️ PAS 2035 Requirement:</strong> IWI must include detailed junction modelling and vapour control layer (VCL) design to prevent moisture accumulation within the wall structure.
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">Why is IWI considered higher risk than EWI?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, false)">
+                        <input type="radio" name="q2"> It is more expensive to install
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, true)">
+                        <input type="radio" name="q2"> It moves the dew point into the wall structure
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false)">
+                        <input type="radio" name="q2"> It requires planning permission
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false)">
+                        <input type="radio" name="q2"> It cannot be used on solid walls
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-2"></div>
+            </div>
+        </section>
+
+        <!-- Section 6: External Wall Insulation -->
+        <section class="section" id="section-6">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>🏗️ External Wall Insulation (EWI)</h2>
+                    <span class="risk-badge risk-medium">Medium Risk</span>
+                </div>
+
+                <p style="margin-bottom: 1.5rem;">Insulation applied to the external face of walls, finished with render or cladding. This moves the dew point outward, reducing moisture risk to the existing structure.</p>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/cdn.prod.website-files.com/ea05c735d35b5b5e3490e11a3f103579b1320afe.jpg" alt="External Wall Insulation">
+                    <div class="image-caption">External Wall Insulation system installation showing insulation boards fixed to existing masonry</div>
+                </div>
+
+                <h3>System Types</h3>
+                <div class="comparison-slider">
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>EPS Systems</h4>
+                        <p>Expanded Polystyrene</p>
+                        <div class="pros-cons">
+                            <strong>Most cost-effective</strong><br>
+                            Good thermal performance<br>
+                            Lightweight, easy to install<br>
+                            <span style="color: var(--secondary);">Lower fire rating</span>
+                        </div>
+                    </div>
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>Mineral Wool</h4>
+                        <p>Rock/Slag Wool</p>
+                        <div class="pros-cons">
+                            <strong>A1 Fire Rating</strong><br>
+                            Vapour permeable<br>
+                            Acoustic insulation<br>
+                            <span style="color: var(--secondary);">Higher cost, heavier</span>
+                        </div>
+                    </div>
+                    <div class="comparison-item" onclick="selectElement(this)">
+                        <h4>Phenolic</h4>
+                        <p>High Performance</p>
+                        <div class="pros-cons">
+                            <strong>Thinnest solution</strong><br>
+                            Lowest U-values<br>
+                            Space saving<br>
+                            <span style="color: var(--secondary);">Premium cost</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem; background: #f0fdfa;">
+                    <h3>✅ Key Advantages</h3>
+                    <ul class="feature-list">
+                        <li>Excellent whole-wall thermal performance (no thermal bridging)</li>
+                        <li>Protects existing structure from weather</li>
+                        <li>Can improve building aesthetics</li>
+                        <li>No internal floor area loss</li>
+                    </ul>
+                </div>
+
+                <h3>⚠️ Critical Detailing Points</h3>
+                <ul class="warning-list" style="margin-top: 1rem;">
+                    <li>Window and door reveals (depth increases)</li>
+                    <li>Roof eaves and verges (may need extension)</li>
+                    <li>Damp-proof course bridging (ground levels)</li>
+                    <li>Services entry points (gas, electric, water)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 7: Underfloor & Room in Roof -->
+        <section class="section" id="section-7">
+            <div class="card">
+                <h2>🔲 Underfloor Insulation</h2>
+                <span class="risk-badge risk-medium" style="margin-bottom: 1rem; display: inline-block;">Medium Risk</span>
+                
+                <p style="margin-bottom: 1.5rem;">Reduces heat loss through ground floors, particularly critical for suspended timber floors which can account for significant draughts.</p>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.eco-home-essentials.co.uk/fed5e53c3160f5c71575442b190df35f4e15f1ee.jpg" alt="Underfloor Insulation">
+                    <div class="image-caption">Suspended timber floor insulation showing insulation between joists and vapour control layer</div>
+                </div>
+
+                <div class="value-grid">
+                    <div class="value-box danger">
+                        <span class="value-number">1.5</span>
+                        <div class="value-label">W/m²K Uninsulated</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">0.25</span>
+                        <div class="value-label">W/m²K Insulated (Basic)</div>
+                    </div>
+                    <div class="value-box">
+                        <span class="value-number">0.18</span>
+                        <div class="value-label">W/m²K Insulated (High)</div>
+                    </div>
+                </div>
+
+                <div style="background: #fee2e2; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0; border-left: 4px solid var(--danger);">
+                    <strong>🚫 NEVER block sub-floor ventilation!</strong> Suspended timber floors require airflow to prevent rot. Use Airex Smart Air Bricks to recover heat from outgoing air while maintaining ventilation.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🏚️ Room in Roof Insulation</h2>
+                <span class="risk-badge risk-high" style="margin-bottom: 1rem; display: inline-block;">High Complexity</span>
+
+                <p>Insulation for habitable spaces within roof structures requires careful detailing due to complex junctions at eaves, ridges, and dormers.</p>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.insulationmarketplace.com/bd7aee16b62c55f03fd0936dbf23c27534de4d5e.webp" alt="Room in Roof Insulation">
+                    <div class="image-caption">Room-in-roof insulation showing rigid boards between and below rafters with ventilation gap</div>
+                </div>
+
+                <h3>Critical Requirements</h3>
+                <ul class="feature-list">
+                    <li><strong>50mm minimum ventilation gap</strong> above insulation (cross-flow)</li>
+                    <li>Insulation between and below rafters (two-layer approach)</li>
+                    <li>Vapour control layer on warm side</li>
+                    <li>Careful eaves detailing to maintain airflow</li>
+                </ul>
+
+                <div class="alert" style="background: #fef3c7; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                    <strong>⚠️ Overheating Risk:</strong> Rooms in roof are prone to summer overheating. PAS 2035 may require overheating risk assessment.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 8: Glazing -->
+        <section class="section" id="section-8">
+            <div class="card">
+                <h2>🪟 Glazing and Doors</h2>
+                <p>Windows and doors form part of the thermal envelope but must balance thermal performance with ventilation, daylight, and solar gain requirements.</p>
+
+                <div class="image-container">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.buildingenergyvt.com/68652764aa39d10590425a943548df75ae480c98.png" alt="Triple Glazing Cross Section">
+                    <div class="image-caption">Triple glazing cross-section showing Low-E coatings and warm edge spacers</div>
+                </div>
+
+                <h3>U-Value Comparison</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Typical U-Value (W/m²K)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #fee2e2;">
+                            <td>Single Glazing</td>
+                            <td>~4.8</td>
+                            <td><span class="risk-badge risk-high">Poor</span></td>
+                        </tr>
+                        <tr style="background: #fef3c7;">
+                            <td>Older Double Glazing</td>
+                            <td>~2.8</td>
+                            <td><span class="risk-badge risk-medium">Below Standard</span></td>
+                        </tr>
+                        <tr style="background: #f0fdf4;">
+                            <td>Modern Double Glazing</td>
+                            <td>~1.2–1.4</td>
+                            <td><span class="risk-badge risk-low">Good</span></td>
+                        </tr>
+                        <tr style="background: #d1fae5;">
+                            <td>Triple Glazing</td>
+                            <td>~0.8</td>
+                            <td><span class="risk-badge risk-low">Excellent</span></td>
+                        </tr>
+                        <tr>
+                            <td>Insulated External Door</td>
+                            <td>~1.0–1.4</td>
+                            <td><span class="risk-badge risk-low">Good</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Key Performance Features</span>
+                        <span class="icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <ul class="feature-list">
+                            <li><strong>Low-E Coatings:</strong> Reflect heat back into the room</li>
+                            <li><strong>Warm Edge Spacers:</strong> Reduce thermal bridging at glass edge</li>
+                            <li><strong>Insulated Frames:</strong> uPVC, timber, or thermally broken aluminium</li>
+                            <li><strong>Gas Filling:</strong> Argon or Krypton between panes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: #f0fdfa; padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem;">
+                    <h4>⚖️ Balance Required</h4>
+                    <p>While triple glazing offers best thermal performance, consider:</p>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Reduced solar gain (winter benefit vs summer disadvantage)</li>
+                        <li>Daylight transmission reduction</li>
+                        <li>Cost-benefit analysis for specific orientation</li>
+                        <li>Background ventilation requirements (trickle vents)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Calculator -->
+        <section class="section" id="section-9">
+            <div class="card">
+                <h2>🧮 U-Value Improvement Calculator</h2>
+                <p>Calculate the percentage improvement in thermal performance when upgrading building elements.</p>
+
+                <div class="calculator">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="input-group">
+                            <label>Current U-Value (W/m²K)</label>
+                            <input type="number" id="currentU" step="0.01" placeholder="e.g., 2.1" oninput="calculateImprovement()">
+                        </div>
+                        <div class="input-group">
+                            <label>Improved U-Value (W/m²K)</label>
+                            <input type="number" id="improvedU" step="0.01" placeholder="e.g., 0.3" oninput="calculateImprovement()">
+                        </div>
+                    </div>
+                    
+                    <div class="calc-result" id="calcResult">
+                        <div id="calcText"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>Reference Values</h3>
+                    <div class="comparison-slider" style="margin-top: 1rem;">
+                        <div class="comparison-item" onclick="fillCalculator(2.1, 0.3)">
+                            <h4>Solid Wall + IWI</h4>
+                            <p>2.1 → 0.3 W/m²K</p>
+                            <div class="pros-cons">
+                                <strong>85.7% improvement</strong><br>
+                                Click to calculate
+                            </div>
+                        </div>
+                        <div class="comparison-item" onclick="fillCalculator(2.0, 0.16)">
+                            <h4>Loft Insulation</h4>
+                            <p>2.0 → 0.16 W/m²K</p>
+                            <div class="pros-cons">
+                                <strong>92% improvement</strong><br>
+                                Click to calculate
+                            </div>
+                        </div>
+                        <div class="comparison-item" onclick="fillCalculator(4.8, 0.8)">
+                            <h4>Single to Triple Glazing</h4>
+                            <p>4.8 → 0.8 W/m²K</p>
+                            <div class="pros-cons">
+                                <strong>83.3% improvement</strong><br>
+                                Click to calculate
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📋 PAS 2035 Summary Checklist</h2>
+                <p>All fabric measures must meet these criteria:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                    <div style="background: #f0fdfa; padding: 1.5rem; border-radius: 0.75rem;">
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">✓ Assessment</h4>
+                        <ul class="feature-list" style="font-size: 0.9rem;">
+                            <li>Whole dwelling retrofit plan</li>
+                            <li>Condition survey completed</li>
+                            <li>Moisture risk assessment</li>
+                            <li>Ventilation strategy</li>
+                        </ul>
+                    </div>
+                    <div style="background: #fef3c7; padding: 1.5rem; border-radius: 0.75rem;">
+                        <h4 style="color: #92400e; margin-bottom: 1rem;">⚠️ Design</h4>
+                        <ul class="feature-list" style="font-size: 0.9rem;">
+                            <li>Junction detailing specified</li>
+                            <li>Vapour control strategy</li>
+                            <li>Thermal bridging minimized</li>
+                            <li>Fire safety considered</li>
+                        </ul>
+                    </div>
+                    <div style="background: #eff6ff; padding: 1.5rem; border-radius: 0.75rem;">
+                        <h4 style="color: #1e40af; margin-bottom: 1rem;">🛠️ Installation</h4>
+                        <ul class="feature-list" style="font-size: 0.9rem;">
+                            <li>Competent installers (PAS 2030)</li>
+                            <li>Quality assurance checks</li>
+                            <li>As-built documentation</li>
+                            <li>Commissioning ventilation</li>
+                        </ul>
+                    </div>
+                    <div style="background: #f3e8ff; padding: 1.5rem; border-radius: 0.75rem;">
+                        <h4 style="color: #6b21a8; margin-bottom: 1rem;">📊 Monitoring</h4>
+                        <ul class="feature-list" style="font-size: 0.9rem;">
+                            <li>Post-installation inspection</li>
+                            <li>Performance verification</li>
+                            <li>Occupant guidance provided</li>
+                            <li>Maintenance schedule</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Final Assessment -->
+        <section class="section" id="section-10">
+            <div class="hero" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);">
+                <h1>Final Assessment</h1>
+                <p>Test your knowledge of PAS 2035 and domestic energy efficiency measures</p>
+                <span class="badge">Pass mark: 80%</span>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">1. What is the primary approach of PAS 2035?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final1"> Renewable energy first
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, true, 'final')">
+                        <input type="radio" name="final1"> Fabric first
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final1"> Heating system replacement
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">2. Which insulation material has the lowest thermal conductivity?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final2"> Mineral Wool (0.035)
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final2"> EPS (0.034)
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, true, 'final')">
+                        <input type="radio" name="final2"> Phenolic Foam (0.020)
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">3. What is the target depth for loft insulation?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final3"> 100-150mm
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, true, 'final')">
+                        <input type="radio" name="final3"> 270-300mm
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final3"> 400-500mm
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">4. Which measure moves the dew point outward, reducing moisture risk?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, true, 'final')">
+                        <input type="radio" name="final4"> External Wall Insulation
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final4"> Internal Wall Insulation
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final4"> Loft Insulation
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <div class="quiz-question">5. What is the minimum eaves ventilation gap for loft insulation?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, true, 'final')">
+                        <input type="radio" name="final5"> 25mm continuous
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final5"> 10mm intermittent
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, false, 'final')">
+                        <input type="radio" name="final5"> 50mm at corners only
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 3rem 0;">
+                <button class="btn btn-primary" style="font-size: 1.25rem; padding: 1rem 3rem;" onclick="calculateFinalScore()">
+                    Submit Assessment
+                </button>
+            </div>
+
+            <div id="finalResult" style="display: none;">
+                <div class="certificate">
+                    <h2>🏆 Course Completion</h2>
+                    <p style="font-size: 1.25rem; margin-bottom: 2rem;">Congratulations on completing PAS 2035: Key Characteristics of Domestic Energy Efficiency Measures</p>
+                    
+                    <div class="certificate-stats">
+                        <div class="stat-box">
+                            <div class="stat-number" id="scorePercent">0%</div>
+                            <div style="color: #92400e; font-weight: 600;">Score</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="correctAnswers">0/5</div>
+                            <div style="color: #92400e; font-weight: 600;">Correct</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">10</div>
+                            <div style="color: #92400e; font-weight: 600;">Modules</div>
+                        </div>
+                    </div>
+
+                    <div id="passMessage" style="margin-top: 2rem; font-size: 1.125rem; font-weight: 600; color: #065f46;">
+                        ✓ You have successfully passed the assessment!
+                    </div>
+                    <div id="failMessage" style="margin-top: 2rem; font-size: 1.125rem; font-weight: 600; color: var(--danger); display: none;">
+                        ✗ You did not achieve the pass mark. Please review the material and try again.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        let currentSection = 1;
+        const totalSections = 10;
+        let finalScore = 0;
+        let finalQuestionsAnswered = 0;
+
+        function updateProgress() {
+            const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = Math.round(percent) + '%';
+            
+            document.getElementById('prevBtn').disabled = currentSection === 1;
+            document.getElementById('nextBtn').disabled = currentSection === totalSections;
+            
+            if (currentSection === totalSections) {
+                document.getElementById('nextBtn').textContent = 'Finish';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Next';
+            }
+        }
+
+        function showSection(n) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('section-' + n).classList.add('active');
+            currentSection = n;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) {
+                showSection(currentSection + 1);
+            }
+        }
+
+        function previousSection() {
+            if (currentSection > 1) {
+                showSection(currentSection - 1);
+            }
+        }
+
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            header.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+
+        function selectElement(element) {
+            // Remove selected class from siblings
+            const parent = element.parentElement;
+            parent.querySelectorAll('.comparison-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function selectOption(element, isCorrect, type = 'practice') {
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.quiz-option');
+            const feedback = parent.nextElementSibling;
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                opt.style.pointerEvents = 'none';
+            });
+            
+            element.classList.add('selected');
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                if (type === 'final') finalScore++;
+            } else {
+                element.classList.add('incorrect');
+                // Highlight correct answer
+                options.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            if (type !== 'final') {
+                feedback.classList.add('show');
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+                feedback.textContent = isCorrect ? 
+                    '✓ Correct! Well done.' : 
+                    '✗ Incorrect. The correct answer is highlighted in green.';
+            } else {
+                finalQuestionsAnswered++;
+            }
+        }
+
+        function calculateImprovement() {
+            const current = parseFloat(document.getElementById('currentU').value);
+            const improved = parseFloat(document.getElementById('improvedU').value);
+            const resultDiv = document.getElementById('calcResult');
+            const textDiv = document.getElementById('calcText');
+            
+            if (current && improved && current > improved) {
+                const improvement = ((current - improved) / current * 100).toFixed(1);
+                textDiv.innerHTML = `
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">${improvement}%</div>
+                    <div style="font-size: 1rem; font-weight: 400; color: #6b7280;">
+                        Improvement in thermal performance<br>
+                        Heat loss reduced by factor of ${(current/improved).toFixed(1)}x
+                    </div>
+                `;
+                resultDiv.classList.add('show');
+            } else {
+                resultDiv.classList.remove('show');
+            }
+        }
+
+        function fillCalculator(current, improved) {
+            document.getElementById('currentU').value = current;
+            document.getElementById('improvedU').value = improved;
+            calculateImprovement();
+        }
+
+        function calculateFinalScore() {
+            const percentage = (finalScore / 5) * 100;
+            document.getElementById('scorePercent').textContent = percentage + '%';
+            document.getElementById('correctAnswers').textContent = finalScore + '/5';
+            
+            const passMessage = document.getElementById('passMessage');
+            const failMessage = document.getElementById('failMessage');
+            
+            if (percentage >= 80) {
+                passMessage.style.display = 'block';
+                failMessage.style.display = 'none';
+            } else {
+                passMessage.style.display = 'none';
+                failMessage.style.display = 'block';
+            }
+            
+            document.getElementById('finalResult').style.display = 'block';
+            document.getElementById('finalResult').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
