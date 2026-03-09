@@ -1529,6 +1529,20 @@
             const hours = Math.floor(elapsed / 60);
             document.getElementById('timeValue').textContent = hours > 0 ? `${hours}:${minutes.toString().padStart(2, '0')}` : `${minutes} min`;
             
+            // Show retake option if score is below 80%
+            const certificateEl = document.getElementById('certificate');
+            if (percentage < 80) {
+                // Check if retake button doesn't already exist
+                if (!document.getElementById('retakeBtn')) {
+                    const retakeBtn = document.createElement('button');
+                    retakeBtn.id = 'retakeBtn';
+                    retakeBtn.textContent = 'Retake Knowledge Check';
+                    retakeBtn.style.cssText = 'background: var(--primary-dark); color: white; border: none; padding: 0.875rem 2rem; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 1rem;';
+                    retakeBtn.onclick = retakeKnowledgeCheck;
+                    certificateEl.appendChild(retakeBtn);
+                }
+            }
+            
             // Mark assessment as complete in nav
             document.querySelectorAll('.nav-link').forEach(link => {
                 if (link.getAttribute('onclick').includes('assessment')) {
@@ -1539,6 +1553,36 @@
             // Set progress to 100%
             document.getElementById('progressBar').style.width = '100%';
             document.getElementById('progressText').textContent = '100% Complete';
+        }
+
+        function retakeKnowledgeCheck() {
+            // Reset quiz state
+            quizScore = 0;
+            currentQuestion = 1;
+            
+            // Hide certificate
+            document.getElementById('certificate').style.display = 'none';
+            
+            // Reset all quiz options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                opt.style.pointerEvents = '';
+            });
+            
+            // Reset all feedbacks
+            document.querySelectorAll('.quiz-feedback').forEach(fb => {
+                fb.classList.remove('show', 'correct', 'incorrect');
+                fb.textContent = '';
+            });
+            
+            // Reset all quiz buttons
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('btn' + i).disabled = false;
+            }
+            
+            // Show first question
+            document.getElementById('q1').style.display = 'block';
+            document.getElementById('q1').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         // Initialize
