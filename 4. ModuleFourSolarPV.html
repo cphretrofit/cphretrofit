@@ -1171,12 +1171,20 @@
 
         function updateButtons() {
             document.getElementById('prevBtn').disabled = currentSection === 0;
-            document.getElementById('nextBtn').disabled = currentSection === totalSections - 1;
+            // Don't disable the next button on last section - allow completion
+            document.getElementById('nextBtn').disabled = false;
             
             if (currentSection === totalSections - 1) {
                 document.getElementById('nextBtn').textContent = 'Course Complete ✓';
+                // Add onclick handler for completion
+                document.getElementById('nextBtn').onclick = function() {
+                    alert('Congratulations! You have completed Module Four: Solar PV.\n\nYou may now proceed to the next module.');
+                };
             } else {
                 document.getElementById('nextBtn').textContent = 'Next Section →';
+                document.getElementById('nextBtn').onclick = function() {
+                    changeSection(1);
+                };
             }
         }
 
