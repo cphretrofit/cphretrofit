@@ -1455,7 +1455,14 @@
     }
 
     function restartExam() {
-        location.reload();
+        // Prevent multiple clicks
+        if (this.restartInProgress) return;
+        this.restartInProgress = true;
+        
+        // Use a slight delay to ensure click is registered
+        setTimeout(() => {
+            location.reload();
+        }, 100);
     }
 
     // Initialize on load
