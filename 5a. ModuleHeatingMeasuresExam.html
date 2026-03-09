@@ -1125,7 +1125,10 @@
         }
 
         function startResit() {
-            if (attemptNumber >= 2) return;
+            if (attemptNumber >= 2) {
+                alert('You have already used your resit.');
+                return;
+            }
             
             attemptNumber = 2;
             currentQuestion = 0;
@@ -1146,6 +1149,12 @@
         }
 
         function restartExam() {
+            // Prevent resetting if already used resit
+            if (attemptNumber >= 2) {
+                alert('You have already used your resit. You must wait 24 hours and retake the induction.');
+                return;
+            }
+            
             // Reset everything
             attemptNumber = 1;
             currentQuestion = 0;
