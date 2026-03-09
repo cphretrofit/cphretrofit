@@ -916,6 +916,21 @@
             <h3>🎓 Module Complete</h3>
             <p>You have completed Module Two: Introduction to PAS2030/2035.<br>
             Next: Role-specific training (Assessor, Coordinator, or Installer pathways).</p>
+            
+            <button onclick="retakeQuizzes()" style="
+                margin-top: 2rem;
+                padding: 1rem 2rem;
+                background: var(--accent);
+                color: var(--dark);
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                🔄 Retake Knowledge Checks
+            </button>
         </div>
         <div class="slide-footer">
             <span>CPH Retrofit Induction Programme</span>
@@ -1018,6 +1033,28 @@
     function checkAnswer2(btn, isCorrect) { checkAnswer(btn, isCorrect); }
     function checkAnswer3(btn, isCorrect) { checkAnswer(btn, isCorrect); }
     function checkAnswer4(btn, isCorrect) { checkAnswer(btn, isCorrect); }
+
+    function retakeQuizzes() {
+        // Reset all quiz options
+        const allQuizButtons = document.querySelectorAll('.quiz-option');
+        allQuizButtons.forEach(btn => {
+            btn.disabled = false;
+            btn.style.cursor = 'pointer';
+            btn.classList.remove('correct', 'wrong');
+        });
+        
+        // Reset all feedback elements
+        const allFeedback = document.querySelectorAll('.feedback');
+        allFeedback.forEach(fb => {
+            fb.classList.remove('show');
+            fb.style.background = '';
+            fb.style.borderLeft = '';
+        });
+        
+        // Go to first quiz slide (slide 11)
+        currentSlide = 11;
+        showSlide(currentSlide);
+    }
 
     // Initialize
     initProgress();
