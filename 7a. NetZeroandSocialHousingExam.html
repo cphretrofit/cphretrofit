@@ -562,7 +562,7 @@
             <span>Questions</span>
         </div>
         <div class="info-item">
-            <strong>70%</strong>
+            <strong>80%</strong>
             <span>Pass Mark</span>
         </div>
         <div class="info-item">
@@ -585,7 +585,7 @@
         <div class="exam-rules">
             <h3>📋 Examination Rules</h3>
             <ul>
-                <li>You must answer <strong>14 out of 20 questions correctly</strong> to pass (70%)</li>
+                <li>You must answer <strong>16 out of 20 questions correctly</strong> to pass (80%)</li>
                 <li>You can navigate between questions using the Previous/Next buttons</li>
                 <li>You must select an answer before proceeding to the next question</li>
                 <li>You can review and change answers before final submission</li>
@@ -953,7 +953,7 @@
         });
         
         const percentage = Math.round((correct / questions.length) * 100);
-        const passed = percentage >= 70;
+        const passed = percentage >= 80;
         
         displayResults(correct, percentage, passed);
     }
@@ -978,19 +978,25 @@
             resultMessage.textContent = '🎉 Congratulations! You have PASSED the examination.';
             resultMessage.classList.add('pass');
             resultMessage.classList.remove('fail');
-            resultDetails.innerHTML = `You answered <strong>${correct} out of ${questions.length}</strong> questions correctly.<br>You have demonstrated competency in UK Net Zero and PRS legislation.`;
+            resultDetails.innerHTML = `You answered <strong>${correct} out of ${questions.length}</strong> questions correctly.<br>You have demonstrated competency in UK Net Zero and PRS legislation.<br><br>
+                <button onclick="downloadCertificate(${correct}, ${percentage})" style="background: #059669; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; margin: 0.5rem;">📥 Download Certificate</button>`;
             
             document.getElementById('certificate-actions').style.display = 'block';
             document.getElementById('fail-actions').style.display = 'none';
             
             generateCertificate(correct, percentage);
+            
+            // Auto-download certificate after 2 seconds
+            setTimeout(() => {
+                downloadCertificate(correct, percentage);
+            }, 2000);
         } else {
             scoreCircle.classList.add('fail');
             scoreCircle.classList.remove('pass');
             resultMessage.textContent = '❌ Unfortunately, you did not pass the examination.';
             resultMessage.classList.add('fail');
             resultMessage.classList.remove('pass');
-            resultDetails.innerHTML = `You answered <strong>${correct} out of ${questions.length}</strong> questions correctly.<br>You needed 14 correct answers (70%) to pass.`;
+            resultDetails.innerHTML = `You answered <strong>${correct} out of ${questions.length}</strong> questions correctly.<br>You needed 16 correct answers (80%) to pass.`;
             
             document.getElementById('certificate-actions').style.display = 'none';
             document.getElementById('fail-actions').style.display = 'block';
@@ -1011,6 +1017,65 @@
             year: 'numeric'
         });
         document.getElementById('cert-id').textContent = 'UK-NZ-' + Date.now().toString().slice(-8);
+    }
+    
+    function downloadCertificate(score, percentage) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 800;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#1e3a5f';
+        ctx.lineWidth = 10;
+        ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+        
+        ctx.fillStyle = '#1e3a5f';
+        ctx.font = 'bold 48px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Certificate of Completion', canvas.width/2, 100);
+        
+        ctx.font = '24px Arial';
+        ctx.fillStyle = '#2c5282';
+        ctx.fillText('CPH Retrofit Training Programme', canvas.width/2, 150);
+        
+        ctx.font = 'bold 36px Arial';
+        ctx.fillStyle = '#000000';
+        ctx.fillText('Module 7: Net Zero & Social Housing Exam', canvas.width/2, 250);
+        
+        // Candidate name
+        ctx.font = 'bold 32px Arial';
+        ctx.fillStyle = '#1e3a5f';
+        ctx.fillText(candidateName, canvas.width/2, 320);
+        
+        ctx.font = '20px Arial';
+        ctx.fillStyle = '#666666';
+        const passDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        ctx.fillText('Date of Pass: ' + passDate, canvas.width/2, 400);
+        
+        // Score - MUST BE CLEARLY VISIBLE
+        ctx.font = 'bold 24px Arial';
+        ctx.fillStyle = '#38a169';
+        ctx.fillText(`Score: ${score}/20 (${percentage}%)`, canvas.width/2, 470);
+        
+        ctx.font = 'italic 18px Arial';
+        ctx.fillText('This certificate confirms successful completion of the assessment', canvas.width/2, 650);
+        
+        ctx.font = 'bold 28px Arial';
+        ctx.fillStyle = '#38a169';
+        ctx.fillText('CPH RETROFIT', canvas.width/2, 750);
+        
+        canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `CPH_Retrofit_Module7_Certificate_${new Date().toISOString().split('T')[0]}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
     }
 
     function showReview() {
