@@ -796,6 +796,11 @@
             
             document.getElementById('startScreen').style.display = 'none';
             document.getElementById('examInterface').style.display = 'block';
+            
+            // Initialize the exam questions (first question is automatically shown as active)
+            initExam();
+            
+            // Start the timer
             startTimer();
         }
         
@@ -985,12 +990,11 @@
         let currentQuestion = 0;
         let answers = new Array(30).fill(null);
         let startTime = Date.now();
+        let examSubmitted = false;
         
         function startTimer() {
             startTime = Date.now();
         }
-        let startTime = Date.now();
-        let examSubmitted = false;
 
         function initExam() {
             const container = document.getElementById('questionsContainer');
